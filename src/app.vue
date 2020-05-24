@@ -1,17 +1,21 @@
 ﻿<template>
     <div>
-        Hello from App Vue: <strong>{{message}}</strong>
-        <router-link to="/pagea">Go to A</router-link>
-        <router-link to="/pageb">Go to B</router-link>
-        <router-view></router-view>
+        <div>
+            Hello from App Vue
+        </div>
+        <builder id="test"></builder>
     </div>
 </template>
 <script>
+    import builder from './components/builder.vue'
+    var c = function(){return {builder};}
     export default {
         data() {
             return {
                 message: 'Message from App.vue',
             };
-        }
+        },
+        components : c()
+        
     };
 </script>
