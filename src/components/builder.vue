@@ -25,14 +25,14 @@
 
     <div class="col-6">
       <h3>Draggable {{ draggingInfo }}</h3>
-      <controlset :schema="schema"> </controlset>
+      <controlset :elements="schema.elements"> </controlset>
     </div>
   </div>
 </template>
 
 <script>
-import controlset from "./.infra/controlset";
-let id = 1;
+import controlset from "@/components/.infra/controlset";
+let id = 100;
 export default {
   name: "simple",
   display: "Simple",
@@ -59,13 +59,16 @@ export default {
   },
   methods: {
     add: function() {
-      this.list.push({ name: "Juan " + id, id: id++ });
+      this.schema.elements.push({id: "ctrl_" + id++, type:'textField', label:'Test' });
     },
     replace: function() {
       this.list = [{ name: "Edgard", id: id++ }];
     },
     checkMove: function(e) {
       window.console.log("Future index: " + e.draggedContext.futureIndex);
+    },
+    getVariable: function(name) {
+      return this.schema.variables[0].name + name ;
     }
   }
 };

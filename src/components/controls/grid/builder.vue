@@ -1,19 +1,11 @@
 <template>
   <div>
     Grid
-    <div v-for="col in schema.columns" :key="col.id">
-      <blockquote style="border:1px dashed silver">
-        <component
-          v-for="el in col.elements"
-          :key="el.id"
-          :is="el.type"
-          :schema="el"
-          v-bind="el"
-          v-model="getVariable[el.variable]"
-        >
-        </component>
-      </blockquote>
-    </div>
+    <draggable class="dragArea" tag="div" :list="schema.columns" :group="{ name: this.schema.id }">
+        <div v-for="col in schema.columns" :key="col.id">
+          <controlset :elements="col.elements"></controlset>
+        </div>
+    </draggable>
   </div>
 </template>
 <script>
@@ -30,12 +22,11 @@ export default {
   },
   components: {
     draggable: () => import("vuedraggable"),
-    grid: () => import("../grid/builder"),
-    textField: () => import("../textField/builder")
+    controlset: () => import("@/components/.infra/controlset")
   },
   methods: {
     getVariable: function(name) {
-      return name;
+      return this.$parent.getVariable(name);
     }
   }
 };
