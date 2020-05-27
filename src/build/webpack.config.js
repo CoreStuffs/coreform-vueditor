@@ -16,11 +16,7 @@ if (config.appSettings != null) {
 const webpathConfig = {
     mode: 'development',   // Specifies whether to use built-in optimizations accordingly (options: production | development | none)
     entry: "./src/main.js",     // Specifies the entry point of the application where webpack begins the packaging process.  
-    output: {
-        path: path.resolve(__dirname, "../../dist"),  // Specifies the output directory for any wepback output files
-        filename: "bundle.js",                              // Specifies the file name template for entry chunks (TODO: figure out what an entry point chunk is),
-        publicPath: "./js/"                                  // Specifies the page-relative URL to prefix before assets to ensure they can be resolved by a browser.  (Notice this value is injected into index.html to refer to the bundle.js file created by webpack).
-    },
+   
 	devServer: {
 		contentBase: './dist'
 	},
@@ -34,6 +30,15 @@ const webpathConfig = {
             { test: /\.vue$/, loader: 'vue-loader' },                                   // Specifies that files with the .vue extension should be processed by vue-loader which is what breaks up a single-file vue component into its constituent parts.
             { test: /\.js$/, loader: 'babel-loader', query: { presets: ['es2015'] } },  // Specifies that .js files should be run through the babel-loader for ES2015 to ES5 conversion.
             { test: /\.css$/, use: ['vue-style-loader', 'css-loader'] },                // Specifies that CSS should be included in the bundle from .CSS files as well as processed from the <style> section of vue single-file vue component.	
+            {
+                test: /\.scss$/,
+                use: [
+                  'vue-style-loader',
+                  'css-loader',
+                  'sass-loader'
+                ]
+              },
+            
             // ESLint rules
             {
                 test: /\.(js|vue)$/,
