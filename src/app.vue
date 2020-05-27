@@ -18,10 +18,7 @@ export default {
   data:function() {
     return {
       message: "Message from App.vue",
-      data:{
-        'name':'Jeff'
-
-      },
+      data:{},
       schema: {
         schemaVersion: 1,
         formVersion: 1,

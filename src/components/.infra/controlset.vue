@@ -20,7 +20,7 @@ export default {
   },
   components: {
       'draggable' : () => import('vuedraggable'),
-      'grid' : () => import('@/components/controls/grid/grid'),
+      'grid' : () => import('@/components/controls/grid/builder.vue'),
       'textField' : () => import('@/components/controls/textField/textField'),
       'selectField': () => import("@/components/controls/selectField/selectField")
   }
