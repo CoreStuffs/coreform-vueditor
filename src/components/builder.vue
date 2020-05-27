@@ -10,16 +10,6 @@
           <button class="btn btn-secondary" @click="add">Add</button>
           <button class="btn btn-secondary" @click="replace">Replace</button>
         </div>
-
-        <div class="form-check">
-          <input
-            id="disabled"
-            type="checkbox"
-            v-model="enabled"
-            class="form-check-input"
-          />
-          <label class="form-check-label" for="disabled">DnD enabled</label>
-        </div>
       </div>
     </div>
 
@@ -40,17 +30,12 @@ export default {
   components: {
     controlset
   },
-  props: {
-    schema: {
-      type: Object,
-      required: true
-    }
-  },
-  data() {
-    return {
-      enabled: true,
-      dragging: false
-    };
+  props: [
+    'schema',
+    'value']
+  ,
+  data:function(){
+    return {};
   },
   computed: {
     draggingInfo() {
@@ -66,10 +51,16 @@ export default {
     },
     checkMove: function(e) {
       window.console.log("Future index: " + e.draggedContext.futureIndex);
-    },
-    getVariable: function(name) {
-      return this.schema.variables[0].name + name ;
     }
+  },
+  provide: function() {
+      var t = this;
+      return {
+        formData:t.value,
+        getVariable: function(name) {
+          return t.schema.variables.filter(p => p && p.name && p.name.toUpperCase() === name.toUpperCase())[0];
+        }
+    };
   }
 };
 </script>

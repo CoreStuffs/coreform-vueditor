@@ -3,7 +3,7 @@
     <h1>
       Hello from App Vue
     </h1>
-    <builder :schema="schema"></builder>
+    <builder :schema="schema" v-model="data"></builder>
     <pre>{{ valueString }}</pre>
   </div>
 </template>
@@ -15,9 +15,13 @@ var c = function() {
   return { builder };
 };
 export default {
-  data() {
+  data:function() {
     return {
       message: "Message from App.vue",
+      data:{
+        'name':'Jeff'
+
+      },
       schema: {
         schemaVersion: 1,
         formVersion: 1,
@@ -143,7 +147,7 @@ export default {
   components: c(),
   computed: {
     valueString: function() {
-      return JSON.stringify(this.schema, null, 2);
+      return JSON.stringify(this.data, null, 2);
     }
   }
 };

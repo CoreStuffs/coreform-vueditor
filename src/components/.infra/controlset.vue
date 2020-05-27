@@ -4,13 +4,13 @@
                     :key="el.id"
                     :is="el.type"
                     :schema="el"
-                    v-bind="el"
-                    v-model="getVariable[el.variable]">
+                    v-model="formData[el.variable]">
         </component>
   </draggable>
 </template>
 <script>
 export default {
+  inject:["formData"],
   name: "controlset",
   props: {
     elements: {
@@ -20,14 +20,9 @@ export default {
   },
   components: {
       'draggable' : () => import('vuedraggable'),
-      'grid' : () => import('@/components/controls/grid/builder'),
-      'textField' : () => import('@/components/controls/textField/builder'),
-      'selectField': () => import("@/components/controls/selectField/builder")
-  },
-  methods:{
-      getVariable:function(name){
-          return this.$parent ?? this.$parent.getVariable(name);
-      }
+      'grid' : () => import('@/components/controls/grid/grid'),
+      'textField' : () => import('@/components/controls/textField/textField'),
+      'selectField': () => import("@/components/controls/selectField/selectField")
   }
 };
 </script>
