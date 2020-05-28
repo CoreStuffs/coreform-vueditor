@@ -52,8 +52,6 @@ export default {
 .uk-grid-medium > *,
 .uk-grid-collapse > * {
   padding-left: 15px;
-  padding-right: 15px;
-
 }
 
 .uk-grid-column-medium > *:last-child,
@@ -78,5 +76,13 @@ export default {
   bottom: 0;
   left: 0px;
   border-left: 1px solid #e5e5e5;
+}
+
+@media (min-width: 960px){
+  .uk-grid-column-medium > *,
+  .uk-grid-medium > *,
+  .uk-grid-collapse > * {
+    padding-right: 15px;
+  }
 }
 </style>
