@@ -2,6 +2,7 @@
     <div :data-ref="id" :type="type" class="cf_validationError uk-margin-small-bottom cf_field" v-on:mouseleave="hideToolbar" v-on:mouseenter="showToolbar">
         <div ref="toolbar" class="toolbar" style="display:none">
             <label class="uk-text-normal" v-if="variableText">Data: {{variableText}}</label>
+            <label class="uk-text-normal" v-if="variableText">Data: {{variableText}}</label>
             <toolButton icon="move" cssclass="uk-drag moveHandle"/>
             <toolButton icon="settings" :onclick="openSettings"/>
             <toolButton icon="trash" cssclass="deleteHandle" :onclick="removeNode"/>
@@ -31,9 +32,11 @@ export default {
     methods: {
         hideToolbar: function(evt){
             this.$refs.toolbar.style.display = 'none';
+            evt.stopPropagation();
         },
         showToolbar: function(evt){
             this.$refs.toolbar.style.display = '';
+            evt.stopPropagation();
         },
         openSettings: function (evt) {
             this.$root.$form.openSettingsById(this.id);

@@ -163,3 +163,8 @@ export default {
 @import "../node_modules/uikit/src/scss/mixins-theme.scss";
 @import "../node_modules/uikit/src/scss/uikit-theme.scss";
 </style>
+<style scoped>
+#app{
+  margin:10px
+}
+</style>

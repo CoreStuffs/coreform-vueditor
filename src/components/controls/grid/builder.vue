@@ -1,21 +1,23 @@
 <template>
-  <draggable
-    class="uk-grid"
-    v-bind:class="{
-      'uk-grid-divider uk-grid-collapse': schema.showSeparator,
-      'uk-grid-medium': !schema.showSeparator
-    }"
-    :list="schema.columns"
-    :group="{ name: this.schema.id }"
-    uk-grid
-  >
-    <controlset
-      :elements="col.elements"
-      v-for="col in schema.columns"
-      :key="col.id"
-      :class="'uk-width-' + col.width + '@m'"
-    ></controlset>
-  </draggable>
+  <formControl :schema="schema">
+    <draggable
+      class="uk-grid"
+      v-bind:class="{
+        'uk-grid-divider uk-grid-collapse': schema.showSeparator,
+        'uk-grid-medium': !schema.showSeparator
+      }"
+      :list="schema.columns"
+      :group="{ name: this.schema.id }"
+      uk-grid
+    >
+      <controlset
+        :elements="col.elements"
+        v-for="col in schema.columns"
+        :key="col.id"
+        :class="'uk-width-' + col.width + '@m'"
+      ></controlset>
+    </draggable>
+  </formControl>
 </template>
 <script>
 export default {
@@ -31,7 +33,8 @@ export default {
   },
   components: {
     draggable: () => import("vuedraggable"),
-    controlset: () => import("@/components/.infra/controlset")
+    controlset: () => import("@/components/.infra/controlset"),
+    formControl: () => import("@/components/.infra/formControl")
   },
   methods: {
     getVariable: function(name) {
@@ -41,11 +44,19 @@ export default {
 };
 </script>
 <style scoped>
+.uk-grid{
+  padding-top: 15px;
+  padding-bottom: 15px
+}
+
+
+
 .uk-grid-column-medium > *,
 .uk-grid-medium > *,
 .uk-grid-collapse > * {
   padding-left: 15px;
   padding-right: 15px;
+
 }
 
 .uk-grid-column-medium > *:last-child,
