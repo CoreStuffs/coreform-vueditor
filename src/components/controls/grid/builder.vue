@@ -45,12 +45,9 @@ export default {
 </script>
 <style scoped>
 .uk-grid{
-  padding-top: 15px;
+  padding-top: 20px;
   padding-bottom: 15px
 }
-
-
-
 .uk-grid-column-medium > *,
 .uk-grid-medium > *,
 .uk-grid-collapse > * {

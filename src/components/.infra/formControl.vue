@@ -1,6 +1,6 @@
 <template>
-    <div :data-ref="id" :type="type" class="cf_validationError uk-margin-small-bottom cf_field" v-on:mouseleave="hideToolbar" v-on:mouseenter="showToolbar">
-        <div ref="toolbar" class="toolbar" style="display:none">
+    <div :data-ref="id" :type="type" class="cf_validationError uk-margin-small-bottom cf_field" v-on:mouseleave="hideToolbar" v-on:mouseover="showToolbar">
+        <div ref="toolbar" class="coreform_toolbar" style="display:none">
             <label class="uk-text-normal" v-if="variableText">Data: {{variableText}}</label>
             <label class="uk-text-normal" v-if="variableText">Data: {{variableText}}</label>
             <toolButton icon="move" cssclass="uk-drag moveHandle"/>
@@ -31,10 +31,11 @@ export default {
     },
     methods: {
         hideToolbar: function(evt){
-            this.$refs.toolbar.style.display = 'none';
+            this.$root.$el.getElementsByClassName("coreform_toolbar").forEach(el => el.style.display = 'none');
             evt.stopPropagation();
         },
         showToolbar: function(evt){
+            this.$root.$el.getElementsByClassName("coreform_toolbar").forEach(el => el.style.display = 'none');
             this.$refs.toolbar.style.display = '';
             evt.stopPropagation();
         },
@@ -54,7 +55,7 @@ export default {
     border: 1px solid transparent
 }
 
-.toolbar {
+.coreform_toolbar {
     z-index: 999;
     position: absolute;
     right: 0px;
@@ -62,7 +63,7 @@ export default {
 
 }
 
-    .toolbar > label {
+    .coreform_toolbar > label {
         background-color: #fcfcfc;      
         margin-right: 7px;
         position:relative;
@@ -73,7 +74,7 @@ export default {
         font-size:13px
     }
 
-    .toolbar img {
+    .coreform_toolbar img {
         display: block;
         height: 100%;
         width: 100%;
