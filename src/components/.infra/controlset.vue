@@ -1,9 +1,10 @@
 <template>
-  <draggable class="dragArea" tag="ul" :list="elements" :group="{ name: 'g1' }">
+  <draggable :list="elements" :group="{ name: 'g1' }">
         <component v-for="el in elements"
                     :key="el.id"
                     :is="el.type"
                     :schema="el"
+                    handle=".moveHandle"
                     v-model="formData[el.variable]">
         </component>
   </draggable>
@@ -26,9 +27,3 @@ export default {
   }
 };
 </script>
-<style scoped>
-.dragArea {
-  min-height: 50px;
-  outline: 1px dashed;
-}
-</style>

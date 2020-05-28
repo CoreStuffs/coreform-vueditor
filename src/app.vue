@@ -4,20 +4,28 @@
       Hello from App Vue
     </h1>
     <builder :schema="schema" v-model="data"></builder>
-    <pre>{{ valueString }}</pre>
+     <ul uk-accordion="multiple: true">
+          <li class="uk-open">
+              <a class="uk-accordion-title" href="#">Schema</a>
+              <div class="uk-accordion-content"><pre><code style="font-size:12px">{{ schema }}</code></pre></div>
+          </li>
+          <li>
+              <a class="uk-accordion-title" href="#">Data</a>
+              <div class="uk-accordion-content"><pre><code style="font-size:12px">{{ data }}</code></pre></div>
+          </li>
+      </ul>
   </div>
 </template>
 <script>
 //import UIkit from 'uikit';
 
-import builder from "./components/builder.vue";
+import builder from "@/components/builder.vue";
 var c = function() {
   return { builder };
 };
 export default {
   data:function() {
     return {
-      message: "Message from App.vue",
       data:{},
       schema: {
         schemaVersion: 1,
