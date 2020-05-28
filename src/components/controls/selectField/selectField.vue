@@ -1,14 +1,14 @@
 <template>
   <div>
-    {{schema.label}}
-    <multiselect :v-model="value" :options="options"></multiselect>
+    {{ schema.label }}
+    <vueselect :v-model="value" :options="options"></vueselect>
   </div>
 </template>
 <script>
 export default {
   data: function() {
     return {
-        value : "",
+      value: "",
       options: ["aaa", "bbb", "ccc"]
     };
   },
@@ -18,8 +18,10 @@ export default {
     }
   },
   components: {
-    multiselect: () => import("vue-multiselect")
+    vueselect: () => import("vue-select")
   }
 };
 </script>
-<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
+<style lang="scss">
+@import "vue-select/src/scss/vue-select.scss";
+</style>
