@@ -129,14 +129,6 @@ export default {
             width: 12
           },
           {
-            label: "Debug",
-            variable: "countries",
-            placeholder: "",
-            id: "ctrl_9",
-            type: "textField",
-            width: 12
-          },
-          {
             label: "New label",
             variable: "nwlbl",
             placeholder: "",

@@ -13,12 +13,7 @@
 export default {
   inject:["formData"],
   name: "controlset",
-  props: {
-    elements: {
-      required: true,
-      type: Array
-    }
-  },
+  props: ['elements'],
   components: {
       'draggable' : () => import('vuedraggable'),
       'grid' : () => import('@/components/controls/grid/builder.vue'),

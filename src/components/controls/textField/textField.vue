@@ -9,6 +9,7 @@
         :type="inputType"
         :placeholder="schema.placeholder"
         class="uk-input uk-form-small"
+         v-bind:class="{'uk-form-danger': $error}"
         :id="schema.id"
         :value="value"
         @input="updateInput"
@@ -17,14 +18,14 @@
   </formControl>
 </template>
 <script>
-import formControl from "@/components/.infra/formControl.vue";
+import componentBase from "@/components/.infra/componentBase.vue";
 export default {
-  inject: ["getVariable"],
+  extends:componentBase,
   data: function() {
-    return {};
+    return {data : this.value};
   },
   components: {
-    formControl
+    formControl: () => import("@/components/.infra/formControl.vue")
   },
   computed: {
     inputType: function() {
@@ -34,7 +35,7 @@ export default {
   methods: {
     updateInput: function() {
       this.$emit("input", this.$el.getElementsByTagName("input")[0].value);
-      //this.$touch(); //vuelidate
+      this.$validation.$touch();
     }
   },
   props: {

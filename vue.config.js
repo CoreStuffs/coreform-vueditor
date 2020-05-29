@@ -1,6 +1,7 @@
 module.exports = {
+  css: {sourceMap: true}, 
   configureWebpack: config => {
-    // Thanks to the following,  webpack-generated:/// files in debug are organized by folder
+    // Thanks to the following,  webpack-debug:/// files in debug are organized by folder
     //
     if (process.env.NODE_ENV === "development") {
       config.devtool = "eval-source-map";
