@@ -138,7 +138,7 @@ export default {
           },
           {
             label: "New label",
-            variable: "",
+            variable: "nwlbl",
             placeholder: "",
             source: "",
             id: "ctrl_7",
