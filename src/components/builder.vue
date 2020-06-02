@@ -13,7 +13,7 @@ import UIkit from "uikit";
 import Icons from "uikit/dist/js/uikit-icons";
 UIkit.use(Icons);
 
-import { validationMixin } from 'vuelidate';
+import { validationMixin } from "vuelidate";
 
 import {
   required,
@@ -54,6 +54,21 @@ var formValidators = {
   }
 };
 
+var formControls = [
+  {
+    label: "Columns",
+    path: "./controls/grid"
+  },
+  {
+    label: "Text field",
+    path: "./controls/textField"
+  },
+  {
+    label: "List",
+    path: "./controls/selectField"
+  }
+];
+
 export default {
   mixins: [validationMixin],
   name: "simple",
@@ -64,9 +79,12 @@ export default {
   },
   props: ["schema", "value"],
   data: function() {
-    return { data: this.value };
+    return { 
+      data: this.value, 
+      controls: [] 
+    };
   },
-   validations: function() {
+  validations: function() {
     var obj = { data: {} };
 
     for (const varid in this.schema.variables) {
@@ -86,6 +104,17 @@ export default {
     draggingInfo() {
       return this.dragging ? "under drag" : "";
     }
+  },
+  created: function() {
+    var t = this;
+    formControls.forEach(o => {
+      let obj = require(o.path + "/manifest.js");
+      t.controls.push({
+        tag: obj.tag,
+        control: () => import(o.path + "/control.vue"),
+        properties: () => import(o.path + "/properties.vue")
+      });
+    });
   },
   methods: {
     add: function() {
@@ -113,8 +142,9 @@ export default {
       },
       getValidator: function(name) {
         return t.$v.data[name];
-      },      
-      $form: t
+      },
+      $form: t,
+      $controls: t.controls
     };
   }
 };
@@ -127,21 +157,20 @@ export default {
   padding-top: 7px;
 }
 .error-message {
-    color: #f0506e;
-    font-size: 8pt;
-    min-height: 15px
+  color: #f0506e;
+  font-size: 8pt;
+  min-height: 15px;
 }
 
 .required-tag {
-    display: inline-block;
+  display: inline-block;
 }
 
-    .required-tag:after {
-        content: 'required';
-        color: #f0506e;
-        position: relative;
-        top: -0.5em;
-        font-size: 70%;
-    }
-
+.required-tag:after {
+  content: "required";
+  color: #f0506e;
+  position: relative;
+  top: -0.5em;
+  font-size: 70%;
+}
 </style>

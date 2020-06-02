@@ -4,7 +4,16 @@ export default {
     data:function(){
         return {};
     },
-    props:[],
+    props:{
+        editMode: {
+            type: Boolean,
+            default: false
+        },
+        schema: {
+            type: Object,
+            required: true
+        }
+    },
     computed:{
         $validation:function(){
             var v = this.schema.variable;

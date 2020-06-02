@@ -39,10 +39,6 @@ export default {
     }
   },
   props: {
-    schema: {
-      type: Object,
-      required: true
-    },
     value: {
       type: String,
       required: false

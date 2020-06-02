@@ -11,14 +11,23 @@
 </template>
 <script>
 export default {
-  inject:["formData"],
+  inject:["formData","$controls"],
   name: "controlset",
   props: ['elements'],
   components: {
       'draggable' : () => import('vuedraggable'),
-      'grid' : () => import('@/components/controls/grid/builder.vue'),
-      'textField' : () => import('@/components/controls/textField/textField'),
-      'selectField': () => import("@/components/controls/selectField/selectField")
+      'grid' : () => import('@/components/controls/grid/control.vue'),
+      'textField' : () => import('@/components/controls/textField/control.vue'),
+      'selectField': () => import("@/components/controls/selectField/control.vue")
+  },
+  created:function(){
+      var t = this;
+      this.$controls.forEach(element => {
+        t.$options.components[element.tag] = element.control;
+      });
   }
 };
 </script>
+
+
+
