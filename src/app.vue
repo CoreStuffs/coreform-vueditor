@@ -3,13 +3,18 @@
     <h1>
       Hello from App Vue
     </h1>
-    <builder :schema="schema" v-model="data"></builder>
+    <toolbox :formControls="controls">
+      <template scope="props">
+          <button>{{props.label}}</button>
+      </template>
+    </toolbox>
+    <builder :schema="schema" v-model="data" :formControls="controls"></builder>
      <ul uk-accordion="multiple: true">
-          <li class="uk-open">
+          <li>
               <a class="uk-accordion-title" href="#">Schema</a>
               <div class="uk-accordion-content"><pre><code style="font-size:12px">{{ schema }}</code></pre></div>
           </li>
-          <li>
+          <li class="uk-open">
               <a class="uk-accordion-title" href="#">Data</a>
               <div class="uk-accordion-content"><pre><code style="font-size:12px">{{ data }}</code></pre></div>
           </li>
@@ -20,13 +25,28 @@
 //import UIkit from 'uikit';
 
 import builder from "@/components/builder.vue";
+import toolbox from "@/components/toolbox.vue";
 var c = function() {
-  return { builder };
+  return { builder, toolbox };
 };
 export default {
   data:function() {
     return {
       data:{},
+      controls: {
+        columns:{
+          label: 'Columns',
+          path: 'grid'
+        },
+        textField:{
+          label: 'Text field',
+          path: 'textField'
+        },
+        selectField:{
+          label: 'List',
+          path: 'selectField'
+        }
+      },
       schema: {
         schemaVersion: 1,
         formVersion: 1,

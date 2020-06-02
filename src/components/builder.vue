@@ -54,20 +54,6 @@ var formValidators = {
   }
 };
 
-var formControls = [
-  {
-    label: "Columns",
-    path: "./controls/grid"
-  },
-  {
-    label: "Text field",
-    path: "./controls/textField"
-  },
-  {
-    label: "List",
-    path: "./controls/selectField"
-  }
-];
 
 export default {
   mixins: [validationMixin],
@@ -77,7 +63,7 @@ export default {
   components: {
     controlset
   },
-  props: ["schema", "value"],
+  props: ["schema", "value", "formControls"],
   data: function() {
     return { 
       data: this.value, 
@@ -106,15 +92,26 @@ export default {
     }
   },
   created: function() {
+  
+    var arr = [];
+    if(typeof(this.formControls)==="string") {
+      var s = this.formControls;
+      Object.assign(arr, eval(s));
+    }else{
+      arr=this.formControls;
+    }
     var t = this;
-    formControls.forEach(o => {
+    for (let [key, o] of Object.entries(arr)) {
+      if(o.path.indexOf("/")<0) o.path = "./controls/" + o.path;
       let obj = require(o.path + "/manifest.js");
-      t.controls.push({
+      var el={
         tag: obj.tag,
+        id: key,
         control: () => import(o.path + "/control.vue"),
         properties: () => import(o.path + "/properties.vue")
-      });
-    });
+      };
+      t.controls.push(el);
+    };
   },
   methods: {
     add: function() {

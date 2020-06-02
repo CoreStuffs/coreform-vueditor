@@ -15,7 +15,7 @@ export default {
         }
     },
     computed:{
-        $validation:function(){
+        $validation: function(){
             var v = this.schema.variable;
             var val = this.getValidator(v);
             return val;

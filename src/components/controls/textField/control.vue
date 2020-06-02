@@ -35,7 +35,7 @@ export default {
   methods: {
     updateInput: function() {
       this.$emit("input", this.$el.getElementsByTagName("input")[0].value);
-      this.$validation.$touch();
+      if(this.$validation) this.$validation.$touch();
     }
   },
   props: {
