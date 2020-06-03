@@ -1,10 +1,69 @@
 <template>
-  <div v-cloak>
-    <button class="btn btn-secondary" @click="add">Add</button>
-    <button class="btn btn-secondary" @click="replace">Replace</button>
-    <div class="uk-form-stacked">
-      <controlset :elements="schema.elements"> </controlset>
-    </div>
+  <div v-cloak class="uk-container uk-container-large">
+    <ul uk-tab data-uk-tab="{connect:'#cf-formBuilder'}">
+      <li class="uk-active"><a href="#">Properties</a></li>
+      <li><a href="#">Form designer</a></li>
+      <li><a href="#">Variables</a></li>
+      <li><a href="#">Debug</a></li>
+    </ul>
+    <ul id="cf-formBuilder" class="uk-switcher uk-margin">
+      <li>
+        Properties
+      </li>
+      <li>
+        <div uk-grid class="uk-grid-small">
+          <div class="uk-width-expand@m">
+            <div class="uk-form-stacked uk-card uk-card-default uk-card-body">
+              <controlset :elements="schema.elements"> </controlset>
+            </div>
+          </div>
+          <div class="uk-width-auto@m" style="min-width:200px">
+            <draggable
+              :list="formControlsList"
+              :group="{
+                name: 'cfShareGroupForDesignSurface',
+                pull: 'clone',
+                put: false
+              }"
+              :sort="false"
+            >
+              <div
+                :key="ctrl.label"
+                v-for="ctrl in formControlsList"
+                :data="ctrl.id"
+              >
+                <div
+                  style="margin-bottom:2px;background-color:#f0f0f0;padding:2px;cursor:default"
+                >
+                  <div>
+                    <span
+                      class="uk-margin-small-right uk-icon"
+                      uk-icon="user"
+                    ></span>
+                    {{ ctrl.label }}
+                  </div>
+                </div>
+              </div>
+            </draggable>
+          </div>
+        </div>
+      </li>
+      <li>
+        <variablesTable :variables="schema.variables"></variablesTable>
+      </li>
+      <li>
+        <div uk-grid class="uk-grid-small">
+          <div class="uk-width-1-2@m">
+              Schema
+              <div><pre><code style="font-size:12px">{{ schema }}</code></pre></div>
+          </div>
+          <div class="uk-width-1-2@m">
+              Data
+              <div><pre><code style="font-size:12px">{{ data }}</code></pre></div>
+          </div>
+        </div>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -23,7 +82,6 @@ import {
   email
 } from "vuelidate/lib/validators";
 
-import controlset from "@/components/.infra/controlset";
 let id = 100;
 
 var formValidators = {
@@ -54,20 +112,21 @@ var formValidators = {
   }
 };
 
-
 export default {
   mixins: [validationMixin],
   name: "simple",
   display: "Simple",
   order: 0,
   components: {
-    controlset
+    controlset: () => import("@/components/.infra/controlset"),
+    variablesTable: () => import("@/components/variables.vue"),
+    draggable: () => import("vuedraggable")
   },
   props: ["schema", "value", "formControls"],
   data: function() {
-    return { 
-      data: this.value, 
-      controls: [] 
+    return {
+      data: this.value,
+      controls: []
     };
   },
   validations: function() {
@@ -89,29 +148,38 @@ export default {
   computed: {
     draggingInfo() {
       return this.dragging ? "under drag" : "";
+    },
+    formControlsList: function() {
+      var arr = new Array();
+      for (let [key, value] of Object.entries(this.formControls)) {
+        var obj = {};
+        Object.assign(obj, value);
+        obj.id = key;
+        arr.push(obj);
+      }
+      return arr;
     }
   },
   created: function() {
-  
     var arr = [];
-    if(typeof(this.formControls)==="string") {
+    if (typeof this.formControls === "string") {
       var s = this.formControls;
       Object.assign(arr, eval(s));
-    }else{
-      arr=this.formControls;
+    } else {
+      arr = this.formControls;
     }
     var t = this;
     for (let [key, o] of Object.entries(arr)) {
-      if(o.path.indexOf("/")<0) o.path = "./controls/" + o.path;
+      if (o.path.indexOf("/") < 0) o.path = "./controls/" + o.path;
       let obj = require(o.path + "/manifest.js");
-      var el={
+      var el = {
         tag: obj.tag,
         id: key,
         control: () => import(o.path + "/control.vue"),
         properties: () => import(o.path + "/properties.vue")
       };
       t.controls.push(el);
-    };
+    }
   },
   methods: {
     add: function() {
@@ -146,6 +214,7 @@ export default {
   }
 };
 </script>
+
 <style>
 .uk-form-stacked .uk-form-label {
   margin-bottom: 2px;

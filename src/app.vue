@@ -3,31 +3,16 @@
     <h1>
       Hello from App Vue
     </h1>
-    <toolbox :formControls="controls">
-      <template scope="props">
-          <button>{{props.label}}</button>
-      </template>
-    </toolbox>
-    <builder :schema="schema" v-model="data" :formControls="controls"></builder>
-     <ul uk-accordion="multiple: true">
-          <li>
-              <a class="uk-accordion-title" href="#">Schema</a>
-              <div class="uk-accordion-content"><pre><code style="font-size:12px">{{ schema }}</code></pre></div>
-          </li>
-          <li class="uk-open">
-              <a class="uk-accordion-title" href="#">Data</a>
-              <div class="uk-accordion-content"><pre><code style="font-size:12px">{{ data }}</code></pre></div>
-          </li>
-      </ul>
+    <buildersurface :schema="schema" v-model="data" :formControls="controls"></buildersurface>
+     
   </div>
 </template>
 <script>
 //import UIkit from 'uikit';
 
-import builder from "@/components/builder.vue";
-import toolbox from "@/components/toolbox.vue";
+import buildersurface from "@/components/buildersurface.vue";
 var c = function() {
-  return { builder, toolbox };
+  return { buildersurface };
 };
 export default {
   data:function() {
@@ -55,6 +40,7 @@ export default {
         variables: [
           {
             name: "name",
+            type: "String",
             validations: [
               {
                 type: "required",
@@ -69,6 +55,7 @@ export default {
           },
           {
             name: "countries",
+            type:"List",
             validations: [
               {
                 type: "required",

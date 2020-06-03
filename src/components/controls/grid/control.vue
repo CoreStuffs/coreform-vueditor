@@ -8,7 +8,7 @@
       }"
       :list="schema.columns"
       :group="{ name: this.schema.id }"
-      uk-grid
+      :component-data="getComponentData()"
     >
       <controlset
         :elements="col.elements"
@@ -39,6 +39,13 @@ export default {
   methods: {
     getVariable: function(name) {
       return this.$parent.getVariable(name);
+    },
+    getComponentData() {
+      return {
+        attrs:{
+          'uk-grid': 'true'
+        }
+      };
     }
   }
 };
@@ -63,7 +70,7 @@ export default {
 }
 
 .uk-first-column {
-  padding-left: 0px;
+  padding-left: 15px;
 }
 
 .uk-grid-divider,
