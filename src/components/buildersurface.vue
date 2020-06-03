@@ -64,6 +64,9 @@
         </div>
       </li>
     </ul>
+<vk-button @click="showModal()">Open</vk-button>
+<controlPropertiesModal ref="ctrlProps" :show="view.showControlPropertiesModal" />
+
   </div>
 </template>
 
@@ -81,8 +84,6 @@ import {
   number,
   email
 } from "vuelidate/lib/validators";
-
-let id = 100;
 
 var formValidators = {
   required: {
@@ -120,13 +121,17 @@ export default {
   components: {
     controlset: () => import("@/components/.infra/controlset"),
     variablesTable: () => import("@/components/variables.vue"),
+    controlPropertiesModal : () => import("@/components/controlPropertiesModal.vue"),
     draggable: () => import("vuedraggable")
   },
   props: ["schema", "value", "formControls"],
   data: function() {
     return {
       data: this.value,
-      controls: []
+      controls: [],
+      view:{
+        showControlPropertiesModal:false
+      }
     };
   },
   validations: function() {
@@ -182,18 +187,8 @@ export default {
     }
   },
   methods: {
-    add: function() {
-      this.schema.elements.push({
-        id: "ctrl_" + id++,
-        type: "textField",
-        label: "Test"
-      });
-    },
-    replace: function() {
-      this.list = [{ name: "Edgard", id: id++ }];
-    },
-    checkMove: function(e) {
-      window.console.log("Future index: " + e.draggedContext.futureIndex);
+    showModal:function(){
+      this.$refs.ctrlProps.showModal()
     }
   },
   provide: function() {

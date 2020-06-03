@@ -4,17 +4,21 @@
       Hello from App Vue
     </h1>
     <buildersurface :schema="schema" v-model="data" :formControls="controls"></buildersurface>
-     
   </div>
 </template>
 <script>
-//import UIkit from 'uikit';
+import Vue from 'vue'
+import Vuikit from 'vuikit'
+Vue.use(Vuikit)
 
 import buildersurface from "@/components/buildersurface.vue";
 var c = function() {
   return { buildersurface };
 };
 export default {
+  methods:{
+
+  },
   data:function() {
     return {
       data:{},
