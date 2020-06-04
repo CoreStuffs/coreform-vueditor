@@ -1,7 +1,7 @@
 <template>
   <vk-modal :show.sync="show" overflow-auto>
     <vk-modal-close @click="show = false"></vk-modal-close>
-    <div class="uk-modal-body uk-form-stacked uk-text-small">
+    <div class="uk-form-stacked uk-text-small">
       <div>
         <ul uk-tab>
           <li v-bind:class="{ 'uk-tab-error': $v.$error }">

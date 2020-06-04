@@ -1,7 +1,7 @@
 <template>
   <vk-modal :show.sync="show" overflow-auto>
     <vk-modal-close @click="show = false"></vk-modal-close>
-    <div class="uk-modal-body uk-form-stacked  uk-text-small">
+    <div class="uk-form-stacked  uk-text-small">
       <div>
         <ul uk-tab>
           <li><a href="#">Basic</a></li>
@@ -65,21 +65,32 @@ import Vue from "vue";
 import Vuikit from "vuikit";
 Vue.use(Vuikit);
 export default {
-  inject: ["$getControlByTag"],
+  inject: ["$getControlByTag", "$getVariablesByType", "$variableTypes"],
   methods: {
+    variableType: function(name) {
+      var v = this.$variableTypes[name];
+      return v.text;
+    },
     showModal: function(control, callback) {
       this.control = Object.assign(control);
       this.callback = callback;
 
-      for (let [key, value] of this.$controls.entries()) {
-        this.$options.components[key] = value.fieldTemplate;
-        this.$options.components["edit_" + key] = value.editForm;
-      }
-      for (let [, value] of Object.entries(this.$options.components)) {
-        value.components = this.$options.components;
-      }
+      this.$options.components[control.type] = this.$getControlByTag(
+        control.type
+      ).properties;
 
       this.show = true;
+    },
+    applyEdit: function() {
+      this.$v.$touch();
+      if (!this.$v.$error) {
+        this.show = false;
+        if (this.callback) {
+          var obj = {};
+          Object.assign(obj, this.field);
+          this.callback(obj);
+        }
+      }
     }
   },
   computed: {
@@ -92,11 +103,14 @@ export default {
     },
     acceptedVariables: function() {
       var l = this.$getControlByTag(this.control.type).acceptedVariableTypes;
-      this.control.type;
-      return this.$variables.filter(
-        v =>
-          l.filter(r => r.toLowerCase() === v.type.toLowerCase()).length === 1
-      );
+      var arr = [];
+      l.forEach(avt => {
+        var vars = this.$getVariablesByType(avt);
+        vars.forEach(v => {
+          arr.push(v);
+        });
+      });
+      return arr;
     }
   },
   data: function() {
@@ -105,6 +119,26 @@ export default {
       callback: function() {},
       control: {}
     };
+  },
+  validations: function() {
+    var v = this.$options.components["edit_" + this.field.type].validations;
+    var obj = {
+      field: {}
+    };
+    if (v) {
+      for (let [key, value] of Object.entries(v)) {
+        if (!key.startsWith("$")) obj.field[key] = value;
+      }
+    }
+    if (this.isDataField) {
+      obj.field.variable = {
+        required: window.validators.required,
+        alphaNum: window.validators.alphaNum,
+        minLength: window.validators.minLength(3)
+      };
+    }
+
+    return obj;
   }
 };
 </script>

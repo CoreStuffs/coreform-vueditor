@@ -13,6 +13,7 @@
 <script>
 import toolButton from '@/components/.infra/toolButton';
 export default {
+    inject:["$openControlSettingsById"],
     data: function () {
         return this.schema
     },
@@ -40,10 +41,10 @@ export default {
             evt.stopPropagation();
         },
         openSettings: function (evt) {
-            this.$root.$form.openSettingsById(this.id);
+            this.$openControlSettingsById(this.id);
         },
         removeNode: function (evt) {
-            this.$root.$form.removeNodeById(this.id);
+            this.$removeControlById(this.id);
         }
     },
     props: ["schema", "validation"]

@@ -159,6 +159,7 @@ export default {
       var el = {
         tag: obj.tag,
         acceptedVariableTypes: obj.acceptedVariableTypes,
+        isDataField : obj.isDataField,
         id: key,
         control: () => import(o.path + "/control.vue"),
         properties: () => import(o.path + "/properties.vue")
@@ -167,6 +168,12 @@ export default {
     }
   },
   methods: {
+    openControlProperties: function(control, callback) {
+      this.$refs.controlPropertiesModal.showModal(control, function(model) {
+        Object.assign(control, model);
+        if (callback) callback(control);
+      });
+    },
     getVariableByName: function(name) {
       var arr = this.schema.variables.filter(
         p => name && p && p.name && p.name.toUpperCase() === name.toUpperCase()
@@ -174,6 +181,12 @@ export default {
       if (arr.length === 1) return arr[0];
       return undefined;
     },
+    getVariablesByType: function(type) {
+      var arr = this.schema.variables.filter(
+        p => type && p && p.type && p.type.toUpperCase() === type.toUpperCase()
+      );
+      return arr;
+    },    
     saveVariable: function(obj, srcName) {
       var variable = this.getVariableByName(srcName ?? obj.name);
       if (variable) {
@@ -194,8 +207,8 @@ export default {
       var schema = this.schema;
       var __s = function(node, modification) {
         var subColl = null;
-        if (typeof node.columns !== "undefined") subColl = node.columns;
-        if (typeof node.fields !== "undefined") subColl = node.fields;
+        if (node.columns) subColl = node.columns;
+        if (node.elements) subColl = node.elements;
         modification(node);
         if (subColl !== null) {
           for (var i = 0; i < subColl.length; i++) {
@@ -211,8 +224,8 @@ export default {
       var schema = this.schema;
       var __s = function(node, query) {
         var subColl = null;
-        if (typeof node.columns !== "undefined") subColl = node.columns;
-        if (typeof node.fields !== "undefined") subColl = node.fields;
+        if (node.columns) subColl = node.columns;
+        if (node.elements) subColl = node.elements;
         if (query(node)) {
           return node;
         } else {
@@ -239,14 +252,15 @@ export default {
       $getControlValidator: function(name) {
         return t.$v.data[name];
       },
+      $getVariablesByType:t.getVariablesByType,
       $getControlByTag: function(tag) {
         return t.controls.filter(o => o.tag === tag)[0];
       },
-      $openControlProperties: function(control, callback) {
-        t.$refs.controlPropertiesModal.showModal(control, function(model) {
-          Object.assign(control, model);
-          if (callback) callback(control);
+      $openControlSettingsById: function(id) {
+        var obj = t.findNodeByQuery(o => {
+          return o.id && o.id === id;
         });
+        t.openControlProperties(obj);
       },
       $openVariableProperties: function(variable, acceptedTypes, callback) {
         var vari;
