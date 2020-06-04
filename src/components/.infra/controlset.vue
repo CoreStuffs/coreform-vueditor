@@ -23,7 +23,7 @@ export default {
   created:function(){
       var t = this;
       this.$controls.forEach(element => {
-        t.$options.components[element.tag] = element.control;
+        t.$options.components[element.tag] = element.control.default;
       });
   },
   methods:{

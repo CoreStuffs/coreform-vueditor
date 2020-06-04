@@ -18,9 +18,9 @@
   </formControl>
 </template>
 <script>
-import componentBase from "@/components/.infra/componentBase.vue";
+import controlBase from "@/components/.infra/controlBase.vue";
 export default {
-  extends:componentBase,
+  extends:controlBase,
   data: function() {
     return {data : this.value};
   },

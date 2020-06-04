@@ -161,8 +161,8 @@ export default {
         acceptedVariableTypes: obj.acceptedVariableTypes,
         isDataField : obj.isDataField,
         id: key,
-        control: () => import(o.path + "/control.vue"),
-        properties: () => import(o.path + "/properties.vue")
+        control: require(o.path + "/control.vue"),
+        properties: require(o.path + "/properties.vue")
       };
       t.controls.push(el);
     }
@@ -191,16 +191,17 @@ export default {
       var variable = this.getVariableByName(srcName ?? obj.name);
       if (variable) {
         var t = this;
+        Object.assign(variable, obj);
         this.executeNodesModification(function(node) {
           if (
             node.variable &&
-            node.variable.toLowerCase() === t.srcName.toLowerCase()
+            node.variable.toLowerCase() === srcName.toLowerCase()
           ) {
-            node.variable = variable.name;
+            node.variable = obj.name;
           }
         });
       } else {
-        this.t.schema.variables.push(obj);
+        t.schema.variables.push(obj);
       }
     },
     executeNodesModification: function(modification) {

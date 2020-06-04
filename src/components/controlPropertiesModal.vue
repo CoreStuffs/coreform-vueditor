@@ -35,8 +35,9 @@
               </div>
             </div>
             <component
+            ref="controlProps"
               :key="control.type"
-              :is="control ? control.type : null"
+              :is="control.type"
               v-bind="control"
               v-model="control"
             ></component>
@@ -64,22 +65,40 @@
 import Vue from "vue";
 import Vuikit from "vuikit";
 Vue.use(Vuikit);
+import Vuelidate from "vuelidate";
+Vue.use(Vuelidate);
+
+import {
+  required,
+  minLength,
+  alphaNum
+} from "vuelidate/lib/validators";
 export default {
-  inject: ["$getControlByTag", "$getVariablesByType", "$variableTypes"],
+  inject: ["$getControlByTag", "$getVariablesByType", "$variableTypes","$controls"],
+//   created:function(){
+//         this.$controls.forEach(control=>{
+//             this.$options.components[control.tag]= control.properties;
+//         })
+//   },
   methods: {
     variableType: function(name) {
       var v = this.$variableTypes[name];
       return v.text;
     },
     showModal: function(control, callback) {
-      this.control = Object.assign(control);
       this.callback = callback;
-
-      this.$options.components[control.type] = this.$getControlByTag(
-        control.type
-      ).properties;
-
+    var ctrl = this.$getControlByTag(control.type);
+    this.isDataField = ctrl.isDataField;
+     var v = ctrl.properties.default.validations;
+     
+    if (v) {
+      for (let [key, value] of Object.entries(v)) {
+        if (!key.startsWith("$")) this.controlValidations.control[key] = value;
+      }
+    }
+    this.$options.components[control.type] = ctrl.properties.default;
       this.show = true;
+      Object.assign(this.control, control);
     },
     applyEdit: function() {
       this.$v.$touch();
@@ -87,20 +106,21 @@ export default {
         this.show = false;
         if (this.callback) {
           var obj = {};
-          Object.assign(obj, this.field);
+          Object.assign(obj, this.control);
           this.callback(obj);
         }
       }
     }
   },
+  provide: function() {
+      var t = this;
+      return{
+          $getValidation:function(){
+              return t.$v.control;
+          }
+      }
+  },
   computed: {
-    isDataField: function() {
-      return (
-        this.control &&
-        this.control.type &&
-        this.$getControlByTag(this.control.type).isDataField
-      );
-    },
     acceptedVariables: function() {
       var l = this.$getControlByTag(this.control.type).acceptedVariableTypes;
       var arr = [];
@@ -116,27 +136,22 @@ export default {
   data: function() {
     return {
       show: false,
+      isDataField:false,
       callback: function() {},
-      control: {}
+      control: {},
+      controlValidations:{control:{}}
     };
   },
   validations: function() {
-    var v = this.$options.components["edit_" + this.field.type].validations;
-    var obj = {
-      field: {}
-    };
-    if (v) {
-      for (let [key, value] of Object.entries(v)) {
-        if (!key.startsWith("$")) obj.field[key] = value;
-      }
-    }
+      var obj = this.controlValidations;
     if (this.isDataField) {
-      obj.field.variable = {
-        required: window.validators.required,
-        alphaNum: window.validators.alphaNum,
-        minLength: window.validators.minLength(3)
+      obj.control.variable = {
+        required: required,
+        alphaNum: alphaNum,
+        minLength: minLength(3)
       };
     }
+    
 
     return obj;
   }
