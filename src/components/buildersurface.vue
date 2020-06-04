@@ -54,16 +54,22 @@
       <li>
         <div uk-grid class="uk-grid-small">
           <div class="uk-width-1-2@m">
-              Schema
-              <div><pre><code style="font-size:12px">{{ schema }}</code></pre></div>
+            Schema
+            <div>
+              <pre><code style="font-size:12px">{{ schema }}</code></pre>
+            </div>
           </div>
           <div class="uk-width-1-2@m">
-              Data
-              <div><pre><code style="font-size:12px">{{ data }}</code></pre></div>
+            Data
+            <div>
+              <pre><code style="font-size:12px">{{ data }}</code></pre>
+            </div>
           </div>
         </div>
       </li>
     </ul>
+    <variablemodal ref="editVariableModal"></variablemodal>
+
   </div>
 </template>
 
@@ -120,6 +126,7 @@ export default {
   components: {
     controlset: () => import("@/components/.infra/controlset"),
     variablesTable: () => import("@/components/variables.vue"),
+    variablemodal: () => import("@/components/variablemodal.vue"),
     draggable: () => import("vuedraggable")
   },
   props: ["schema", "value", "formControls"],
@@ -194,6 +201,21 @@ export default {
     },
     checkMove: function(e) {
       window.console.log("Future index: " + e.draggedContext.futureIndex);
+    },
+    openVariableSettings: function(variable, acceptedTypes, callback) {
+      var vari;
+      if (variable) {
+        vari = variable;
+      } else {
+        vari = {
+          name: "",
+          validations: [{ type: "required" }]
+        };
+      }
+      this.$refs.editVariableModal.show(vari, acceptedTypes, function(model) {
+        Object.assign(vari, model);
+        if (callback) callback(vari);
+      });
     }
   },
   provide: function() {
