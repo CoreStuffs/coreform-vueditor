@@ -68,7 +68,12 @@
         </div>
       </li>
     </ul>
+<<<<<<< HEAD
     <variablemodal ref="editVariableModal"></variablemodal>
+=======
+<vk-button @click="showModal()">Open</vk-button>
+<controlPropertiesModal ref="ctrlProps" :show="view.showControlPropertiesModal" />
+>>>>>>> 9a65ec0a77e0c95034bf98a82f49edeb0d5a3e11
 
   </div>
 </template>
@@ -87,8 +92,6 @@ import {
   number,
   email
 } from "vuelidate/lib/validators";
-
-let id = 100;
 
 var formValidators = {
   required: {
@@ -126,14 +129,21 @@ export default {
   components: {
     controlset: () => import("@/components/.infra/controlset"),
     variablesTable: () => import("@/components/variables.vue"),
+<<<<<<< HEAD
     variablemodal: () => import("@/components/variablemodal.vue"),
+=======
+    controlPropertiesModal : () => import("@/components/controlPropertiesModal.vue"),
+>>>>>>> 9a65ec0a77e0c95034bf98a82f49edeb0d5a3e11
     draggable: () => import("vuedraggable")
   },
   props: ["schema", "value", "formControls"],
   data: function() {
     return {
       data: this.value,
-      controls: []
+      controls: [],
+      view:{
+        showControlPropertiesModal:false
+      }
     };
   },
   validations: function() {
@@ -189,6 +199,7 @@ export default {
     }
   },
   methods: {
+<<<<<<< HEAD
     add: function() {
       this.schema.elements.push({
         id: "ctrl_" + id++,
@@ -216,6 +227,10 @@ export default {
         Object.assign(vari, model);
         if (callback) callback(vari);
       });
+=======
+    showModal:function(){
+      this.$refs.ctrlProps.showModal()
+>>>>>>> 9a65ec0a77e0c95034bf98a82f49edeb0d5a3e11
     }
   },
   provide: function() {

@@ -22,6 +22,7 @@
     "vuelidate": "^0.7.5",
     "vuetify": "^2.2.8",
     "vuex": "^3.1.2",
+    "vuikit": "^0.8.10",
     "weekstart": "^1.0.1"
   },
   "devDependencies": {
