@@ -39,10 +39,10 @@
 <script>
 import componentBase from "@/components/.infra/componentBase.vue";
 export default {
-  extends: componentBase,  
+  extends: componentBase,
   data: function() {
     return {
-      data : this.value,
+      data: this.value,
       options: [
         { key: "1", text: "aaa" },
         { key: "3", text: "ccc" },
@@ -56,7 +56,7 @@ export default {
     },
     value: {
       required: false,
-      type:[String,Array,Object]
+      type: [String, Array, Object]
     }
   },
   methods: {

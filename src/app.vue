@@ -44,7 +44,7 @@ export default {
         variables: [
           {
             name: "name",
-            type: "String",
+            type: "text",
             validations: [
               {
                 type: "required",
@@ -59,7 +59,7 @@ export default {
           },
           {
             name: "countries",
-            type:"List",
+            type:"listitemarray",
             validations: [
               {
                 type: "required",

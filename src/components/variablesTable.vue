@@ -38,7 +38,7 @@
 
 <script>
 export default {
-    inject:['$form'],
+    inject:['$openVariableProperties'],
     data: function () {
         return { };
     },
@@ -47,11 +47,11 @@ export default {
         return variable.validations.filter(o=>o.type.toLowerCase()==='required').length>0
         },
         addVariable:function(){
-            this.$form.openVariableSettings();
+            this.$openVariableProperties();
         },
         editVariable:function(variable){
             
-            this.$form.openVariableSettings(variable,null, function(){
+            this.$openVariableProperties(variable,null, function(){
                 
             });
         },

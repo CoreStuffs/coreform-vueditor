@@ -1,2 +1,4 @@
 const tag = "selectField";
-export { tag };
+const acceptedVariableTypes = ["listitem", "listitemarray"];
+const isDataField = true;
+export { tag, acceptedVariableTypes, isDataField };

@@ -5,13 +5,13 @@
                     :is="el.type"
                     :schema="el"
                     handle=".moveHandle"
-                    v-model="formData[el.variable]">
+                    v-model="$formData[el.variable]">
         </component>
   </draggable>
 </template>
 <script>
 export default {
-  inject:["formData","$controls"],
+  inject:["$formData","$controls"],
   name: "controlset",
   props: ['elements'],
   components: {
@@ -27,6 +27,9 @@ export default {
       });
   },
   methods:{
+    getData:function(variable){
+      return this.$getFormData(variable);
+    },
     onAdd:function(a){
       var t = a.item.attributes["data"].value;
       console.log("Add: " + t);

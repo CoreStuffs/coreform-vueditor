@@ -1,2 +1,4 @@
 const tag = "textField";
-export { tag};
+const acceptedVariableTypes = ["text", "number"];
+const isDataField = true;
+export { tag, acceptedVariableTypes, isDataField };

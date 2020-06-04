@@ -68,13 +68,15 @@
         </div>
       </li>
     </ul>
-<<<<<<< HEAD
-    <variablemodal ref="editVariableModal"></variablemodal>
-=======
-<vk-button @click="showModal()">Open</vk-button>
-<controlPropertiesModal ref="ctrlProps" :show="view.showControlPropertiesModal" />
->>>>>>> 9a65ec0a77e0c95034bf98a82f49edeb0d5a3e11
-
+    <variablePropertiesModal
+      ref="variablePropertiesModal"
+      :variableTypes="staticData.variableTypes"
+    />
+    <vk-button @click="openControlProperties()">Open</vk-button>
+    <controlPropertiesModal
+      ref="controlPropertiesModal"
+      :show="view.showControlPropertiesModal"
+    />
   </div>
 </template>
 
@@ -85,42 +87,6 @@ UIkit.use(Icons);
 
 import { validationMixin } from "vuelidate";
 
-import {
-  required,
-  minLength,
-  maxLength,
-  number,
-  email
-} from "vuelidate/lib/validators";
-
-var formValidators = {
-  required: {
-    build: function() {
-      return required;
-    }
-  },
-  minLength: {
-    build: function(data) {
-      return minLength(data.minLength);
-    }
-  },
-  maxLength: {
-    build: function(data) {
-      return maxLength(data.maxLength);
-    }
-  },
-  number: {
-    build: function() {
-      return number;
-    }
-  },
-  email: {
-    build: function() {
-      return email;
-    }
-  }
-};
-
 export default {
   mixins: [validationMixin],
   name: "simple",
@@ -128,12 +94,11 @@ export default {
   order: 0,
   components: {
     controlset: () => import("@/components/.infra/controlset"),
-    variablesTable: () => import("@/components/variables.vue"),
-<<<<<<< HEAD
-    variablemodal: () => import("@/components/variablemodal.vue"),
-=======
-    controlPropertiesModal : () => import("@/components/controlPropertiesModal.vue"),
->>>>>>> 9a65ec0a77e0c95034bf98a82f49edeb0d5a3e11
+    variablesTable: () => import("@/components/variablesTable.vue"),
+    variablePropertiesModal: () =>
+      import("@/components/variablePropertiesModal.vue"),
+    controlPropertiesModal: () =>
+      import("@/components/controlPropertiesModal.vue"),
     draggable: () => import("vuedraggable")
   },
   props: ["schema", "value", "formControls"],
@@ -141,8 +106,10 @@ export default {
     return {
       data: this.value,
       controls: [],
-      view:{
-        showControlPropertiesModal:false
+      staticData: require("@/components/staticData.js").default,
+      view: {
+        showControlPropertiesModal: false,
+        showVariablePropertiesModal: false
       }
     };
   },
@@ -156,7 +123,7 @@ export default {
       var i = 0;
       for (const valid in variable.validations) {
         var v = variable.validations[valid];
-        rv["v" + i] = formValidators[v.type].build(v);
+        rv["v" + i] = this.staticData.formValidators[v.type].build(v);
         i++;
       }
     }
@@ -191,6 +158,7 @@ export default {
       let obj = require(o.path + "/manifest.js");
       var el = {
         tag: obj.tag,
+        acceptedVariableTypes: obj.acceptedVariableTypes,
         id: key,
         control: () => import(o.path + "/control.vue"),
         properties: () => import(o.path + "/properties.vue")
@@ -199,54 +167,104 @@ export default {
     }
   },
   methods: {
-<<<<<<< HEAD
-    add: function() {
-      this.schema.elements.push({
-        id: "ctrl_" + id++,
-        type: "textField",
-        label: "Test"
-      });
+    getVariableByName: function(name) {
+      var arr = this.schema.variables.filter(
+        p => name && p && p.name && p.name.toUpperCase() === name.toUpperCase()
+      );
+      if (arr.length === 1) return arr[0];
+      return undefined;
     },
-    replace: function() {
-      this.list = [{ name: "Edgard", id: id++ }];
-    },
-    checkMove: function(e) {
-      window.console.log("Future index: " + e.draggedContext.futureIndex);
-    },
-    openVariableSettings: function(variable, acceptedTypes, callback) {
-      var vari;
+    saveVariable: function(obj, srcName) {
+      var variable = this.getVariableByName(srcName ?? obj.name);
       if (variable) {
-        vari = variable;
+        var t = this;
+        this.executeNodesModification(function(node) {
+          if (
+            node.variable &&
+            node.variable.toLowerCase() === t.srcName.toLowerCase()
+          ) {
+            node.variable = variable.name;
+          }
+        });
       } else {
-        vari = {
-          name: "",
-          validations: [{ type: "required" }]
-        };
+        this.t.schema.variables.push(obj);
       }
-      this.$refs.editVariableModal.show(vari, acceptedTypes, function(model) {
-        Object.assign(vari, model);
-        if (callback) callback(vari);
-      });
-=======
-    showModal:function(){
-      this.$refs.ctrlProps.showModal()
->>>>>>> 9a65ec0a77e0c95034bf98a82f49edeb0d5a3e11
+    },
+    executeNodesModification: function(modification) {
+      var schema = this.schema;
+      var __s = function(node, modification) {
+        var subColl = null;
+        if (typeof node.columns !== "undefined") subColl = node.columns;
+        if (typeof node.fields !== "undefined") subColl = node.fields;
+        modification(node);
+        if (subColl !== null) {
+          for (var i = 0; i < subColl.length; i++) {
+            var res = __s(subColl[i], modification);
+            if (res !== null) return res;
+          }
+        }
+        return null;
+      };
+      __s(schema, modification);
+    },
+    findNodeByQuery: function(query) {
+      var schema = this.schema;
+      var __s = function(node, query) {
+        var subColl = null;
+        if (typeof node.columns !== "undefined") subColl = node.columns;
+        if (typeof node.fields !== "undefined") subColl = node.fields;
+        if (query(node)) {
+          return node;
+        } else {
+          if (subColl !== null) {
+            for (var i = 0; i < subColl.length; i++) {
+              var res = __s(subColl[i], query);
+              if (res !== null) return res;
+            }
+          }
+        }
+        return null;
+      };
+      return __s(schema, query);
     }
   },
   provide: function() {
     var t = this;
     return {
-      formData: t.value,
-      getVariable: function(name) {
-        return t.schema.variables.filter(
-          p => p && p.name && p.name.toUpperCase() === name.toUpperCase()
-        )[0];
-      },
-      getValidator: function(name) {
+      $formData: t.value,
+      $variableTypes: t.staticData.variableTypes,
+      $controls: t.controls,
+      $getVariableByName: t.getVariableByName,
+      $saveVariable: t.saveVariable,
+      $getControlValidator: function(name) {
         return t.$v.data[name];
       },
-      $form: t,
-      $controls: t.controls
+      $getControlByTag: function(tag) {
+        return t.controls.filter(o => o.tag === tag)[0];
+      },
+      $openControlProperties: function(control, callback) {
+        t.$refs.controlPropertiesModal.showModal(control, function(model) {
+          Object.assign(control, model);
+          if (callback) callback(control);
+        });
+      },
+      $openVariableProperties: function(variable, acceptedTypes, callback) {
+        var vari;
+        if (variable) {
+          vari = variable;
+        } else {
+          vari = {
+            name: "",
+            validations: [{ type: "required" }]
+          };
+        }
+        t.$refs.variablePropertiesModal.showModal(vari, acceptedTypes, function(
+          model
+        ) {
+          Object.assign(vari, model);
+          if (callback) callback(vari);
+        });
+      }
     };
   }
 };

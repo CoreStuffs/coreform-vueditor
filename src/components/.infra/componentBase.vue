@@ -1,6 +1,6 @@
 <script>
 export default {
-    inject: ["getValidator"],
+    inject: ["$getControlValidator"],
     data:function(){
         return {};
     },
@@ -17,7 +17,7 @@ export default {
     computed:{
         $validation: function(){
             var v = this.schema.variable;
-            var val = this.getValidator(v);
+            var val = this.$getControlValidator(v);
             return val;
         },
         $errorMessage : function () {
