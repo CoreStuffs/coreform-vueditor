@@ -188,9 +188,9 @@ export default {
       return arr;
     },    
     saveVariable: function(obj, srcName) {
+              var t = this;
       var variable = this.getVariableByName(srcName ?? obj.name);
       if (variable) {
-        var t = this;
         Object.assign(variable, obj);
         this.executeNodesModification(function(node) {
           if (
