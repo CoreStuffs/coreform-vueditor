@@ -14,7 +14,10 @@
         <div uk-grid class="uk-grid-small">
           <div class="uk-width-expand@m">
             <div class="uk-form-stacked uk-card uk-card-default uk-card-body">
-              <controlset :elements="schema.elements"> </controlset>
+              <controlset
+                :elements="schema.elements"
+                :editMode="true"
+              ></controlset>
             </div>
           </div>
           <div class="uk-width-auto@m" style="min-width:200px">
@@ -28,7 +31,7 @@
               :sort="false"
             >
               <div
-                :key="ctrl.label"
+                :key="ctrl.label.default"
                 v-for="ctrl in formControlsList"
                 :data="ctrl.id"
               >
@@ -40,7 +43,7 @@
                       class="uk-margin-small-right uk-icon"
                       uk-icon="user"
                     ></span>
-                    {{ ctrl.label }}
+                    {{ ctrl.label.default }}
                   </div>
                 </div>
               </div>
@@ -105,12 +108,13 @@ export default {
   data: function() {
     return {
       data: this.value,
-      controls: [],
+      controls: {},
       staticData: require("@/components/staticData.js").default,
       view: {
         showControlPropertiesModal: false,
         showVariablePropertiesModal: false
-      }
+      },
+      maxId: 0
     };
   },
   validations: function() {
@@ -157,14 +161,17 @@ export default {
       if (o.path.indexOf("/") < 0) o.path = "./controls/" + o.path;
       let obj = require(o.path + "/manifest.js");
       var el = {
-        tag: obj.tag,
+        tag: key,
+        label: obj.label ?? {},
+        defaultSchema: obj.defaultSchema ?? {},
         acceptedVariableTypes: obj.acceptedVariableTypes,
-        isDataField : obj.isDataField,
-        id: key,
+        isDataField: obj.isDataField,
         control: require(o.path + "/control.vue"),
         properties: require(o.path + "/properties.vue")
       };
-      t.controls.push(el);
+      if (o.label) Object.assign(el.label, o.label);
+      if (o.defaultSchema) Object.assign(el.defaultSchema, o.defaultSchema);
+      t.controls[key] = el;
     }
   },
   methods: {
@@ -172,6 +179,15 @@ export default {
       this.$refs.controlPropertiesModal.showModal(control, function(model) {
         Object.assign(control, model);
         if (callback) callback(control);
+      });
+    },
+    createControl: function(type, collection, index) {
+      var c = this.controls[type];
+      var obj = Object.assign({}, c.defaultSchema);
+      obj.id = new Date().getUTCMilliseconds();
+      obj.type = type;
+      this.openControlProperties(obj, function(o) {
+        collection.splice(index, 0, o);
       });
     },
     getVariableByName: function(name) {
@@ -186,13 +202,13 @@ export default {
         p => type && p && p.type && p.type.toUpperCase() === type.toUpperCase()
       );
       return arr;
-    },    
+    },
     saveVariable: function(obj, srcName) {
-              var t = this;
+      var t = this;
       var variable = this.getVariableByName(srcName ?? obj.name);
       if (variable) {
         Object.assign(variable, obj);
-        this.executeNodesModification(function(node) {
+        this.executeNodesOperation(function(node) {
           if (
             node.variable &&
             node.variable.toLowerCase() === srcName.toLowerCase()
@@ -204,7 +220,7 @@ export default {
         t.schema.variables.push(obj);
       }
     },
-    executeNodesModification: function(modification) {
+    executeNodesOperation: function(modification) {
       var schema = this.schema;
       var __s = function(node, modification) {
         var subColl = null;
@@ -250,18 +266,33 @@ export default {
       $controls: t.controls,
       $getVariableByName: t.getVariableByName,
       $saveVariable: t.saveVariable,
+      $getControlLabel: function(name, lang) {
+        var cs = t.controls[name];
+        if (cs) {
+          var l = lang;
+          if (!l) l = "default";
+          if (!cs.label[l]) {
+            return name;
+          } else {
+            return cs.label[l];
+          }
+        }
+      },
       $getControlValidator: function(name) {
         return t.$v.data[name];
       },
-      $getVariablesByType:t.getVariablesByType,
+      $getVariablesByType: t.getVariablesByType,
       $getControlByTag: function(tag) {
-        return t.controls.filter(o => o.tag === tag)[0];
+        return t.controls[tag];
       },
       $openControlSettingsById: function(id) {
         var obj = t.findNodeByQuery(o => {
           return o.id && o.id === id;
         });
         t.openControlProperties(obj);
+      },
+      $createControl: function(type, collection, index) {
+        t.createControl(type, collection, index);
       },
       $openVariableProperties: function(variable, acceptedTypes, callback) {
         var vari;

@@ -4,7 +4,8 @@
       class="uk-grid"
       v-bind:class="{
         'uk-grid-divider uk-grid-collapse': schema.showSeparator,
-        'uk-grid-medium': !schema.showSeparator
+        'uk-grid-medium': !schema.showSeparator,
+        'grid_edit': editMode
       }"
       :list="schema.columns"
       :group="{ name: this.schema.id }"
@@ -14,7 +15,7 @@
         :elements="col.elements"
         v-for="col in schema.columns"
         :key="col.id"
-        :class="'uk-width-' + col.width + '@m'"
+        v-bind:class="['uk-width-' + col.width + '@m']"
       ></controlset>
     </draggable>
   </formControl>
@@ -26,10 +27,17 @@ export default {
     return {};
   },
   props: {
+    editMode:{
+      type: Boolean,
+      default:false
+    },
     schema: {
       type: Object,
       required: true
     }
+  },
+  created:function(){
+
   },
   components: {
     draggable: () => import("vuedraggable"),
@@ -42,8 +50,8 @@ export default {
     },
     getComponentData() {
       return {
-        attrs:{
-          'uk-grid': 'true'
+        attrs: {
+          "uk-grid": "true"
         }
       };
     }
@@ -51,17 +59,27 @@ export default {
 };
 </script>
 <style scoped>
-.uk-grid{
+.uk-grid {
   padding-top: 20px;
-  padding-bottom: 15px
+  padding-bottom: 15px;
+  padding-left:15px
 }
 .uk-grid-column-medium > *,
 .uk-grid-medium > *,
 .uk-grid-collapse > * {
   padding-left: 15px;
   padding-right: 15px;
-
 }
+
+.grid_edit {
+    min-height:25px
+}
+
+.grid_edit > div{
+  border: 1px dashed #e0e0e0;
+  min-height:25px
+}
+
 
 .uk-grid-column-medium > *:last-child,
 .uk-grid-medium > *:last-child,
@@ -70,7 +88,7 @@ export default {
 }
 
 .uk-first-column {
-  padding-left: 15px;
+  padding-left: 0px;
 }
 
 .uk-grid-divider,

@@ -1,7 +1,7 @@
 <template>
     <div :data-ref="id" :type="type" class="cf_validationError uk-margin-small-bottom cf_field" v-on:mouseleave="hideToolbar" v-on:mouseover="showToolbar">
         <div ref="toolbar" class="coreform_toolbar" style="display:none">
-            <label class="uk-text-normal" v-if="variableText">Data: {{variableText}}</label>
+            <label class="uk-text-normal">{{controlType}}</label>
             <label class="uk-text-normal" v-if="variableText">Data: {{variableText}}</label>
             <toolButton icon="move" cssclass="uk-drag moveHandle"/>
             <toolButton icon="settings" :onclick="openSettings"/>
@@ -13,7 +13,7 @@
 <script>
 import toolButton from '@/components/.infra/toolButton';
 export default {
-    inject:["$openControlSettingsById"],
+    inject: ["$getControlLabel", "$openControlSettingsById"],
     data: function () {
         return this.schema
     },
@@ -22,11 +22,20 @@ export default {
     },
     computed: {
         variableText: function () {
-            if (typeof (this.variable) !== "undefined") {
+            if (this.variable) {
                 return this.variable;
             }
             else {
                 return "";
+            }
+        },
+        controlType: function () {
+            var l = this.$getControlLabel(this.type)
+            if (l) {
+                return l;
+            }
+            else {
+                return "Unknown";
             }
         }
     },

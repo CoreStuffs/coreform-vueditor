@@ -4,6 +4,7 @@
                     :key="el.id"
                     :is="el.type"
                     :schema="el"
+                    :editMode="editMode"
                     handle=".moveHandle"
                     v-model="$formData[el.variable]">
         </component>
@@ -11,20 +12,17 @@
 </template>
 <script>
 export default {
-  inject:["$formData","$controls"],
+  inject:["$formData","$controls","$createControl"],
   name: "controlset",
-  props: ['elements'],
+  props: ['elements','editMode'],
   components: {
       'draggable' : () => import('vuedraggable'),
-      // 'grid' : () => import('@/components/controls/grid/control.vue'),
-      // 'textField' : () => import('@/components/controls/textField/control.vue'),
-      // 'selectField': () => import("@/components/controls/selectField/control.vue")
   },
   created:function(){
       var t = this;
-      this.$controls.forEach(element => {
-        t.$options.components[element.tag] = element.control.default;
-      });
+       for (let [key, value] of Object.entries(this.$controls)) {
+        t.$options.components[key] = value.control.default;
+      };
   },
   methods:{
     getData:function(variable){
@@ -32,8 +30,7 @@ export default {
     },
     onAdd:function(a){
       var t = a.item.attributes["data"].value;
-      console.log("Add: " + t);
-      this.elements.splice(a.newIndex+1, 0, {type:t, label:'new ' + t});
+      this.$createControl(t, this.elements, a.newIndex+1 );
     }
   }
 };

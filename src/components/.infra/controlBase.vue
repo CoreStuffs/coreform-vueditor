@@ -7,7 +7,7 @@ export default {
     props:{
         editMode: {
             type: Boolean,
-            default: false
+            default: true
         },
         schema: {
             type: Object,

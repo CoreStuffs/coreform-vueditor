@@ -24,15 +24,15 @@ export default {
       data:{},
       controls: {
         columns:{
-          label: 'Columns',
+          label: {default:'Columns'},
           path: 'grid'
         },
         textField:{
-          label: 'Text field',
+          label: {default:'Text field'},
           path: 'textField'
         },
         selectField:{
-          label: 'List',
+          label: {default:'List'},
           path: 'selectField'
         }
       },
@@ -126,7 +126,7 @@ export default {
               }
             ],
             id: "ctrl_1",
-            type: "grid",
+            type: "columns",
             width: 12
           },
           {
