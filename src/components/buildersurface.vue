@@ -28,10 +28,11 @@
                 pull: 'clone',
                 put: false
               }"
+              :clone="createEmptyControl"
               :sort="false"
             >
               <div
-                :key="ctrl.label.default"
+                :key="ctrl.id"
                 v-for="ctrl in formControlsList"
                 :data="ctrl.id"
               >
@@ -175,19 +176,17 @@ export default {
     }
   },
   methods: {
+    createEmptyControl: function(type) {
+      var c = this.controls[type.id];
+      var obj = Object.assign({}, c.defaultSchema);
+      obj.id = new Date().valueOf();
+      obj.type = type.id;
+      return obj;
+    },
     openControlProperties: function(control, callback) {
       this.$refs.controlPropertiesModal.showModal(control, function(model) {
         Object.assign(control, model);
         if (callback) callback(control);
-      });
-    },
-    createControl: function(type, collection, index) {
-      var c = this.controls[type];
-      var obj = Object.assign({}, c.defaultSchema);
-      obj.id = new Date().getUTCMilliseconds();
-      obj.type = type;
-      this.openControlProperties(obj, function(o) {
-        collection.splice(index, 0, o);
       });
     },
     getVariableByName: function(name) {
@@ -285,11 +284,11 @@ export default {
       $getControlByTag: function(tag) {
         return t.controls[tag];
       },
-      $openControlSettingsById: function(id) {
+      $openControlSettingsById: function(id, callback) {
         var obj = t.findNodeByQuery(o => {
           return o.id && o.id === id;
         });
-        t.openControlProperties(obj);
+        t.openControlProperties(obj, callback);
       },
       $createControl: function(type, collection, index) {
         t.createControl(type, collection, index);

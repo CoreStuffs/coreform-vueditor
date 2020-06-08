@@ -87,8 +87,8 @@ export default {
     },
     showModal: function(control, callback) {
       this.callback = callback;
-    var ctrl = this.$getControlByTag(control.type);
-    this.isDataField = ctrl.isDataField;
+      var ctrl = this.$getControlByTag(control.type);
+      this.isDataField = ctrl.isDataField;
      var v = ctrl.properties.default.validations;
      
     if (v) {

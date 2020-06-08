@@ -1,7 +1,7 @@
 <template>
-  <draggable :list="elements" :group="{ name: 'cfShareGroupForDesignSurface' }" @add="onAdd">
+  <draggable :list="elements" :group="{ name: 'cfShareGroupForDesignSurface' }" @end="onEnd">
         <component v-for="el in elements"
-                    :key="el.id"
+                    :key="el"
                     :is="el.type"
                     :schema="el"
                     :editMode="editMode"
@@ -12,7 +12,7 @@
 </template>
 <script>
 export default {
-  inject:["$formData","$controls","$createControl"],
+  inject:["$formData","$controls","$openControlSettingsById"],
   name: "controlset",
   props: ['elements','editMode'],
   components: {
@@ -28,9 +28,11 @@ export default {
     getData:function(variable){
       return this.$getFormData(variable);
     },
-    onAdd:function(a){
-      var t = a.item.attributes["data"].value;
-      this.$createControl(t, this.elements, a.newIndex+1 );
+    onEnd:function(a,b){
+      var t = this;
+      this.$openControlSettingsById(a.item.attributes["data"].value, (o)=>{
+        this.elements.splice(a.newIndex+1, 0, o);
+      });
     }
   }
 };

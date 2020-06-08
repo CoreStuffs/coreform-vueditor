@@ -13,6 +13,11 @@ export default {
         props: ["value"],
         created:function(){
             if(typeof(this.showSeparator)==="undefined") this["showSeparator"] = true;
+            var i = 0;
+            this.columns.forEach(element => {
+                if(!element.id) element.id = (new Date().valueOf()) + i;
+                i++;
+            });
         }
 }
 </script>
