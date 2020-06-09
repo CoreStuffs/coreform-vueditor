@@ -28,6 +28,7 @@
                 pull: 'clone',
                 put: false
               }"
+              :fallbackOnBody="true"
               :clone="createEmptyControl"
               :sort="false"
             >
@@ -181,6 +182,7 @@ export default {
       var obj = Object.assign({}, c.defaultSchema);
       obj.id = new Date().valueOf();
       obj.type = type.id;
+      obj.isNew = true;
       return obj;
     },
     openControlProperties: function(control, callback) {
@@ -290,6 +292,9 @@ export default {
         });
         t.openControlProperties(obj, callback);
       },
+      $openControlSettingsByObject: function(obj, callback) {
+        t.openControlProperties(obj, callback);
+      },
       $createControl: function(type, collection, index) {
         t.createControl(type, collection, index);
       },
@@ -339,4 +344,7 @@ export default {
   top: -0.5em;
   font-size: 70%;
 }
+
+
+
 </style>

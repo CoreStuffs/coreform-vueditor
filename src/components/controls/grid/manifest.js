@@ -4,6 +4,7 @@ const label = {
     fr:"2 colonnes"
 };
 const defaultSchema = {
+    width:12,
     columns: [
         {
             width: "1-2",

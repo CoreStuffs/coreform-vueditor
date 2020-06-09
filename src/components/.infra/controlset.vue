@@ -1,7 +1,7 @@
 <template>
-  <draggable :list="elements" :group="{ name: 'cfShareGroupForDesignSurface' }" @end="onEnd">
+  <draggable :list="elements" group="cfShareGroupForDesignSurface" @add="onAdd" >
         <component v-for="el in elements"
-                    :key="el"
+                    :key="el.id"
                     :is="el.type"
                     :schema="el"
                     :editMode="editMode"
@@ -12,7 +12,7 @@
 </template>
 <script>
 export default {
-  inject:["$formData","$controls","$openControlSettingsById"],
+  inject:["$formData","$controls","$openControlSettingsByObject"],
   name: "controlset",
   props: ['elements','editMode'],
   components: {
@@ -28,13 +28,26 @@ export default {
     getData:function(variable){
       return this.$getFormData(variable);
     },
-    onEnd:function(a,b){
-      var t = this;
-      this.$openControlSettingsById(a.item.attributes["data"].value, (o)=>{
-        this.elements.splice(a.newIndex+1, 0, o);
-      });
+
+  onAdd:function(a){
+          //Trick: We try to find an element with isNew (a new one). For whatever reason, it can be at newindex or oldindex (investigation required).
+          //If, after all, it has no isNew... it is not a new one
+          var t = this;
+          var index= a.oldIndex;
+          var obj = this.elements[a.oldIndex];
+          if(!obj || !obj.isNew) { 
+            obj=this.elements[a.newIndex];
+            index= a.newIndex;
+          }
+          if(obj.isNew){
+            delete obj.isNew;
+            this.elements.splice(index,1);
+            this.$openControlSettingsByObject(obj, (o)=>{
+              t.elements.splice(a.newIndex, 0, o);
+            });
+          }
+      }
     }
-  }
 };
 </script>
 

@@ -25,7 +25,8 @@ export default {
         },
         computed:{
             $v:function(){
-                return this.$getValidation();
+                var v = this.$getValidation();
+                return v;
             }
         },
         data: function () {

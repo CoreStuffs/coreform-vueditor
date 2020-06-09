@@ -15,6 +15,7 @@
         :elements="col.elements"
         v-for="col in schema.columns"
         :key="col.id"
+        :editMode="editMode"
         v-bind:class="['uk-width-' + col.width + '@m']"
       ></controlset>
     </draggable>
