@@ -1,109 +1,113 @@
 <template>
-  <vk-modal :show.sync="show" overflow-auto>
-    <vk-modal-close @click="show = false"></vk-modal-close>
-    <div class="uk-form-stacked  uk-text-small">
-      <div>
-        <ul uk-tab>
-          <li><a href="#">Basic</a></li>
-          <li><a href="#">Debug</a></li>
-        </ul>
-        <ul class="uk-switcher uk-margin" uk-overflow-auto>
-          <li>
-            <div v-if="isDataField" class="uk-margin-small-bottom">
-              <label for="txtValue" class="uk-form-label">Variable name</label>
-              <!--<input id="txtValue" type="text" class="uk-input uk-form-small" v-model="control.variable" v-bind:class="{'uk-form-danger': $v.control.variable.$error}"/>-->
-              <div class="uk-grid-column-collapse" uk-grid>
-                <select
-                  class="uk-select uk-form-small uk-width-expand@m"
-                  v-model="control.variable"
+  <div :ref="editformId" :id="editformId" class="uk-flex-top" uk-modal v-cloak>
+    >
+    <div
+      style="transition: none;"
+      class="uk-modal-dialog uk-transition-fade uk-margin-auto-vertical "
+    >
+      <button class="uk-modal-close-default" type="button" uk-close></button>
+      <div class="uk-modal-body uk-form-stacked" id="editFormBody">
+        <div>
+          <ul uk-tab>
+            <li><a href="#">Basic</a></li>
+            <li><a href="#">Debug</a></li>
+          </ul>
+          <ul class="uk-switcher uk-margin" uk-overflow-auto>
+            <li>
+              <div v-if="isDataField" class="uk-margin-small-bottom">
+                <label for="txtValue" class="uk-form-label"
+                  >Variable name</label
                 >
-                  <option
-                    :key="option.name"
-                    v-for="option in acceptedVariables"
-                    v-bind:value="option.name"
+                <!--<input id="txtValue" type="text" class="uk-input uk-form-small" v-model="control.variable" v-bind:class="{'uk-form-danger': $v.control.variable.$error}"/>-->
+                <div class="uk-grid-column-collapse" uk-grid>
+                  <select
+                    class="uk-select uk-form-small uk-width-expand@m"
+                    v-model="control.variable"
                   >
-                    {{ option.name }} ({{ variableType(option.type) }})
-                  </option>
-                </select>
-                <a
-                  href="#"
-                  @click="addVariable()"
-                  class="uk-width-auto@m"
-                  style="margin-left:5px;margin-top:5px"
-                  uk-icon="icon: plus-circle"
-                ></a>
+                    <option
+                      :key="option.name"
+                      v-for="option in acceptedVariables"
+                      v-bind:value="option.name"
+                    >
+                      {{ option.name }} ({{ variableType(option.type) }})
+                    </option>
+                  </select>
+                  <a
+                    href="#"
+                    @click="addVariable()"
+                    class="uk-width-auto@m"
+                    style="margin-left:5px;margin-top:5px"
+                    uk-icon="icon: plus-circle"
+                  ></a>
+                </div>
               </div>
-            </div>
-            <component
-            ref="controlProps"
-              :key="control.type"
-              :is="control.type"
-              v-bind="control"
-              v-model="control"
-            ></component>
-          </li>
-          <li>
-            <pre><code>{{control}}</code></pre>
-          </li>
-        </ul>
+              <component
+                :key="editformFieldId"
+                ref="controlProps"
+                :is="control.type"
+                v-bind="control"
+                v-model="control"
+              ></component>
+            </li>
+            <li>
+              <pre><code>{{control}}</code></pre>
+            </li>
+          </ul>
+        </div>
       </div>
+            <div class="uk-modal-footer uk-text-right">
+                <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
+                <button class="uk-button uk-button-primary" type="button" @click="applyEdit()">Apply</button>
+            </div>
     </div>
-    <div slot="footer" class="uk-text-right">
-      <vk-button class="uk-margin-small-right" @click="show = false"
-        >Cancel</vk-button
-      >
-      <vk-button
-        class="uk-margin-small-right uk-button-primary"
-        type="primary"
-        @click="applyEdit()"
-        >Apply</vk-button
-      >
-    </div>
-  </vk-modal>
+  </div>
 </template>
 <script>
 import Vue from "vue";
-import Vuikit from "vuikit";
-Vue.use(Vuikit);
+import UIkit from "uikit";
 import Vuelidate from "vuelidate";
 Vue.use(Vuelidate);
 
-import {
-  required,
-  minLength,
-  alphaNum
-} from "vuelidate/lib/validators";
+import { required, minLength, alphaNum } from "vuelidate/lib/validators";
 export default {
-  inject: ["$getControlByTag", "$getVariablesByType", "$variableTypes","$controls"],
-//   created:function(){
-//         this.$controls.forEach(control=>{
-//             this.$options.components[control.tag]= control.properties;
-//         })
-//   },
+  inject: [
+    "$getControlByTag",
+    "$getVariablesByType",
+    "$variableTypes",
+    "$controls"
+  ],
+  //   created:function(){
+  //         this.$controls.forEach(control=>{
+  //             this.$options.components[control.tag]= control.properties;
+  //         })
+  //   },
   methods: {
     variableType: function(name) {
       var v = this.$variableTypes[name];
       return v.text;
     },
     showModal: function(control, callback) {
+      this.editformFieldId = Date.now();
       this.callback = callback;
       var ctrl = this.$getControlByTag(control.type);
       this.isDataField = ctrl.isDataField;
-     var v = ctrl.properties.default.validations;
-     
-    if (v) {
-      for (let [key, value] of Object.entries(v)) {
-        if (!key.startsWith("$")) this.controlValidations.control[key] = value;
+      var v = ctrl.properties.default.validations;
+
+      if (v) {
+        for (let [key, value] of Object.entries(v)) {
+          if (!key.startsWith("$"))
+            this.controlValidations.control[key] = value;
+        }
       }
-    }
-    this.$options.components[control.type] = ctrl.properties.default;
-      this.show = true;
+      this.$options.components[control.type] = ctrl.properties.default;
+      UIkit.modal(document.getElementById(this.editformId)).show();
       Object.assign(this.control, control);
+      this.$forceUpdate();
     },
     applyEdit: function() {
       this.$v.$touch();
       if (!this.$v.$error) {
-        this.show = false;
+        UIkit.modal(document.getElementById(this.editformId)).hide();
         if (this.callback) {
           var obj = {};
           Object.assign(obj, this.control);
@@ -113,12 +117,12 @@ export default {
     }
   },
   provide: function() {
-      var t = this;
-      return{
-          $getValidation:function(){
-              return t.$v.control;
-          }
+    var t = this;
+    return {
+      $getValidation: function() {
+        return t.$v.control;
       }
+    };
   },
   computed: {
     acceptedVariables: function() {
@@ -135,15 +139,17 @@ export default {
   },
   data: function() {
     return {
+      editformId: Date.now(),
+      editformFieldId: Date.now(),
       show: false,
-      isDataField:false,
+      isDataField: false,
       callback: function() {},
       control: {},
-      controlValidations:{control:{}}
+      controlValidations: { control: {} }
     };
   },
   validations: function() {
-      var obj = this.controlValidations;
+    var obj = this.controlValidations;
     if (this.isDataField) {
       obj.control.variable = {
         required: required,
@@ -151,7 +157,6 @@ export default {
         minLength: minLength(3)
       };
     }
-    
 
     return obj;
   }

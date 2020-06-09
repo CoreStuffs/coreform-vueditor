@@ -1,91 +1,104 @@
 <template>
-  <vk-modal :show.sync="show" overflow-auto>
-    <vk-modal-close @click="show = false"></vk-modal-close>
-    <div class="uk-form-stacked uk-text-small">
-      <div>
-        <ul uk-tab>
-          <li v-bind:class="{ 'uk-tab-error': $v.$error }">
-            <a href="#">Basic</a>
-          </li>
-          <li><a href="#">Validations</a></li>
-          <li><a href="#">Debug</a></li>
-        </ul>
-        <ul class="uk-switcher uk-margin" uk-overflow-auto>
-          <li>
-            <div class="uk-form-horizontal uk-margin-large">
-              <fieldset class="uk-fieldset">
-                <div class="uk-margin">
-                  <label for="txtValue" class="uk-form-label"
-                    >Variable name</label
-                  >
-                  <div class="uk-form-controls">
-                    <input
-                      id="txtValue"
-                      name="txtValue"
-                      type="text"
-                      class="uk-input uk-form-small"
-                      v-model="variable.name"
-                      v-bind:class="{
-                        'uk-form-danger': $v.variable.name.$error
-                      }"
-                    />
-                  </div>
-                </div>
-                <div class="uk-margin">
-                  <label for="selType" class="uk-form-label"
-                    >Variable type</label
-                  >
-                  <div class="uk-form-controls uk-text-small">
-                    <select
-                      v-if="srcName === ''"
-                      name="selType"
-                      class="uk-select uk-form-small uk-width-expand@m"
-                      v-model="variable.type"
-                      v-bind:class="{
-                        'uk-form-danger': $v.variable.type.$error
-                      }"
+  <div :ref="editformId" :id="editformId" class="uk-flex-top" uk-modal v-cloak>
+    <div
+      style="transition: none;"
+      class="uk-modal-dialog uk-transition-fade uk-margin-auto-vertical "
+    >
+      <button class="uk-modal-close-default" type="button" uk-close></button>
+      <!--<div class="uk-modal-header">
+                <h2 class="uk-modal-title">Variable</h2>
+            </div>-->
+      <div class="uk-modal-body uk-text-small" id="editFormBody">
+        <div>
+          <ul uk-tab>
+            <li v-bind:class="{ 'uk-tab-error': $v.$error }">
+              <a href="#">Basic</a>
+            </li>
+            <li><a href="#">Validations</a></li>
+            <li><a href="#">Debug</a></li>
+          </ul>
+          <ul class="uk-switcher uk-margin" uk-overflow-auto>
+            <li>
+              <div class="uk-form-horizontal uk-margin-large">
+                <fieldset class="uk-fieldset">
+                  <div class="uk-margin">
+                    <label for="txtValue" class="uk-form-label"
+                      >Variable name</label
                     >
-                      <option
-                        :key="key"
-                        v-for="(text, key) in acceptedVariablesTypes"
-                        v-bind:value="key"
-                      >
-                        {{ text }}
-                      </option>
-                    </select>
-                    <label v-if="srcName !== ''">{{
-                      variableType(variable.type)
-                    }}</label>
+                    <div class="uk-form-controls">
+                      <input
+                        id="txtValue"
+                        name="txtValue"
+                        type="text"
+                        class="uk-input uk-form-small"
+                        v-model="variable.name"
+                        v-bind:class="{
+                          'uk-form-danger': $v.variable.name.$error
+                        }"
+                      />
+                    </div>
                   </div>
-                </div>
-              </fieldset>
-            </div>
-          </li>
-          <li>
-            <validationTable :variable="variable" />
-          </li>
-          <li>
-            <pre><code>{{variable}}</code></pre>
-          </li>
-        </ul>
+                  <div class="uk-margin">
+                    <label for="selType" class="uk-form-label"
+                      >Variable type</label
+                    >
+                    <div class="uk-form-controls uk-text-small">
+                      <select
+                        v-if="srcName === ''"
+                        name="selType"
+                        class="uk-select uk-form-small uk-width-expand@m"
+                        v-model="variable.type"
+                        v-bind:class="{
+                          'uk-form-danger': $v.variable.type.$error
+                        }"
+                      >
+                        <option
+                          :key="key"
+                          v-for="(text, key) in acceptedVariablesTypes"
+                          v-bind:value="key"
+                        >
+                          {{ text }}
+                        </option>
+                      </select>
+                      <label v-if="srcName !== ''">{{
+                        variableType(variable.type)
+                      }}</label>
+                    </div>
+                  </div>
+                </fieldset>
+              </div>
+            </li>
+            <li>
+              <validationTable :variable="variable" />
+            </li>
+            <li>
+              <pre><code>{{variable}}</code></pre>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="uk-modal-footer uk-text-right">
+        <button
+          class="uk-button uk-button-default uk-modal-close"
+          type="button"
+        >
+          Cancel
+        </button>
+        <button
+          class="uk-button uk-button-primary"
+          type="button"
+          @click="applyEdit()"
+        >
+          Apply
+        </button>
       </div>
     </div>
-    <div slot="footer" class="uk-text-right">
-      <vk-button class="uk-margin-small-right" @click="show = false"
-        >Cancel</vk-button
-      >
-      <vk-button
-        class="uk-margin-small-right uk-button-primary"
-        type="primary"
-        @click="applyEdit()"
-        >Apply</vk-button
-      >
-    </div>
-  </vk-modal>
+  </div>
 </template>
 
 <script>
 import Vue from "vue";
+import UIkit from "uikit";
 import Vuelidate from "vuelidate";
 Vue.use(Vuelidate);
 
@@ -149,6 +162,7 @@ export default {
       this.$emit("input", evt.srcElement.value);
     },
     showModal: function(variable, acceptedTypes, callback) {
+      this.editformFieldId = Date.now();
       if (!variable)
         variable = { name: "", validations: [{ type: "required" }] };
       this.srcName = variable.name;
@@ -168,13 +182,20 @@ export default {
       if (Object.keys(this.acceptedVariablesTypes).length === 1)
         this.variable.type = Object.keys(this.acceptedVariablesTypes)[0];
 
-      this.show = true;
+      var modal = UIkit.modal(document.getElementById(this.editformId));
+      var t = this;
+      UIkit.util.on(document.getElementById(this.editformId), "shown", function( a, b) {
+        if (b === modal) {
+          UIkit.tab(document.getElementById(t.editformId).getElementsByClassName("uk-tab")[0]).show(0);
+        }
+      });
+      modal.show();
     },
 
     applyEdit: function() {
       //this.$v.$touch();
       //if (!this.$v.$error) {
-      this.show = false;
+      UIkit.modal(document.getElementById(this.editformId)).hide();
       if (this.callback !== null && typeof this.callback !== "undefined") {
         var obj = {};
         Object.assign(obj, this.variable);

@@ -77,11 +77,13 @@
       ref="variablePropertiesModal"
       :variableTypes="staticData.variableTypes"
     />
-    <vk-button @click="openControlProperties()">Open</vk-button>
-    <controlPropertiesModal
-      ref="controlPropertiesModal"
-      :show="view.showControlPropertiesModal"
-    />
+    <controlPropertiesModal ref="controlPropertiesModal" />
+    <button
+      class="uk-button uk-button-default"
+      @click="openControlProperties()"
+    >
+      Open
+    </button>
   </div>
 </template>
 
@@ -112,10 +114,6 @@ export default {
       data: this.value,
       controls: {},
       staticData: require("@/components/staticData.js").default,
-      view: {
-        showControlPropertiesModal: false,
-        showVariablePropertiesModal: false
-      },
       maxId: 0
     };
   },
@@ -151,6 +149,9 @@ export default {
     }
   },
   created: function() {
+    if (!this.schema.variables) this.schema.variables = [];
+    if (!this.schema.elements) this.schema.elements = [];
+
     var arr = [];
     if (typeof this.formControls === "string") {
       var s = this.formControls;
@@ -181,11 +182,13 @@ export default {
       var c = this.controls[type.id];
       var obj = Object.assign({}, c.defaultSchema);
       obj.id = new Date().valueOf();
+      if (c.isDataField) obj.variable = "";
       obj.type = type.id;
       obj.isNew = true;
       return obj;
     },
     openControlProperties: function(control, callback) {
+      //this.$refs.controlPropertiesModal.showModal(control, function(model) {
       this.$refs.controlPropertiesModal.showModal(control, function(model) {
         Object.assign(control, model);
         if (callback) callback(control);
@@ -344,7 +347,4 @@ export default {
   top: -0.5em;
   font-size: 70%;
 }
-
-
-
 </style>
