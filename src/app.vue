@@ -3,7 +3,7 @@
     <h1>
       Hello from App Vue
     </h1>
-    <buildersurface :schema="schema" v-model="data" :formControls="controls"></buildersurface>
+    <buildersurface :formDefinition="schema" v-model="data" :formControls="controls"></buildersurface>
   </div>
 </template>
 <script>

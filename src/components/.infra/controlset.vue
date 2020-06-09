@@ -6,7 +6,7 @@
                     :schema="el"
                     :editMode="editMode"
                     handle=".moveHandle"
-                    v-model="$formData[el.variable]">
+                    :v-model="getData(el.variable)">
         </component>
   </draggable>
 </template>
@@ -26,10 +26,10 @@ export default {
   },
   methods:{
     getData:function(variable){
-      return this.$getFormData(variable);
+      if(!variable) return null;
+      return this.$formData[variable];
     },
-
-  onAdd:function(a){
+    onAdd:function(a){
           //Trick: We try to find an element with isNew (a new one). For whatever reason, it can be at newindex or oldindex (investigation required).
           //If, after all, it has no isNew... it is not a new one
           var t = this;
@@ -43,7 +43,12 @@ export default {
             delete obj.isNew;
             this.elements.splice(index,1);
             this.$openControlSettingsByObject(obj, (o)=>{
-              t.elements.splice(a.newIndex, 0, o);
+              if(t.elements.length>0){
+                t.elements.splice(a.newIndex, 0, o);
+              }else{
+                t.elements.push(o);
+              }
+              this.$forceUpdate();
             });
           }
       }

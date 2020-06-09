@@ -63,7 +63,7 @@
             <div>
               <pre><code style="font-size:12px">{{ schema }}</code></pre>
             </div>
-          </div>
+          </div>       
           <div class="uk-width-1-2@m">
             Data
             <div>
@@ -108,18 +108,18 @@ export default {
       import("@/components/controlPropertiesModal.vue"),
     draggable: () => import("vuedraggable")
   },
-  props: ["schema", "value", "formControls"],
+  props: ["formDefinition", "value", "formControls"],
   data: function() {
     return {
       data: this.value,
       controls: {},
+      schemaData : this.formDefinition,
       staticData: require("@/components/staticData.js").default,
       maxId: 0
     };
   },
   validations: function() {
     var obj = { data: {} };
-
     for (const varid in this.schema.variables) {
       var variable = this.schema.variables[varid];
       obj.data[variable.name] = {};
@@ -134,8 +134,8 @@ export default {
     return obj;
   },
   computed: {
-    draggingInfo() {
-      return this.dragging ? "under drag" : "";
+    schema:function(){
+      return this.sanitizeSchema(this.schemaData);
     },
     formControlsList: function() {
       var arr = new Array();
@@ -149,9 +149,7 @@ export default {
     }
   },
   created: function() {
-    if (!this.schema.variables) this.schema.variables = [];
-    if (!this.schema.elements) this.schema.elements = [];
-
+    Object.assign(this.schema, this.sanitizeSchema(this.formDefinition));
     var arr = [];
     if (typeof this.formControls === "string") {
       var s = this.formControls;
@@ -178,6 +176,15 @@ export default {
     }
   },
   methods: {
+    sanitizeSchema: function(schema) {
+      if (!schema.schemaVersion) schema.schemaVersion = 1;
+      if (!schema.formVersion) schema.formVersion = 1;
+      if (!schema.name) schema.name = "newForm";
+      if (!schema.title) schema.title = "New Form";
+      if (!schema.variables) schema["variables"] = new Array();
+      if (!schema.elements) schema["elements"] = new Array();
+      return schema;
+    },
     createEmptyControl: function(type) {
       var c = this.controls[type.id];
       var obj = Object.assign({}, c.defaultSchema);

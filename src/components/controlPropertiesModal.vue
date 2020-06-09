@@ -55,10 +55,14 @@
           </ul>
         </div>
       </div>
-            <div class="uk-modal-footer uk-text-right">
-                <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
-                <button class="uk-button uk-button-primary" type="button" @click="applyEdit()">Apply</button>
-            </div>
+      <div class="uk-modal-footer uk-text-right">
+        <button class="uk-button uk-button-default uk-modal-close" type="button">
+          Cancel
+        </button>
+        <button class="uk-button uk-button-primary" type="button" @click="applyEdit()">
+          Apply
+        </button>
+      </div>
     </div>
   </div>
 </template>
