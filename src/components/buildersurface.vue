@@ -21,7 +21,7 @@
             </div>
           </div>
           <div class="uk-width-auto@m" style="min-width:200px">
-            <draggable
+            <div ref="sortable"
               :list="formControlsList"
               :group="{
                 name: 'cfShareGroupForDesignSurface',
@@ -49,7 +49,7 @@
                   </div>
                 </div>
               </div>
-            </draggable>
+            </div>
           </div>
         </div>
       </li>
@@ -91,7 +91,7 @@
 import UIkit from "uikit";
 import Icons from "uikit/dist/js/uikit-icons";
 UIkit.use(Icons);
-
+import Sortable from 'sortablejs';
 import { validationMixin } from "vuelidate";
 
 export default {
@@ -105,8 +105,7 @@ export default {
     variablePropertiesModal: () =>
       import("@/components/variablePropertiesModal.vue"),
     controlPropertiesModal: () =>
-      import("@/components/controlPropertiesModal.vue"),
-    draggable: () => import("vuedraggable")
+      import("@/components/controlPropertiesModal.vue")
   },
   props: ["formDefinition", "value", "formControls"],
   data: function() {
@@ -148,7 +147,20 @@ export default {
       return arr;
     }
   },
+  mounted:function(){
+ var t = this;
+     new Sortable(t.$refs.sortable,{
+        group:{
+          name:"cfShareGroupForDesignSurface",
+          pull: 'clone',
+          put: false
+        },
+        onAdd:this.onAdd
+       });
+  },
   created: function() {
+    var t = this;
+     
     Object.assign(this.schema, this.sanitizeSchema(this.formDefinition));
     var arr = [];
     if (typeof this.formControls === "string") {
@@ -157,7 +169,6 @@ export default {
     } else {
       arr = this.formControls;
     }
-    var t = this;
     for (let [key, o] of Object.entries(arr)) {
       if (o.path.indexOf("/") < 0) o.path = "./controls/" + o.path;
       let obj = require(o.path + "/manifest.js");

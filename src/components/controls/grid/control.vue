@@ -1,6 +1,6 @@
 <template>
   <formControl :schema="schema">
-    <draggable
+    <div
       class="uk-grid"
       v-bind:class="{
         'uk-grid-divider uk-grid-collapse': schema.showSeparator,
@@ -18,7 +18,7 @@
         :editMode="editMode"
         v-bind:class="['uk-width-' + col.width + '@m']"
       ></controlset>
-    </draggable>
+    </div>
   </formControl>
 </template>
 <script>
@@ -41,7 +41,6 @@ export default {
 
   },
   components: {
-    draggable: () => import("vuedraggable"),
     controlset: () => import("@/components/.infra/controlset"),
     formControl: () => import("@/components/.infra/formControl")
   },

@@ -1,5 +1,5 @@
 <template>
-  <draggable :list="elements" group="cfShareGroupForDesignSurface" @add="onAdd" >
+  <div ref="sortable" >
         <component v-for="el in elements"
                     :key="el.id"
                     :is="el.type"
@@ -8,21 +8,28 @@
                     handle=".moveHandle"
                     :v-model="getData(el.variable)">
         </component>
-  </draggable>
+  </div>
 </template>
 <script>
+import Sortable from 'sortablejs';
 export default {
   inject:["$formData","$controls","$openControlSettingsByObject"],
   name: "controlset",
   props: ['elements','editMode'],
-  components: {
-      'draggable' : () => import('vuedraggable'),
-  },
   created:function(){
       var t = this;
        for (let [key, value] of Object.entries(this.$controls)) {
         t.$options.components[key] = value.control.default;
       };
+  },
+  mounted:function(){
+     var t = this;
+       new Sortable(t.$refs.sortable,{
+        group:{
+          name:"cfShareGroupForDesignSurface"
+        },
+        onAdd:this.onAdd
+       });
   },
   methods:{
     getData:function(variable){
