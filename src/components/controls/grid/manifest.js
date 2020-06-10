@@ -16,5 +16,6 @@ const defaultSchema = {
         }
     ]
 };
+
 const isDataField = false;
 export { tag, label, isDataField, defaultSchema };

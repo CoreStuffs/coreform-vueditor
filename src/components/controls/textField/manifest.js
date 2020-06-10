@@ -7,6 +7,7 @@ const defaultSchema = {
     label:"",
     placeholder:""
 };
+
 const acceptedVariableTypes = ["text", "number"];
 const isDataField = true;
 export { tag, label, acceptedVariableTypes, isDataField , defaultSchema};

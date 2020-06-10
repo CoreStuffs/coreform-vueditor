@@ -113,7 +113,7 @@ export default {
     },
     addVariable:function(){
         var t = this;
-        this.$openVariableProperties(null, null , function(vari){
+        this.$openVariableProperties(null, this.acceptedVariableTypes , function(vari){
             t.control.variable = vari.name;
             UIkit.modal(document.getElementById(t.editformId)).show();
         });
@@ -148,6 +148,10 @@ export default {
         });
       });
       return arr;
+    },
+    acceptedVariableTypes: function() {
+      var l = this.$getControlByTag(this.control.type).acceptedVariableTypes;
+      return l;
     }
   },
   data: function() {
