@@ -80,7 +80,8 @@ export default {
     "$getControlByTag",
     "$getVariablesByType",
     "$variableTypes",
-    "$controls"
+    "$controls",
+    "$openVariableProperties"
   ],
   //   created:function(){
   //         this.$controls.forEach(control=>{
@@ -98,7 +99,7 @@ export default {
       var ctrl = this.$getControlByTag(control.type);
       this.isDataField = ctrl.isDataField;
       var v = ctrl.properties.default.validations;
-
+      this.controlValidations = { control: {} };
       if (v) {
         for (let [key, value] of Object.entries(v)) {
           if (!key.startsWith("$"))
@@ -107,8 +108,15 @@ export default {
       }
       this.$options.components[control.type] = ctrl.properties.default;
       UIkit.modal(document.getElementById(this.editformId)).show();
-      Object.assign(this.control, control);
+      this.control = deepCopy(control);
       this.$forceUpdate();
+    },
+    addVariable:function(){
+        var t = this;
+        this.$openVariableProperties(null, null , function(vari){
+            t.control.variable = vari.name;
+            UIkit.modal(document.getElementById(t.editformId)).show();
+        });
     },
     applyEdit: function() {
       this.$v.$touch();

@@ -146,8 +146,7 @@ export default {
     formControlsList: function() {
       var arr = new Array();
       for (let [key, value] of Object.entries(this.formControls)) {
-        var obj = {};
-        Object.assign(obj, value);
+        var obj = deepCopy(value);
         obj.id = key;
         arr.push(obj);
       }
@@ -166,7 +165,7 @@ export default {
     var arr = [];
     if (typeof this.formControls === "string") {
       var s = this.formControls;
-      Object.assign(arr, eval(s));
+      arr = deepCopy(eval(s));
     } else {
       arr = this.formControls;
     }
@@ -183,8 +182,8 @@ export default {
         control: require(o.path + "/control.vue"),
         properties: require(o.path + "/properties.vue")
       };
-      if (o.label) Object.assign(el.label, o.label);
-      if (o.defaultSchema) Object.assign(el.defaultSchema, o.defaultSchema);
+      if (o.label) el.label = deepCopy(o.label);
+      if (o.defaultSchema) el.defaultSchema = deepCopy(o.defaultSchema);
       t.controls[key] = el;
     }
   },
@@ -206,7 +205,7 @@ export default {
     openControlProperties: function(control, callback) {
       //this.$refs.controlPropertiesModal.showModal(control, function(model) {
       this.$refs.controlPropertiesModal.showModal(control, function(model) {
-        Object.assign(control, model);
+        control = deepCopy(model);
         if (callback) callback(control);
       });
     },
@@ -227,7 +226,7 @@ export default {
       var t = this;
       var variable = this.getVariableByName(srcName ?? obj.name);
       if (variable) {
-        Object.assign(variable, obj);
+        Object.assign(variable,obj);
         this.executeNodesOperation(function(node) {
           if (
             node.variable &&
@@ -331,7 +330,7 @@ export default {
         t.$refs.variablePropertiesModal.showModal(vari, acceptedTypes, function(
           model
         ) {
-          Object.assign(vari, model);
+          vari = deepCopy(model);
           if (callback) callback(vari);
         });
       }

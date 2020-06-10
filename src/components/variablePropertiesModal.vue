@@ -100,6 +100,7 @@
 import Vue from "vue";
 import UIkit from "uikit";
 import Vuelidate from "vuelidate";
+import {deepCopy} from "@/components/utils.js";
 Vue.use(Vuelidate);
 
 import { required, minLength, alphaNum } from "vuelidate/lib/validators";
@@ -166,7 +167,7 @@ export default {
       if (!variable)
         variable = { name: "", validations: [{ type: "required" }] };
       this.srcName = variable.name;
-      Object.assign(this.variable, variable);
+      this.variable = deepCopy(variable);
       this.callback = callback;
 
       this.acceptedVariablesTypes = {};
@@ -197,9 +198,9 @@ export default {
       //if (!this.$v.$error) {
       UIkit.modal(document.getElementById(this.editformId)).hide();
       if (this.callback !== null && typeof this.callback !== "undefined") {
-        var obj = {};
-        Object.assign(obj, this.variable);
-        this.$saveVariable(obj, this.srcName), this.callback(obj);
+        var obj = deepCopy(this.variable);
+        this.$saveVariable(this.variable, this.srcName);
+        this.callback(obj);
       }
       //}
     }
