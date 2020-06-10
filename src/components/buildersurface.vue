@@ -63,7 +63,7 @@
             <div>
               <pre><code style="font-size:12px">{{ schema }}</code></pre>
             </div>
-          </div>       
+          </div>
           <div class="uk-width-1-2@m">
             Data
             <div>
@@ -92,8 +92,9 @@ import UIkit from "uikit";
 import Icons from "uikit/dist/js/uikit-icons";
 UIkit.use(Icons);
 
+import {deepCopy} from "@/components/utils.js";
 import { validationMixin } from "vuelidate";
-
+var globalId = 1;
 export default {
   mixins: [validationMixin],
   name: "simple",
@@ -108,15 +109,23 @@ export default {
       import("@/components/controlPropertiesModal.vue"),
     draggable: () => import("vuedraggable")
   },
-  props: ["formDefinition", "value", "formControls"],
+  props: ["value", "formControls"],
   data: function() {
     return {
-      data: this.value,
+      data: {},
       controls: {},
-      schemaData : this.formDefinition,
+      schema: {elements:[],variables:[]},
       staticData: require("@/components/staticData.js").default,
       maxId: 0
     };
+  },
+  watch:{
+    schema:{
+      deep:true,
+      handler(val){
+        this.$emit("input", val);
+      }
+    }
   },
   validations: function() {
     var obj = { data: {} };
@@ -134,9 +143,6 @@ export default {
     return obj;
   },
   computed: {
-    schema:function(){
-      return this.sanitizeSchema(this.schemaData);
-    },
     formControlsList: function() {
       var arr = new Array();
       for (let [key, value] of Object.entries(this.formControls)) {
@@ -149,7 +155,14 @@ export default {
     }
   },
   created: function() {
-    Object.assign(this.schema, this.sanitizeSchema(this.formDefinition));
+    Object.assign(this.schema, this.value);
+    this.executeNodesOperation((o)=>{
+      var id = this.getNextId()
+      o.id = function(){return id;};
+      globalId++;
+    });
+
+
     var arr = [];
     if (typeof this.formControls === "string") {
       var s = this.formControls;
@@ -176,22 +189,18 @@ export default {
     }
   },
   methods: {
-    sanitizeSchema: function(schema) {
-      if (!schema.schemaVersion) schema.schemaVersion = 1;
-      if (!schema.formVersion) schema.formVersion = 1;
-      if (!schema.name) schema.name = "newForm";
-      if (!schema.title) schema.title = "New Form";
-      if (!schema.variables) schema["variables"] = new Array();
-      if (!schema.elements) schema["elements"] = new Array();
-      return schema;
+    getNextId:function(){
+      globalId++;
+      return globalId;
     },
     createEmptyControl: function(type) {
       var c = this.controls[type.id];
-      var obj = Object.assign({}, c.defaultSchema);
-      obj.id = new Date().valueOf();
-      if (c.isDataField) obj.variable = "";
+      var obj = deepCopy(c.defaultSchema);
+      var id = this.getNextId()
+      obj.id = function() {return id;}
+      globalId++;
+      if (c.isDataField) obj["variable"] = "";
       obj.type = type.id;
-      obj.isNew = true;
       return obj;
     },
     openControlProperties: function(control, callback) {
@@ -273,6 +282,7 @@ export default {
     var t = this;
     return {
       $formData: t.value,
+      $getNextId: t.getNextId,
       $variableTypes: t.staticData.variableTypes,
       $controls: t.controls,
       $getVariableByName: t.getVariableByName,
@@ -298,7 +308,7 @@ export default {
       },
       $openControlSettingsById: function(id, callback) {
         var obj = t.findNodeByQuery(o => {
-          return o.id && o.id === id;
+          return o.id && o.id() === id;
         });
         t.openControlProperties(obj, callback);
       },
@@ -328,6 +338,7 @@ export default {
     };
   }
 };
+
 </script>
 
 <style>
@@ -355,3 +366,4 @@ export default {
   font-size: 70%;
 }
 </style>
+

@@ -7,17 +7,19 @@
 </template>
 <script>
 export default {
+        inject:["$getNextId"],
         data: function () {
             return this.value;
         },
         props: ["value"],
         created:function(){
             if(typeof(this.showSeparator)==="undefined") this["showSeparator"] = true;
-            var i = 0;
-            this.columns.forEach(element => {
-                if(!element.id) element.id = (new Date().valueOf()) + i;
-                i++;
-            });
+            //var i = 1;
+            // this.columns.forEach(element => {
+            //     if(!element.id) {
+            //         element.id =  this.id + 1000 + i++;
+            //     }
+            // });
         }
 }
 </script>

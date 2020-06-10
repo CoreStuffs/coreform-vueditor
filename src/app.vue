@@ -3,7 +3,8 @@
     <h1>
       Hello from App Vue
     </h1>
-    <buildersurface :formDefinition="schema" v-model="data" :formControls="controls"></buildersurface>
+    <buildersurface v-model="schema" :formControls="controls"></buildersurface>
+      <pre><code style="font-size:12px">{{ schema }}</code></pre>
   </div>
 </template>
 <script>
@@ -136,7 +137,6 @@ export default {
   },
   data:function() {
     return {
-      data:{},
       controls: {
         columns:{
           label: {default:'Columns'},

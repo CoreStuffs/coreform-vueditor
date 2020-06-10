@@ -5,7 +5,7 @@
       v-bind:class="{
         'uk-grid-divider uk-grid-collapse': schema.showSeparator,
         'uk-grid-medium': !schema.showSeparator,
-        'grid_edit': editMode
+        grid_edit: editMode
       }"
       :list="schema.columns"
       :group="{ name: this.schema.id }"
@@ -14,7 +14,7 @@
       <controlset
         :elements="col.elements"
         v-for="col in schema.columns"
-        :key="col.id"
+        :key="schema.columns.indexOf(col)"
         :editMode="editMode"
         v-bind:class="['uk-width-' + col.width + '@m']"
       ></controlset>
@@ -28,18 +28,16 @@ export default {
     return {};
   },
   props: {
-    editMode:{
+    editMode: {
       type: Boolean,
-      default:false
+      default: false
     },
     schema: {
       type: Object,
       required: true
     }
   },
-  created:function(){
-
-  },
+  created: function() {},
   components: {
     draggable: () => import("vuedraggable"),
     controlset: () => import("@/components/.infra/controlset"),
@@ -63,7 +61,7 @@ export default {
 .uk-grid {
   padding-top: 20px;
   padding-bottom: 15px;
-  padding-left:15px
+  padding-left: 15px;
 }
 .uk-grid-column-medium > *,
 .uk-grid-medium > *,
@@ -73,14 +71,13 @@ export default {
 }
 
 .grid_edit {
-    min-height:25px
+  min-height: 25px;
 }
 
-.grid_edit > div{
+.grid_edit > div {
   border: 1px dashed #e0e0e0;
-  min-height:25px
+  min-height: 25px;
 }
-
 
 .uk-grid-column-medium > *:last-child,
 .uk-grid-medium > *:last-child,

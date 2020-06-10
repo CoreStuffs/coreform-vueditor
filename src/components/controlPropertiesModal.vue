@@ -71,6 +71,8 @@ import Vue from "vue";
 import UIkit from "uikit";
 import Vuelidate from "vuelidate";
 Vue.use(Vuelidate);
+import {deepCopy} from "@/components/utils.js";
+
 
 import { required, minLength, alphaNum } from "vuelidate/lib/validators";
 export default {
@@ -113,8 +115,7 @@ export default {
       if (!this.$v.$error) {
         UIkit.modal(document.getElementById(this.editformId)).hide();
         if (this.callback) {
-          var obj = {};
-          Object.assign(obj, this.control);
+          var obj = deepCopy(this.control);
           this.callback(obj);
         }
       }

@@ -1,7 +1,7 @@
 <template>
   <draggable :list="elements" group="cfShareGroupForDesignSurface" @add="onAdd" >
         <component v-for="el in elements"
-                    :key="el.id"
+                    :key="el.id()"
                     :is="el.type"
                     :schema="el"
                     :editMode="editMode"
@@ -32,15 +32,14 @@ export default {
     onAdd:function(a){
           //Trick: We try to find an element with isNew (a new one). For whatever reason, it can be at newindex or oldindex (investigation required).
           //If, after all, it has no isNew... it is not a new one
-          var t = this;
-          var index= a.oldIndex;
-          var obj = this.elements[a.oldIndex];
-          if(!obj || !obj.isNew) { 
-            obj=this.elements[a.newIndex];
-            index= a.newIndex;
-          }
-          if(obj.isNew){
-            delete obj.isNew;
+          if(a.pullMode === "clone"){
+            var t = this;
+            var index= a.oldIndex;
+            var obj = this.elements[a.oldIndex];
+            if(!obj || !obj.isNew) { 
+              obj=this.elements[a.newIndex];
+              index= a.newIndex;
+            }
             this.elements.splice(index,1);
             this.$openControlSettingsByObject(obj, (o)=>{
               if(t.elements.length>0){

@@ -50,10 +50,10 @@ export default {
             evt.stopPropagation();
         },
         openSettings: function (evt) {
-            this.$openControlSettingsById(this.id);
+            this.$openControlSettingsById(this.id());
         },
         removeNode: function (evt) {
-            this.$removeControlById(this.id);
+            this.$removeControlById(this.id());
         }
     },
     props: ["schema", "validation"]
