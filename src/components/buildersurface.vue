@@ -91,8 +91,8 @@
 import UIkit from "uikit";
 import Icons from "uikit/dist/js/uikit-icons";
 UIkit.use(Icons);
-
 import {deepCopy} from "@/components/utils.js";
+
 import { validationMixin } from "vuelidate";
 var globalId = 1;
 export default {
