@@ -7,9 +7,11 @@
     <div class="uk-form-controls">
       <v-select
         ref="selector"
-        label="text"
+        label="text" auto
         v-model="data"
+        :filterable="false" 
         @input="onChange"
+        @search="onSearch"
         :multiple="schema.multiple"
         :placeholder="schema.placeholder"
         :options="options"
@@ -39,15 +41,12 @@
 <script>
 import controlBase from "@/components/.infra/controlBase.vue";
 export default {
+  inject:["$getExternalData"],
   extends: controlBase,
   data: function() {
     return {
       data: this.value,
-      options: [
-        { key: "1", text: "aaa" },
-        { key: "3", text: "ccc" },
-        { key: "2", text: "bbb" }
-      ]
+      options: []
     };
   },
   props: {
@@ -62,6 +61,15 @@ export default {
   methods: {
     onChange: function() {
       this.$emit("input", this.data);
+    },
+    onSearch(search, loading) {
+      loading(true);
+      var vm = this;
+      vm.options.splice(0, vm.options.length)
+      this.$getExternalData(this.schema.sourceId, (data)=>{
+          this.options= data.items;
+          loading(false);
+      }, search);
     }
   },
   components: {

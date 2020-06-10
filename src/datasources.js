@@ -15,14 +15,14 @@ var dataSources = [
       getAllUrl:
         "https://restcountries.eu/rest/v2/all?fields=name;flag;alpha3Code",
       transform: function(data) {
-        var results = [];
+          var r = {items:[]};
         for (var i = 0; i < data.length; i++) {
-          results.push({
-            id: data[i].alpha3Code,
+          r.items.push({
+            key: data[i].alpha3Code,
             text: data[i].name
           });
         }
-        return results;
+        return r;
       }
     }
   },
@@ -77,7 +77,10 @@ const customDataAdapter = {
       if (dataSource.config.getAllUrl) url = dataSource.config.getAllUrl;
       if (dataSource.config.queryableUrl && query)
         url = dataSource.config.queryableUrl.replace(/{{query}}/gi, query);
-        axios.get(url).then(data => {
+        console.log("url: " + url);
+        axios.get(url).then(response => {
+            console.log("Found " + typeof(response.data));
+            var data = response.data;
             if (dataSource.config.transform) data = dataSource.config.transform(data);
             onSuccess(data);
         })
