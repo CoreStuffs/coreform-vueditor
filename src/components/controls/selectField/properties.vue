@@ -28,6 +28,7 @@ import {
 } from "vuelidate/lib/validators";
 
 export default {
+    inject:["$externalDataSources"],
     validations: {
             'label': {
                 'required': required,
@@ -36,7 +37,7 @@ export default {
         },
         computed:{
             dataSources : function(){
-                return [];
+                return this.$externalDataSources;
             }
         },
         data: function () {

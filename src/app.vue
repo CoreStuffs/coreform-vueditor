@@ -3,11 +3,12 @@
     <h1>
       Hello from App Vue
     </h1>
-    <buildersurface v-model="schema" :formControls="controls"></buildersurface>
+    <buildersurface v-model="schema" :formControls="controls" :externalDataAdapter="dataAdapter"></buildersurface>
       <pre><code style="font-size:12px">{{ schema }}</code></pre>
   </div>
 </template>
 <script>
+
 
 import buildersurface from "@/components/buildersurface.vue";
 var c = function() {
@@ -151,6 +152,7 @@ export default {
           path: 'selectField'
         }
       },
+      dataAdapter:require("./datasources.js").customDataAdapter,
       schema: {}
     };
   },

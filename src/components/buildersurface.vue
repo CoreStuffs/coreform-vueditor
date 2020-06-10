@@ -91,7 +91,7 @@
 import UIkit from "uikit";
 import Icons from "uikit/dist/js/uikit-icons";
 UIkit.use(Icons);
-import {deepCopy} from "@/components/utils.js";
+import { deepCopy } from "@/components/utils.js";
 
 import { validationMixin } from "vuelidate";
 var globalId = 1;
@@ -109,20 +109,21 @@ export default {
       import("@/components/controlPropertiesModal.vue"),
     draggable: () => import("vuedraggable")
   },
-  props: ["value", "formControls"],
+  props: ["value", "formControls", "externalDataAdapter"],
   data: function() {
     return {
       data: {},
       controls: {},
-      schema: {elements:[],variables:[]},
+      schema: { elements: [], variables: [] },
+      dataSources:[],
       staticData: require("@/components/staticData.js").default,
       maxId: 0
     };
   },
-  watch:{
-    schema:{
-      deep:true,
-      handler(val){
+  watch: {
+    schema: {
+      deep: true,
+      handler(val) {
         this.$emit("input", val);
       }
     }
@@ -154,11 +155,19 @@ export default {
     }
   },
   created: function() {
+
     Object.assign(this.schema, this.value);
-    this.executeNodesOperation((o)=>{
-      var id = this.getNextId()
-      o.id = function(){return id;};
+    this.executeNodesOperation(o => {
+      var id = this.getNextId();
+      o.id = function() {
+        return id;
+      };
       globalId++;
+    });
+
+    var t = this;
+    this.getExternalDataSources(function(data){
+        Object.assign(t.dataSources, data);
     });
 
 
@@ -169,7 +178,7 @@ export default {
     } else {
       arr = this.formControls;
     }
-    var t = this;
+
     for (let [key, o] of Object.entries(arr)) {
       if (o.path.indexOf("/") < 0) o.path = "./controls/" + o.path;
       let obj = require(o.path + "/manifest.js");
@@ -188,15 +197,29 @@ export default {
     }
   },
   methods: {
-    getNextId:function(){
+    getExternalDataItem: function(sourceid, itemid, onSuccess, query) {
+      if (this.externalDataAdapter && this.externalDataAdapter.getDataItem)
+        this.externalDataAdapter.getDataItem(itemid, onSuccess, query);
+    },
+    getExternalData: function(id, onSuccess, query) {
+      if (this.externalDataAdapter && this.externalDataAdapter.getData)
+        this.externalDataAdapter.getData(id, onSuccess, query);
+    },
+    getExternalDataSources: function(onSuccess) {
+      if (this.externalDataAdapter && this.externalDataAdapter.getDataSources)
+        this.externalDataAdapter.getDataSources(onSuccess);
+    },
+    getNextId: function() {
       globalId++;
       return globalId;
     },
     createEmptyControl: function(type) {
       var c = this.controls[type.id];
       var obj = deepCopy(c.defaultSchema);
-      var id = this.getNextId()
-      obj.id = function() {return id;}
+      var id = this.getNextId();
+      obj.id = function() {
+        return id;
+      };
       globalId++;
       if (c.isDataField) obj["variable"] = "";
       obj.type = type.id;
@@ -226,7 +249,7 @@ export default {
       var t = this;
       var variable = this.getVariableByName(srcName ?? obj.name);
       if (variable) {
-        Object.assign(variable,obj);
+        Object.assign(variable, obj);
         this.executeNodesOperation(function(node) {
           if (
             node.variable &&
@@ -280,12 +303,13 @@ export default {
   provide: function() {
     var t = this;
     return {
-      $formData: t.value,
+      $formData: t.data,
       $getNextId: t.getNextId,
       $variableTypes: t.staticData.variableTypes,
       $controls: t.controls,
       $getVariableByName: t.getVariableByName,
       $saveVariable: t.saveVariable,
+      $externalDataSources: t.dataSources,
       $getControlLabel: function(name, lang) {
         var cs = t.controls[name];
         if (cs) {
@@ -333,11 +357,12 @@ export default {
           vari = deepCopy(model);
           if (callback) callback(vari);
         });
-      }
+      },
+      $getExternalDataItem: this.getExternalDataItem,
+      $getExternalData: this.getExternalData,
     };
   }
 };
-
 </script>
 
 <style>
@@ -365,4 +390,3 @@ export default {
   font-size: 70%;
 }
 </style>
-

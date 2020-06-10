@@ -6,7 +6,7 @@
                     :schema="el"
                     :editMode="editMode"
                     handle=".moveHandle"
-                    :v-model="getData(el.variable)">
+                    v-model="$formData[el.variable]">
         </component>
   </draggable>
 </template>
