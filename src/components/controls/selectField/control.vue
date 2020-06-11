@@ -7,10 +7,11 @@
     <div class="uk-form-controls">
       <v-select
         ref="selector"
-        label="text" auto
+        label="text"
+        auto
         v-model="data"
         :close-on-select="!schema.multiple"
-        :filterable="!dataSource.queryable" 
+        :filterable="!dataSource.queryable"
         @input="onChange"
         @search="onSearch"
         :multiple="schema.multiple"
@@ -42,54 +43,68 @@
 <script>
 import controlBase from "@/components/.infra/controlBase.vue";
 export default {
-  inject:["$getExternalData","$externalDataSources"],
+  inject: ["$getExternalData", "$externalDataSources"],
   extends: controlBase,
-  data: function() {
+  data: function () {
     return {
       data: this.value,
       options: [],
-      dataSource:{}
+      dataSource: {},
     };
   },
   props: {
     schema: {
-      required: true
+      required: true,
     },
     value: {
       required: false,
-      type: [String, Array, Object]
-    }
+      type: [String, Array, Object],
+    },
   },
-  created:function(){
-      var arr = this.$externalDataSources.filter(o=>o.id === this.schema.sourceId);
-      if(arr.length===1) this.dataSource = arr[0];
+  created: function () {
+    var arr = this.$externalDataSources.filter(
+      (o) => o.id === this.schema.sourceId
+    );
+    if (arr.length === 1) this.dataSource = arr[0];
 
-      if(this.dataSource && (!this.dataSource.queryable || this.dataSource.initialLoad)){
-         this.$getExternalData(this.schema.sourceId, (data)=>{
-            this.options= data.items;
-        }, null);
-      }
+    if (
+      this.dataSource &&
+      (!this.dataSource.queryable || this.dataSource.initialLoad)
+    ) {
+      this.$getExternalData(
+        this.schema.sourceId,
+        (data) => {
+          this.options = data.items;
+        },
+        null
+      );
+    }
   },
   methods: {
-    onChange: function() {
+    onChange: function () {
       this.$emit("input", this.data);
-      if(this.schema.multiple) this.$refs.selector.$el.getElementsByTagName("INPUT")[0].focus();
+      if (this.schema.multiple)
+        this.$refs.selector.$el.getElementsByTagName("INPUT")[0].focus();
     },
     onSearch(search, loading) {
-      if(!this.dataSource.initialLoad && search=="") return;
+      if (!this.dataSource.initialLoad && search == "") return;
       loading(true);
       var vm = this;
-      vm.options.splice(0, vm.options.length)
-      this.$getExternalData(this.schema.sourceId, (data)=>{
-          this.options= data.items;
+      vm.options.splice(0, vm.options.length);
+      this.$getExternalData(
+        this.schema.sourceId,
+        (data) => {
+          this.options = data.items;
           loading(false);
-      }, search);
-    }
+        },
+        search
+      );
+    },
   },
   components: {
     "v-select": () => import("vue-select"),
-    formControl: () => import("@/components/.infra/formControl.vue")
-  }
+    formControl: () => import("@/components/.infra/formControl.vue"),
+  },
 };
 </script>
 <style lang="scss">

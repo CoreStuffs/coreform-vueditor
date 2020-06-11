@@ -20,13 +20,13 @@
               ></controlset>
             </div>
           </div>
-          <div class="uk-width-auto@m" style="min-width:200px">
+          <div class="uk-width-auto@m" style="min-width: 200px;">
             <draggable
               :list="formControlsList"
               :group="{
                 name: 'cfShareGroupForDesignSurface',
                 pull: 'clone',
-                put: false
+                put: false,
               }"
               :fallbackOnBody="true"
               :clone="createEmptyControl"
@@ -38,7 +38,12 @@
                 :data="ctrl.id"
               >
                 <div
-                  style="margin-bottom:2px;background-color:#f0f0f0;padding:2px;cursor:default"
+                  style="
+                    margin-bottom: 2px;
+                    background-color: #f0f0f0;
+                    padding: 2px;
+                    cursor: default;
+                  "
                 >
                   <div>
                     <span
@@ -107,17 +112,17 @@ export default {
       import("@/components/variablePropertiesModal.vue"),
     controlPropertiesModal: () =>
       import("@/components/controlPropertiesModal.vue"),
-    draggable: () => import("vuedraggable")
+    draggable: () => import("vuedraggable"),
   },
   props: ["value", "formControls", "externalDataAdapter"],
-  data: function() {
+  data: function () {
     return {
       data: {},
       controls: {},
       schema: { elements: [], variables: [] },
-      dataSources:[],
+      dataSources: [],
       staticData: require("@/components/staticData.js").default,
-      maxId: 0
+      maxId: 0,
     };
   },
   watch: {
@@ -125,10 +130,10 @@ export default {
       deep: true,
       handler(val) {
         this.$emit("input", val);
-      }
-    }
+      },
+    },
   },
-  validations: function() {
+  validations: function () {
     var obj = { data: {} };
     for (const varid in this.schema.variables) {
       var variable = this.schema.variables[varid];
@@ -144,7 +149,7 @@ export default {
     return obj;
   },
   computed: {
-    formControlsList: function() {
+    formControlsList: function () {
       var arr = new Array();
       for (let [key, value] of Object.entries(this.formControls)) {
         var obj = deepCopy(value);
@@ -152,24 +157,22 @@ export default {
         arr.push(obj);
       }
       return arr;
-    }
+    },
   },
-  created: function() {
-
+  created: function () {
     Object.assign(this.schema, this.value);
-    this.executeNodesOperation(o => {
+    this.executeNodesOperation((o) => {
       var id = this.getNextId();
-      o.id = function() {
+      o.id = function () {
         return id;
       };
       globalId++;
     });
 
     var t = this;
-    this.getExternalDataSources(function(data){
-        Object.assign(t.dataSources, data);
+    this.getExternalDataSources(function (data) {
+      Object.assign(t.dataSources, data);
     });
-
 
     var arr = [];
     if (typeof this.formControls === "string") {
@@ -189,7 +192,7 @@ export default {
         acceptedVariableTypes: obj.acceptedVariableTypes,
         isDataField: obj.isDataField,
         control: require(o.path + "/control.vue"),
-        properties: require(o.path + "/properties.vue")
+        properties: require(o.path + "/properties.vue"),
       };
       if (o.label) el.label = deepCopy(o.label);
       if (o.defaultSchema) el.defaultSchema = deepCopy(o.defaultSchema);
@@ -197,27 +200,27 @@ export default {
     }
   },
   methods: {
-    getExternalDataItem: function(sourceid, itemid, onSuccess, query) {
+    getExternalDataItem: function (sourceid, itemid, onSuccess, query) {
       if (this.externalDataAdapter && this.externalDataAdapter.getDataItem)
         this.externalDataAdapter.getDataItem(itemid, onSuccess, query);
     },
-    getExternalData: function(id, onSuccess, query) {
+    getExternalData: function (id, onSuccess, query) {
       if (this.externalDataAdapter && this.externalDataAdapter.getData)
         this.externalDataAdapter.getData(id, onSuccess, query);
     },
-    getExternalDataSources: function(onSuccess) {
+    getExternalDataSources: function (onSuccess) {
       if (this.externalDataAdapter && this.externalDataAdapter.getDataSources)
         this.externalDataAdapter.getDataSources(onSuccess);
     },
-    getNextId: function() {
+    getNextId: function () {
       globalId++;
       return globalId;
     },
-    createEmptyControl: function(type) {
+    createEmptyControl: function (type) {
       var c = this.controls[type.id];
       var obj = deepCopy(c.defaultSchema);
       var id = this.getNextId();
-      obj.id = function() {
+      obj.id = function () {
         return id;
       };
       globalId++;
@@ -225,32 +228,34 @@ export default {
       obj.type = type.id;
       return obj;
     },
-    openControlProperties: function(control, callback) {
+    openControlProperties: function (control, callback) {
       //this.$refs.controlPropertiesModal.showModal(control, function(model) {
-      this.$refs.controlPropertiesModal.showModal(control, function(model) {
+      this.$refs.controlPropertiesModal.showModal(control, function (model) {
         control = deepCopy(model);
         if (callback) callback(control);
       });
     },
-    getVariableByName: function(name) {
+    getVariableByName: function (name) {
       var arr = this.schema.variables.filter(
-        p => name && p && p.name && p.name.toUpperCase() === name.toUpperCase()
+        (p) =>
+          name && p && p.name && p.name.toUpperCase() === name.toUpperCase()
       );
       if (arr.length === 1) return arr[0];
       return undefined;
     },
-    getVariablesByType: function(type) {
+    getVariablesByType: function (type) {
       var arr = this.schema.variables.filter(
-        p => type && p && p.type && p.type.toUpperCase() === type.toUpperCase()
+        (p) =>
+          type && p && p.type && p.type.toUpperCase() === type.toUpperCase()
       );
       return arr;
     },
-    saveVariable: function(obj, srcName) {
+    saveVariable: function (obj, srcName) {
       var t = this;
       var variable = this.getVariableByName(srcName ?? obj.name);
       if (variable) {
         Object.assign(variable, obj);
-        this.executeNodesOperation(function(node) {
+        this.executeNodesOperation(function (node) {
           if (
             node.variable &&
             node.variable.toLowerCase() === srcName.toLowerCase()
@@ -262,9 +267,9 @@ export default {
         t.schema.variables.push(obj);
       }
     },
-    executeNodesOperation: function(modification) {
+    executeNodesOperation: function (modification) {
       var schema = this.schema;
-      var __s = function(node, modification) {
+      var __s = function (node, modification) {
         var subColl = null;
         if (node.columns) subColl = node.columns;
         if (node.elements) subColl = node.elements;
@@ -279,9 +284,9 @@ export default {
       };
       __s(schema, modification);
     },
-    findNodeByQuery: function(query) {
+    findNodeByQuery: function (query) {
       var schema = this.schema;
-      var __s = function(node, query) {
+      var __s = function (node, query) {
         var subColl = null;
         if (node.columns) subColl = node.columns;
         if (node.elements) subColl = node.elements;
@@ -298,9 +303,9 @@ export default {
         return null;
       };
       return __s(schema, query);
-    }
+    },
   },
-  provide: function() {
+  provide: function () {
     var t = this;
     return {
       $formData: t.data,
@@ -310,7 +315,7 @@ export default {
       $getVariableByName: t.getVariableByName,
       $saveVariable: t.saveVariable,
       $externalDataSources: t.dataSources,
-      $getControlLabel: function(name, lang) {
+      $getControlLabel: function (name, lang) {
         var cs = t.controls[name];
         if (cs) {
           var l = lang;
@@ -322,46 +327,48 @@ export default {
           }
         }
       },
-      $getControlValidator: function(name) {
+      $getControlValidator: function (name) {
         return t.$v.data[name];
       },
       $getVariablesByType: t.getVariablesByType,
-      $getControlByTag: function(tag) {
+      $getControlByTag: function (tag) {
         return t.controls[tag];
       },
-      $openControlSettingsById: function(id, callback) {
-        var obj = t.findNodeByQuery(o => {
+      $openControlSettingsById: function (id, callback) {
+        var obj = t.findNodeByQuery((o) => {
           return o.id && o.id() === id;
         });
         t.openControlProperties(obj, callback);
       },
-      $openControlSettingsByObject: function(obj, callback) {
+      $openControlSettingsByObject: function (obj, callback) {
         t.openControlProperties(obj, callback);
       },
-      $createControl: function(type, collection, index) {
+      $createControl: function (type, collection, index) {
         t.createControl(type, collection, index);
       },
-      $openVariableProperties: function(variable, acceptedTypes, callback) {
+      $openVariableProperties: function (variable, acceptedTypes, callback) {
         var vari;
         if (variable) {
           vari = variable;
         } else {
           vari = {
             name: "",
-            validations: [{ type: "required" }]
+            validations: [{ type: "required" }],
           };
         }
-        t.$refs.variablePropertiesModal.showModal(vari, acceptedTypes, function(
-          model
-        ) {
-          vari = deepCopy(model);
-          if (callback) callback(vari);
-        });
+        t.$refs.variablePropertiesModal.showModal(
+          vari,
+          acceptedTypes,
+          function (model) {
+            vari = deepCopy(model);
+            if (callback) callback(vari);
+          }
+        );
       },
       $getExternalDataItem: this.getExternalDataItem,
       $getExternalData: this.getExternalData,
     };
-  }
+  },
 };
 </script>
 

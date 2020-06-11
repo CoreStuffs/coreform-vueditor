@@ -5,7 +5,7 @@
       v-bind:class="{
         'uk-grid-divider uk-grid-collapse': schema.showSeparator,
         'uk-grid-medium': !schema.showSeparator,
-        grid_edit: editMode
+        grid_edit: editMode,
       }"
       :list="schema.columns"
       :group="{ name: this.schema.id }"
@@ -24,37 +24,37 @@
 <script>
 export default {
   name: "Grid",
-  data: function() {
+  data: function () {
     return {};
   },
   props: {
     editMode: {
       type: Boolean,
-      default: false
+      default: false,
     },
     schema: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
-  created: function() {},
+  created: function () {},
   components: {
     draggable: () => import("vuedraggable"),
     controlset: () => import("@/components/.infra/controlset"),
-    formControl: () => import("@/components/.infra/formControl")
+    formControl: () => import("@/components/.infra/formControl"),
   },
   methods: {
-    getVariable: function(name) {
+    getVariable: function (name) {
       return this.$parent.getVariable(name);
     },
     getComponentData() {
       return {
         attrs: {
-          "uk-grid": "true"
-        }
+          "uk-grid": "true",
+        },
       };
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>

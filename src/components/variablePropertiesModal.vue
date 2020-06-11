@@ -2,7 +2,7 @@
   <div :ref="editformId" :id="editformId" class="uk-flex-top" uk-modal v-cloak>
     <div
       style="transition: none;"
-      class="uk-modal-dialog uk-transition-fade uk-margin-auto-vertical "
+      class="uk-modal-dialog uk-transition-fade uk-margin-auto-vertical"
     >
       <button class="uk-modal-close-default" type="button" uk-close></button>
       <!--<div class="uk-modal-header">
@@ -33,7 +33,7 @@
                         class="uk-input uk-form-small"
                         v-model="variable.name"
                         v-bind:class="{
-                          'uk-form-danger': $v.variable.name.$error
+                          'uk-form-danger': $v.variable.name.$error,
                         }"
                       />
                     </div>
@@ -49,7 +49,7 @@
                         class="uk-select uk-form-small uk-width-expand@m"
                         v-model="variable.type"
                         v-bind:class="{
-                          'uk-form-danger': $v.variable.type.$error
+                          'uk-form-danger': $v.variable.type.$error,
                         }"
                       >
                         <option
@@ -100,45 +100,45 @@
 import Vue from "vue";
 import UIkit from "uikit";
 import Vuelidate from "vuelidate";
-import {deepCopy} from "@/components/utils.js";
+import { deepCopy } from "@/components/utils.js";
 Vue.use(Vuelidate);
 
 import { required, minLength, alphaNum } from "vuelidate/lib/validators";
 
 export default {
   inject: ["$variableTypes", "$saveVariable"],
-  data: function() {
+  data: function () {
     return {
       show: false,
       editformId: Date.now(),
       editformFieldId: Date.now(),
       variable: {},
-      callback: function() {},
+      callback: function () {},
       acceptedVariablesTypes: {},
-      srcName: ""
+      srcName: "",
     };
   },
   components: {
-    validationTable: () => import("@/components/validationTable.vue")
+    validationTable: () => import("@/components/validationTable.vue"),
   },
-  validations: function() {
+  validations: function () {
     return {
       variable: {
         name: {
           required: required,
           alphaNum: alphaNum,
           minLength: minLength(3),
-          unique: value =>
+          unique: (value) =>
             this.$getVariableByName(value) &&
-            this.srcName.toLowerCase() === value.toLowerCase()
+            this.srcName.toLowerCase() === value.toLowerCase(),
         },
         type: {
-          required: required
-        }
-      }
+          required: required,
+        },
+      },
     };
   },
-  mounted: function() {
+  mounted: function () {
     // var el = $(this.$el).find('.variableSelector');
     // el.select2()
     //     .val(this.variable)
@@ -150,19 +150,19 @@ export default {
   },
 
   watch: {
-    variable: function() {
+    variable: function () {
       this.$v.$reset();
-    }
+    },
   },
   methods: {
-    variableType: function(name) {
+    variableType: function (name) {
       var vt = this.$variableTypes[name.toLowerCase()];
       return vt.text;
     },
-    changeValue: function(evt) {
+    changeValue: function (evt) {
       this.$emit("input", evt.srcElement.value);
     },
-    showModal: function(variable, acceptedTypes, callback) {
+    showModal: function (variable, acceptedTypes, callback) {
       this.editformFieldId = Date.now();
       if (!variable)
         variable = { name: "", validations: [{ type: "required" }] };
@@ -174,7 +174,7 @@ export default {
       for (const varid in this.$variableTypes) {
         if (
           !acceptedTypes ||
-          acceptedTypes.filter(n => n.toLowerCase() === varid.toLowerCase())
+          acceptedTypes.filter((n) => n.toLowerCase() === varid.toLowerCase())
             .length === 1
         ) {
           this.acceptedVariablesTypes[varid] = this.$variableTypes[varid].text;
@@ -185,15 +185,23 @@ export default {
 
       var modal = UIkit.modal(document.getElementById(this.editformId));
       var t = this;
-      UIkit.util.on(document.getElementById(this.editformId), "shown", function( a, b) {
-        if (b === modal) {
-          UIkit.tab(document.getElementById(t.editformId).getElementsByClassName("uk-tab")[0]).show(0);
+      UIkit.util.on(
+        document.getElementById(this.editformId),
+        "shown",
+        function (a, b) {
+          if (b === modal) {
+            UIkit.tab(
+              document
+                .getElementById(t.editformId)
+                .getElementsByClassName("uk-tab")[0]
+            ).show(0);
+          }
         }
-      });
+      );
       modal.show();
     },
 
-    applyEdit: function() {
+    applyEdit: function () {
       //this.$v.$touch();
       //if (!this.$v.$error) {
       UIkit.modal(document.getElementById(this.editformId)).hide();
@@ -203,7 +211,7 @@ export default {
         this.callback(obj);
       }
       //}
-    }
-  }
+    },
+  },
 };
 </script>
