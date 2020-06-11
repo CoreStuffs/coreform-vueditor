@@ -3,7 +3,7 @@
     <div>
       <QInput
         :label="schema.label"
-       
+       :placeholder="schema.placeholder"
         :hint="schema.placeholder"
         v-bind:class="{ 'uk-form-danger': $error }"
         :id="schema.id"
