@@ -5,7 +5,8 @@ var dataSources = [
     //common/mandatory part
     id: "countries",
     title: "Countries",
-    loadMode: "always",
+    queryable: true,
+    initialLoad: false,
     //custom part
     config: {
       type: "rest",
@@ -14,57 +15,56 @@ var dataSources = [
         "https://restcountries.eu/rest/v2/name/{{query}}?fields=name;flag;alpha3Code",
       getAllUrl:
         "https://restcountries.eu/rest/v2/all?fields=name;flag;alpha3Code",
-      transform: function(data) {
-          var r = {items:[]};
+      transform: function (data) {
+        var r = { items: [] };
         for (var i = 0; i < data.length; i++) {
           r.items.push({
             key: data[i].alpha3Code,
-            text: data[i].name
+            text: data[i].name,
           });
         }
         return r;
-      }
-    }
+      },
+    },
   },
   {
     //common/mandatory part
     id: "currencies",
     title: "Currencies",
-    loadMode: "once",
+    queryable: false,
     //custom part
     config: {
       type: "rest",
       method: "GET",
       getAllUrl: "https://openexchangerates.org/api/currencies.json",
-      transform: function(data) {
-        var results = [];
+      transform: function (data) {
+        var results = { items: [] };
         for (let [key, value] of Object.entries(data)) {
-          results.push({
+          results.items.push({
             id: key,
-            text: value
+            text: value,
           });
         }
         return results;
-      }
-    }
-  }
+      },
+    },
+  },
 ];
 
-
-
 const customDataAdapter = {
-  getDataSources: function(callback) {
+  getDataSources: function (callback) {
     var data = [];
     for (var i = 0; i < dataSources.length; i++) {
       data.push({
         id: dataSources[i].id,
         text: dataSources[i].title,
-        loadMode: dataSources[i].loadMode
+        queryable: dataSources[i].queryable,
+        initialLoad: dataSources[i].initialLoad,
       });
     }
     callback(data);
   },
-  getData: function(sourceId, onSuccess, query) {
+  getData: function (sourceId, onSuccess, query) {
     var dataSource;
     for (var i = 0; i < dataSources.length; i++) {
       if (dataSources[i].id === sourceId) {
@@ -77,30 +77,30 @@ const customDataAdapter = {
       if (dataSource.config.getAllUrl) url = dataSource.config.getAllUrl;
       if (dataSource.config.queryableUrl && query)
         url = dataSource.config.queryableUrl.replace(/{{query}}/gi, query);
-        console.log("url: " + url);
-        axios.get(url).then(response => {
-            console.log("Found " + typeof(response.data));
-            var data = response.data;
-            if (dataSource.config.transform) data = dataSource.config.transform(data);
-            onSuccess(data);
-        })
-    //   $.ajax({
-    //     url: url,
-    //     crossDomain: true,
-    //     type: dataSource.config.method,
-    //     //contentType: "application/json; charset=utf-8",
-    //     dataType: "json",
-    //     success: function(data) {
-    //       if (dataSource.config.transform)
-    //         data = dataSource.config.transform(data);
-    //       onSuccess(data);
-    //     }
-    //   });
-
+      console.log("url: " + url);
+      axios.get(url).then((response) => {
+        console.log("Found " + typeof response.data);
+        var data = response.data;
+        if (dataSource.config.transform)
+          data = dataSource.config.transform(data);
+        onSuccess(data);
+      });
+      //   $.ajax({
+      //     url: url,
+      //     crossDomain: true,
+      //     type: dataSource.config.method,
+      //     //contentType: "application/json; charset=utf-8",
+      //     dataType: "json",
+      //     success: function(data) {
+      //       if (dataSource.config.transform)
+      //         data = dataSource.config.transform(data);
+      //       onSuccess(data);
+      //     }
+      //   });
     }
   },
   // eslint-disable-next-line no-unused-vars
-  getDataItem: function(sourceId, itemId, onSuccess) {}
+  getDataItem: function (sourceId, itemId, onSuccess) {},
 };
 
-export {customDataAdapter} 
+export { customDataAdapter };

@@ -11,7 +11,7 @@
         class="uk-input uk-form-small"
          v-bind:class="{'uk-form-danger': $error}"
         :id="schema.id"
-        v-model="data"
+        v-model="value"
         @input="updateInput"
       />
     </div>
@@ -21,9 +21,6 @@
 import controlBase from "@/components/.infra/controlBase.vue";
 export default {
   extends:controlBase,
-  data: function() {
-    return {data : this.value??""};
-  },
   components: {
     formControl: () => import("@/components/.infra/formControl.vue")
   },
