@@ -1,101 +1,124 @@
 <template>
-  <div v-cloak class="uk-container uk-container-large">
-    <ul uk-tab data-uk-tab="{connect:'#cf-formBuilder'}">
-      <li class="uk-active"><a href="#">Properties</a></li>
-      <li><a href="#">Form designer</a></li>
-      <li><a href="#">Variables</a></li>
-      <li><a href="#">Debug</a></li>
-    </ul>
-    <ul id="cf-formBuilder" class="uk-switcher uk-margin">
-      <li>
-        Properties
-      </li>
-      <li>
-        <div uk-grid class="uk-grid-small">
-          <div class="uk-width-expand@m">
-            <div class="uk-form-stacked uk-card uk-card-default uk-card-body">
-              <controlset
-                :elements="schema.elements"
-                :editMode="true"
-              ></controlset>
-            </div>
-          </div>
-          <div class="uk-width-auto@m" style="min-width: 200px;">
-            <draggable
-              :list="formControlsList"
-              :group="{
-                name: 'cfShareGroupForDesignSurface',
-                pull: 'clone',
-                put: false,
-              }"
-              :fallbackOnBody="true"
-              :clone="createEmptyControl"
-              :sort="false"
-            >
-              <div
-                :key="ctrl.id"
-                v-for="ctrl in formControlsList"
-                :data="ctrl.id"
-              >
-                <div
-                  style="
-                    margin-bottom: 2px;
-                    background-color: #f0f0f0;
-                    padding: 2px;
-                    cursor: default;
-                  "
+  <div v-cloak class="cf q-pa-md q-page">
+    <div class="q-gutter-y-md doc-page">
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">CoreForm Editor</div>
+          <div class="text-subtitle2">by Jeff G.</div>
+        </q-card-section>        
+        <q-tabs
+          dense
+          v-model="tab"
+          class="text-grey"
+          active-color="primary"
+          indicator-color="primary"
+          align="justify"
+          narrow-indicator
+        >
+          <q-tab name="tabFormDesigner" label="Form designer" />
+          <q-tab name="tabVariables" label="Variables" />
+          <q-tab name="tabDebug" label="Debug" />
+        </q-tabs>
+        <q-separator />
+        <q-tab-panels v-model="tab" animated
+          swipeable
+          horizontal
+          transition-prev="jump-up"
+          transition-next="jump-up">
+          <q-tab-panel name="tabFormDesigner">
+            <div class="row">
+              <div class="col-12 col-md-10">
+                <q-form class="q-gutter-md">
+                  <controlset
+                    :elements="schema.elements"
+                    :editMode="true"
+                  ></controlset>
+                </q-form>
+              </div>
+              <div class="col-12 col-md-2">
+                <draggable
+                  :list="formControlsList"
+                  :group="{
+                    name: 'cfShareGroupForDesignSurface',
+                    pull: 'clone',
+                    put: false,
+                  }"
+                  :fallbackOnBody="true"
+                  :clone="createEmptyControl"
+                  :sort="false"
                 >
-                  <div>
-                    <span
-                      class="uk-margin-small-right uk-icon"
-                      uk-icon="user"
-                    ></span>
-                    {{ ctrl.label.default }}
+                  <div
+                    :key="ctrl.id"
+                    v-for="ctrl in formControlsList"
+                    :data="ctrl.id"
+                  >
+                    <div
+                      style="
+                        margin-bottom: 2px;
+                        background-color: #f0f0f0;
+                        padding: 2px;
+                        cursor: default;
+                      "
+                    >
+                      <div>
+                        <span
+                          class="uk-margin-small-right uk-icon"
+                          uk-icon="user"
+                        ></span>
+                        {{ ctrl.label.default }}
+                      </div>
+                    </div>
                   </div>
+                </draggable>
+              </div>
+            </div>
+          </q-tab-panel>
+          <q-tab-panel name="tabVariables">
+            <variablesTable :variables="schema.variables"></variablesTable>
+          </q-tab-panel>
+          <q-tab-panel name="tabDebug">
+            <div uk-grid class="uk-grid-small">
+              <div class="uk-width-1-2@m">
+                Schema
+                <div>
+                  <pre><code style="font-size:12px">{{ schema }}</code></pre>
                 </div>
               </div>
-            </draggable>
-          </div>
-        </div>
-      </li>
-      <li>
-        <variablesTable :variables="schema.variables"></variablesTable>
-      </li>
-      <li>
-        <div uk-grid class="uk-grid-small">
-          <div class="uk-width-1-2@m">
-            Schema
-            <div>
-              <pre><code style="font-size:12px">{{ schema }}</code></pre>
+              <div class="uk-width-1-2@m">
+                Data
+                <div>
+                  <pre><code style="font-size:12px">{{ data }}</code></pre>
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="uk-width-1-2@m">
-            Data
-            <div>
-              <pre><code style="font-size:12px">{{ data }}</code></pre>
-            </div>
-          </div>
-        </div>
-      </li>
-    </ul>
-    <variablePropertiesModal
-      ref="variablePropertiesModal"
-      :variableTypes="staticData.variableTypes"
-    />
-    <controlPropertiesModal ref="controlPropertiesModal" />
-    <button
-      class="uk-button uk-button-default"
-      @click="openControlProperties()"
-    >
-      Open
-    </button>
+          </q-tab-panel>
+        </q-tab-panels>
+      </q-card>
+      <variablePropertiesModal
+        ref="variablePropertiesModal"
+        :variableTypes="staticData.variableTypes"
+      />
+      <controlPropertiesModal ref="controlPropertiesModal" />
+      <q-btn @click="openControlProperties()">
+        Open
+      </q-btn>
+    </div>
   </div>
 </template>
 
 <script>
-import UIkit from "uikit";
-import Icons from "uikit/dist/js/uikit-icons";
-UIkit.use(Icons);
+import Vue from "vue";
+import "quasar/dist/quasar.ie.polyfills";
+import { Quasar } from "quasar";
+Vue.use(Quasar);
+
+import "@quasar/extras/roboto-font/roboto-font.css";
+import "@quasar/extras/material-icons-outlined/material-icons-outlined.css";
+import "@quasar/extras/material-icons-round/material-icons-round.css";
+import "@quasar/extras/material-icons-sharp/material-icons-sharp.css";
+// import "@quasar/extras/fontawesome-v5/fontawesome-v5.css";
+// import "@quasar/extras/ionicons-v4/ionicons-v4.css";
+
 import { deepCopy } from "@/components/utils.js";
 
 import { validationMixin } from "vuelidate";
@@ -117,6 +140,7 @@ export default {
   props: ["value", "formControls", "externalDataAdapter"],
   data: function () {
     return {
+      tab: "tabFormDesigner",
       data: {},
       controls: {},
       schema: { elements: [], variables: [] },
@@ -373,12 +397,28 @@ export default {
 </script>
 
 <style>
-.uk-form-stacked .uk-form-label {
-  margin-bottom: 2px;
+
+:root {
+  --q-color-primary: #1976d2;
+  --q-color-secondary: #26a69a;
+  --q-color-accent: #9c27b0;
+  --q-color-positive: #21ba45;
+  --q-color-negative: #c10015;
+  --q-color-info: #31ccec;
+  --q-color-warning: #f2c037;
+  --q-color-dark: #1d1d1d;
 }
-.uk-form-horizontal .uk-form-controls {
-  padding-top: 7px;
+
+.cf {
+  font-family: Roboto, -apple-system, Helvetica Neue, Helvetica, Arial,
+    sans-serif;
 }
+
+.q-panel > div {
+width:initial !important;
+}
+
+
 .error-message {
   color: #f0506e;
   font-size: 8pt;
@@ -396,4 +436,7 @@ export default {
   top: -0.5em;
   font-size: 70%;
 }
+</style>
+<style lang="sass">
+@import "../styles/quasar.sass"
 </style>
