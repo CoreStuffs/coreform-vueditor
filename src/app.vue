@@ -59,6 +59,12 @@ var schema = {
       width: 12,
     },
     {
+      "label": "Date de naissance",
+      "placeholder": "",
+      "variable": "Birthday",
+      "type": "dateTimeField"
+    },
+    {
       showSeparator: true,
       columns: [
         {
@@ -157,6 +163,9 @@ export default {
       dataAdapter: require("./datasources.js").customDataAdapter,
       schema: schema,
     };
+  },
+  mounted:function(){
+    document.title = "Demo CoreForm Components";
   },
   components: c(),
   computed: {
