@@ -149,6 +149,10 @@ export default {
           label: { default: "List" },
           path: "selectField",
         },
+        dateTimeField: {
+          label: { default: "Date/Time field" },
+          path: "dateTimeField",
+        },
       },
       dataAdapter: require("./datasources.js").customDataAdapter,
       schema: schema,
