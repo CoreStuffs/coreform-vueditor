@@ -1,14 +1,13 @@
 module.exports = {
-  css: { sourceMap: true },
-
-  configureWebpack: (config) => {
+  css: {sourceMap: true}, 
+  configureWebpack: config => {
     // Thanks to the following,  webpack-debug:/// files in debug are organized by folder
     //
     if (process.env.NODE_ENV === "development") {
       config.devtool = "eval-source-map";
       config.output.devtoolFallbackModuleFilenameTemplate =
         "webpack:///[resource-path]?[hash]";
-      config.output.devtoolModuleFilenameTemplate = (info) => {
+      config.output.devtoolModuleFilenameTemplate = info => {
         const isVue = info.resourcePath.match(/\.vue$/);
         const isScript = info.query.match(/type=script/);
         const hasModuleId = info.moduleId !== "";
@@ -31,14 +30,5 @@ module.exports = {
         return `webpack-vue:///${info.resourcePath}`;
       };
     }
-  },
-
-  pluginOptions: {
-    quasar: {
-      importStrategy: "kebab",
-      rtlSupport: false,
-    },
-  },
-
-  transpileDependencies: ["quasar"],
+  }
 };
