@@ -3,7 +3,7 @@
     >
     <div
       style="transition: none;"
-      class="uk-modal-dialog uk-transition-fade uk-margin-auto-vertical "
+      class="uk-modal-dialog uk-transition-fade uk-margin-auto-vertical"
     >
       <button class="uk-modal-close-default" type="button" uk-close></button>
       <div class="uk-modal-body uk-form-stacked" id="editFormBody">
@@ -36,7 +36,7 @@
                     href="#"
                     @click="addVariable()"
                     class="uk-width-auto@m"
-                    style="margin-left:5px;margin-top:5px"
+                    style="margin-left: 5px; margin-top: 5px;"
                     uk-icon="icon: plus-circle"
                   ></a>
                 </div>
@@ -56,10 +56,17 @@
         </div>
       </div>
       <div class="uk-modal-footer uk-text-right">
-        <button class="uk-button uk-button-default uk-modal-close" type="button">
+        <button
+          class="uk-button uk-button-default uk-modal-close"
+          type="button"
+        >
           Cancel
         </button>
-        <button class="uk-button uk-button-primary" type="button" @click="applyEdit()">
+        <button
+          class="uk-button uk-button-primary"
+          type="button"
+          @click="applyEdit()"
+        >
           Apply
         </button>
       </div>
@@ -71,8 +78,7 @@ import Vue from "vue";
 import UIkit from "uikit";
 import Vuelidate from "vuelidate";
 Vue.use(Vuelidate);
-import {deepCopy} from "@/components/utils.js";
-
+import { deepCopy } from "@/components/utils.js";
 
 import { required, minLength, alphaNum } from "vuelidate/lib/validators";
 export default {
@@ -81,7 +87,7 @@ export default {
     "$getVariablesByType",
     "$variableTypes",
     "$controls",
-    "$openVariableProperties"
+    "$openVariableProperties",
   ],
   //   created:function(){
   //         this.$controls.forEach(control=>{
@@ -89,11 +95,11 @@ export default {
   //         })
   //   },
   methods: {
-    variableType: function(name) {
+    variableType: function (name) {
       var v = this.$variableTypes[name];
       return v.text;
     },
-    showModal: function(control, callback) {
+    showModal: function (control, callback) {
       this.editformFieldId = Date.now();
       this.callback = callback;
       var ctrl = this.$getControlByTag(control.type);
@@ -111,14 +117,16 @@ export default {
       this.control = deepCopy(control);
       this.$forceUpdate();
     },
-    addVariable:function(){
-        var t = this;
-        this.$openVariableProperties(null, this.acceptedVariableTypes , function(vari){
-            t.control.variable = vari.name;
-            UIkit.modal(document.getElementById(t.editformId)).show();
-        });
+    addVariable: function () {
+      var t = this;
+      this.$openVariableProperties(null, this.acceptedVariableTypes, function (
+        vari
+      ) {
+        t.control.variable = vari.name;
+        UIkit.modal(document.getElementById(t.editformId)).show();
+      });
     },
-    applyEdit: function() {
+    applyEdit: function () {
       this.$v.$touch();
       if (!this.$v.$error) {
         UIkit.modal(document.getElementById(this.editformId)).hide();
@@ -127,55 +135,55 @@ export default {
           this.callback(obj);
         }
       }
-    }
+    },
   },
-  provide: function() {
+  provide: function () {
     var t = this;
     return {
-      $getValidation: function() {
+      $getValidation: function () {
         return t.$v.control;
-      }
+      },
     };
   },
   computed: {
-    acceptedVariables: function() {
+    acceptedVariables: function () {
       var l = this.$getControlByTag(this.control.type).acceptedVariableTypes;
       var arr = [];
-      l.forEach(avt => {
+      l.forEach((avt) => {
         var vars = this.$getVariablesByType(avt);
-        vars.forEach(v => {
+        vars.forEach((v) => {
           arr.push(v);
         });
       });
       return arr;
     },
-    acceptedVariableTypes: function() {
+    acceptedVariableTypes: function () {
       var l = this.$getControlByTag(this.control.type).acceptedVariableTypes;
       return l;
-    }
+    },
   },
-  data: function() {
+  data: function () {
     return {
       editformId: Date.now(),
       editformFieldId: Date.now(),
       show: false,
       isDataField: false,
-      callback: function() {},
+      callback: function () {},
       control: {},
-      controlValidations: { control: {} }
+      controlValidations: { control: {} },
     };
   },
-  validations: function() {
+  validations: function () {
     var obj = this.controlValidations;
     if (this.isDataField) {
       obj.control.variable = {
         required: required,
         alphaNum: alphaNum,
-        minLength: minLength(3)
+        minLength: minLength(3),
       };
     }
 
     return obj;
-  }
+  },
 };
 </script>

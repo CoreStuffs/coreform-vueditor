@@ -18,7 +18,7 @@
 </template>
 <script>
 export default {
-  data: function() {
+  data: function () {
     return {};
   },
   computed: {
@@ -28,7 +28,7 @@ export default {
           this.variable &&
           this.variable.validations &&
           this.variable.validations.filter(
-            o => o.type.toLowerCase() === "required"
+            (o) => o.type.toLowerCase() === "required"
           ).length === 1
         );
       },
@@ -37,28 +37,28 @@ export default {
           this.variable.validations.push({ type: "required" });
         } else {
           this.variable.validations = this.variable.validations.filter(
-            o => o.type.toLowerCase() !== "required"
+            (o) => o.type.toLowerCase() !== "required"
           );
         }
         this.$emit("input", this.variable);
-      }
-    }
+      },
+    },
   },
-  validation: function() {
+  validation: function () {
     return {};
   },
   methods: {
-    changeRequired: function(e) {
+    changeRequired: function (e) {
       if (e.srcElement.checked) {
         this.variable.validations.push({ type: "required" });
       } else {
         this.variable.validations = this.variable.validations.filter(
-          o => o.type.toLowerCase() !== "required"
+          (o) => o.type.toLowerCase() !== "required"
         );
       }
       this.$emit("input", this.variable);
-    }
+    },
   },
-  props: ["variable"]
+  props: ["variable"],
 };
 </script>

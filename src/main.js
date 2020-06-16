@@ -1,12 +1,11 @@
-﻿
-import Vue from 'vue';
-import App from './app.vue';
+﻿import Vue from "vue";
+import App from "./app.vue";
+import "./quasar";
 
-
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 new Vue({
-    el: '#app',
-    render: h => h(App),
-    components: { App }
+  el: "#app",
+  render: (h) => h(App),
+  components: { App },
 });

@@ -3,66 +3,66 @@ import {
   minLength,
   maxLength,
   number,
-  email
+  email,
 } from "vuelidate/lib/validators";
 
 export default {
   formValidators: {
     required: {
-      build: function() {
+      build: function () {
         return required;
-      }
+      },
     },
     minLength: {
-      build: function(data) {
+      build: function (data) {
         return minLength(data.minLength);
-      }
+      },
     },
     maxLength: {
-      build: function(data) {
+      build: function (data) {
         return maxLength(data.maxLength);
-      }
+      },
     },
     number: {
-      build: function() {
+      build: function () {
         return number;
-      }
+      },
     },
     email: {
-      build: function() {
+      build: function () {
         return email;
-      }
-    }
+      },
+    },
   },
   variableTypes: {
     text: {
       text: "String or Text",
-      optionalValidations: ["required", "minLength", "maxLength", "email"]
+      optionalValidations: ["required", "minLength", "maxLength", "email"],
     },
     number: {
       text: "Numeric value",
       implicitValidations: ["number"],
-      optionalValidations: ["required"]
+      optionalValidations: ["required"],
     },
     richtext: {
       text: "Rich content",
-      optionalValidations: ["required"]
+      optionalValidations: ["required"],
     },
     datetime: {
       text: "Date and time",
-      optionalValidations: ["required"]
+      optionalValidations: ["required"],
     },
     datetimerange: {
       text: "Date and time range",
-      optionalValidations: ["required"]
+      optionalValidations: ["required"],
     },
     listitemarray: {
       text: "Multiple selection items",
-      optionalValidations: ["required"]
+      optionalValidations: ["required"],
     },
     listitem: {
       text: "Selection item",
-      optionalValidations: ["required"]
-    }
-  }
+      optionalValidations: ["required"],
+    },
+  },
 };
