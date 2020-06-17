@@ -19,6 +19,7 @@
     "vue-quill-editor": "^3.0.6",
     "vue-router": "^3.3.2",
     "vue-select": "^3.10.3",
+    "vue2-datepicker": "^3.6.0",
     "vuedraggable": "^2.23.2",
     "vuelidate": "^0.7.5",
     "vuetify": "^2.2.34",

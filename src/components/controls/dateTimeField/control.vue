@@ -4,66 +4,67 @@
       >{{ schema.label }}
       <div class="required-tag" v-if="$isrequired"
     /></label>
-    <div class="uk-form-controls">
-      <input
+      <DatePicker
         :ref="schema.id"
-        :placeholder="placeholder"
-        class="uk-input uk-form-small"
+        :placeholder="schema.placeholder"
         v-bind:class="{'uk-form-danger': $error}"
         :id="schema.id"
-        :value="input"
+        v-model="data"
+        :lang="lang"
+        type="datetime"
         @input="updateInput"
-        @blur="blur"
       />
-    </div>
+
+
   </formControl>
 </template>
 <script>
+/* https://github.com/mengxiong10/vue2-datepicker */
 import controlBase from "@/components/.infra/controlBase.vue";
-import moment from 'moment';
-import 'moment/locale/fr';
-moment.locale("fr");
-moment.defaultFormat = "L LT";//"D/M/YYYY HH:mm";
+import DatePicker from 'vue2-datepicker';
+import 'vue2-datepicker/index.css';
+
+import 'vue2-datepicker/locale/fr';
+import 'vue2-datepicker/locale/ru';
 export default {
   extends:controlBase,
- 
+ data:function(){
+   return {
+     lang:'en',
+     data:this.value
+    };
+ },
   components: {
     formControl: () => import("@/components/.infra/formControl.vue"),
-  },
-  computed: {
-    input: function() {
-      
-      if(this.value){
-        var dt = moment(this.value, moment.defaultFormatUtctrue, true);
-        if(dt.isValid()) return dt.format();
-      } 
-      return this.value;
-    },
-    placeholder:function(){
-      return "Format: " + moment("2020-12-31 22:53").format();
-    }
+    DatePicker
   },
   methods: {
     updateInput: function() {
-  var str = this.$el.getElementsByTagName("input")[0].value;
-      var d = moment(str, moment.defaultFormat, true);
-      var iv=d.isValid();
-      if(iv){
-        str = d.utc().format(moment.defaultFormatUtc);
-      }
-      this.$emit("input", str);
-
-    },
-    blur:function(){
-    
+      this.$emit("input", this.data);
       if(this.$validation) this.$validation.$touch();
     }
   },
-  props: {
-    value: {
-      type: String,
-      required: false
-    }
-  }
+  props: ["value"]
 };
 </script>
+<style>
+.mx-datepicker {
+  
+}
+.mx-input {
+  border-radius:0px !important;
+  box-shadow:inherit;
+  height:30px;
+  border:1px solid #e5e5e5;
+  font:inherit !important;
+  font-size:0.875rem !important;
+}
+
+.mx-table-date .today{
+  font-weight: 700;
+}
+
+td.today{
+  background-color: #f0f0f0
+}
+</style>
