@@ -35,7 +35,7 @@
               <div
                 :key="ctrl.id"
                 v-for="ctrl in formControlsList"
-                :data="ctrl.id"
+                :data="JSON.stringify({id:ctrl.id, isNew:true})"
               >
                 <div
                   style="
@@ -166,7 +166,6 @@ export default {
       o.id = function () {
         return id;
       };
-      globalId++;
     });
 
     var t = this;
@@ -223,9 +222,9 @@ export default {
       obj.id = function () {
         return id;
       };
-      globalId++;
       if (c.isDataField) obj["variable"] = "";
       obj.type = type.id;
+      obj.isNew = true;
       return obj;
     },
     openControlProperties: function (control, callback) {

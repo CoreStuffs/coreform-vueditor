@@ -1,12 +1,15 @@
 <template>
-  <draggable :list="elements" group="cfShareGroupForDesignSurface" @add="onAdd" >
+  <draggable :list="elements" group="cfShareGroupForDesignSurface" @add="onAdd" @end="onEnd">
         <component v-for="el in elements"
                     :key="el.id()"
                     :is="el.type"
                     :schema="el"
                     :editMode="editMode"
                     handle=".moveHandle"
-                    v-model="$formData[el.variable]">
+                    v-model="$formData[el.variable]"
+                    :data="JSON.stringify({id:el.id, isNew:false})"
+                   
+                    >
         </component>
   </draggable>
 </template>
@@ -29,27 +32,40 @@ export default {
       if(!variable) return null;
       return this.$formData[variable];
     },
+    onEnd:function(a){
+
+    },
     onAdd:function(a){
           //Trick: We try to find an element with isNew (a new one). For whatever reason, it can be at newindex or oldindex (investigation required).
           //If, after all, it has no isNew... it is not a new one
           if(a.pullMode === "clone"){
+            var type;
+            if(a.item.attributes && a.item.attributes.data){
+              var d =JSON.parse(a.item.attributes.data.value);
+              if(!d.isNew) return;
+              type = d.id;
+            } else return;
             var t = this;
-            var index= a.oldIndex;
-            var obj = this.elements[a.oldIndex];
-            if(!obj || !obj.isNew) { 
-              obj=this.elements[a.newIndex];
-              index= a.newIndex;
-            }
-            this.elements.splice(index,1);
+            var obj;
+            for (var i = 0; i < this.elements.length; i++) {
+              var element = this.elements[i];
+              if(element && element.isNew){
+                  delete element.isNew;
+                  obj = element;
+                  this.elements.splice(i,1);
+                  break;
+                }
+              }
+            var index = a.newIndex;
             this.$openControlSettingsByObject(obj, (o)=>{
               if(t.elements.length>0){
-                t.elements.splice(a.newIndex, 0, o);
+                t.elements.splice(index, 0, o);
               }else{
                 t.elements.push(o);
               }
               this.$forceUpdate();
             });
-          }
+           };
       }
     }
 };
