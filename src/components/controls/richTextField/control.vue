@@ -5,7 +5,8 @@
       <div class="required-tag" v-if="$isrequired"
     /></label>
     <div class="uk-form-controls">
-    <VueEditor ref="editor" v-model="data" :placeholder="schema.placeholder" @text-change="textChange"></VueEditor>
+    <VueEditor ref="editor" v-model="data" :placeholder="schema.placeholder"
+     @text-change="textChange" @selection-change="selectionChange"></VueEditor>
     </div>
   </formControl>
 </template>
@@ -20,7 +21,7 @@ export default {
   },
  
   data:function(){
-    return {data: this.value ?? ""};
+    return {data: this.value};
   },
   computed: {
     inputType: function() {
@@ -28,16 +29,72 @@ export default {
     }
   },
   methods: {
-    updateInput: function() {
-      this.$emit("input", this.$el.getElementsByTagName("input")[0].value);
-      if(this.$validation) this.$validation.$touch();
-    },
-    textChange:function(delta, oldDelta, source){
+    textChange:function(){
         var quill = this.$refs.editor.quill;
         var c = quill.getContents();
         this.$emit('input', c);
+    },
+    selectionChange:function(range, oldRange){
+      if (range === null && oldRange !== null) {
+          this.$refs.editor.quill.container.parentElement.classList.remove("ql-focus");
+      } else if (range !== null && oldRange === null) {
+          this.$refs.editor.quill.container.parentElement.classList.add("ql-focus");
+      }
     }
   },
+  watch: {
+            value: function (newValue) {
+                // update value
+                if (JSON.stringify(newValue.ops) !== JSON.stringify(this.$refs.editor.quill.getContents().ops)) {
+                    this.$refs.editor.quill.setContents(newValue, "silent");
+                }
+            }
+        },
   props: ["value"]
 };
 </script>
+<style>
+.quillWrapper .ql-snow.ql-toolbar{
+  padding-top:0px !important;
+  padding-bottom:0px !important;
+  font-family: inherit !important;
+}
+.quillWrapper .ql-snow.ql-toolbar .ql-formats{
+  margin-bottom: 5px !important;
+}
+
+.ql-editor{
+  padding:6px 8px !important;
+  min-height: 100px;
+  font-size:14px !important;
+  font-family: apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
+}
+.quillWrapper .ql-picker-label{
+  font-size: 14px !important;
+}
+
+
+.ql-toolbar.ql-snow {
+    padding: 2px;
+    border-width: 0px !important;
+    border-bottom-width: 1px !important;
+    border-color:#e5e5e5 !important;
+    transition: 0.2s ease-in-out;
+    transition-property: color, background-color, border;
+}
+
+    .ql-toolbar.ql-snow + .ql-container.ql-snow,
+    .ql-container.ql-snow {
+        border: 0px;
+        border-color:inherit !important;
+    }
+.quillWrapper {
+  border-style: solid;
+  border-width: 1px;;
+    border-color:#e5e5e5 !important;
+}
+
+.ql-focus {
+      border-color:#1e87f0 !important
+}
+</style>

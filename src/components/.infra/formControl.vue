@@ -65,6 +65,7 @@ export default {
     border: 1px solid transparent;
 }
 
+
 .coreform_toolbar {
     z-index: 999;
     position: absolute;

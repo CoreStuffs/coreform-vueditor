@@ -1,11 +1,17 @@
 <template>
-  <draggable :list="elements" group="cfShareGroupForDesignSurface" @add="onAdd" @end="onEnd">
+  <draggable 
+  :list="elements" 
+  group="cfShareGroupForDesignSurface"
+   @add="onAdd"
+    @end="onEnd"
+     handle=".moveHandle"
+     ghost-class="ghost">
         <component v-for="el in elements"
                     :key="el.id()"
                     :is="el.type"
                     :schema="el"
                     :editMode="editMode"
-                    handle=".moveHandle"
+                    
                     v-model="$formData[el.variable]"
                     :data="JSON.stringify({id:el.id, isNew:false})"
                    
@@ -64,6 +70,12 @@ export default {
     }
 };
 </script>
+<style scoped>
+.ghost {
+  opacity: 0.5;
+  background: #c8ebfb;
+}
 
+</style>
 
 
