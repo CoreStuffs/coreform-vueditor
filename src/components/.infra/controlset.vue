@@ -39,12 +39,6 @@ export default {
           //Trick: We try to find an element with isNew (a new one). For whatever reason, it can be at newindex or oldindex (investigation required).
           //If, after all, it has no isNew... it is not a new one
           if(a.pullMode === "clone"){
-            var type;
-            if(a.item.attributes && a.item.attributes.data){
-              var d =JSON.parse(a.item.attributes.data.value);
-              if(!d.isNew) return;
-              type = d.id;
-            } else return;
             var t = this;
             var obj;
             for (var i = 0; i < this.elements.length; i++) {

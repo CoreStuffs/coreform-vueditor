@@ -6,6 +6,21 @@ import {
   email,
 } from "vuelidate/lib/validators";
 
+import moment from "moment";
+import "moment/locale/fr";
+
+moment.locale("fr");
+moment.defaultFormat = "L LT"; //"D/M/YYYY HH:mm";
+
+function isValidDate(value){
+  console.log(value + " is valid?");
+  var m = moment(value, moment.defaultFormatUtc, true);
+  return m.isValid();
+}
+
+const dateTimeValidator = (value) => isValidDate(value);
+
+
 export default {
   formValidators: {
     required: {
@@ -33,6 +48,11 @@ export default {
         return email;
       },
     },
+    dateTime: {
+      build: function () {
+        return dateTimeValidator;
+      },
+    },
   },
   variableTypes: {
     text: {
@@ -50,6 +70,7 @@ export default {
     },
     datetime: {
       text: "Date and time",
+      implicitValidations: ["dateTime"],
       optionalValidations: ["required"],
     },
     datetimerange: {

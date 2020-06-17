@@ -35,7 +35,6 @@
               <div
                 :key="ctrl.id"
                 v-for="ctrl in formControlsList"
-                :data="JSON.stringify({id:ctrl.id, isNew:true})"
               >
                 <div
                   style="
@@ -251,6 +250,10 @@ export default {
     },
     saveVariable: function (obj, srcName) {
       var t = this;
+      var type = this.staticData.variableTypes[obj.type];
+      type.implicitValidations.forEach(valid => {
+        obj.validations.push({ type: valid});
+      });
       var variable = this.getVariableByName(srcName ?? obj.name);
       if (variable) {
         Object.assign(variable, obj);

@@ -15,10 +15,12 @@ export default {
         }
     },
     computed:{
-        $validation: function(){
+        $validation: {cache: false,
+            get: function (){
             var v = this.schema.variable;
             var val = this.$getControlValidator(v);
             return val;
+        }
         },
         $errorMessage : function () {
             if (this.$validation && this.$validation.$error && this.schema.variable) {

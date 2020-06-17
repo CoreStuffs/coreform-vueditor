@@ -32,7 +32,12 @@ export default {
   },
   computed: {
     input: function() {
-      return this.value ? moment(this.value).format() : "";
+      
+      if(this.value){
+        var dt = moment(this.value, moment.defaultFormatUtctrue, true);
+        if(dt.isValid()) return dt.format();
+      } 
+      return this.value;
     },
     placeholder:function(){
       return "Format: " + moment("2020-12-31 22:53").format();
@@ -40,14 +45,17 @@ export default {
   },
   methods: {
     updateInput: function() {
-      var d = moment(this.$el.getElementsByTagName("input")[0].value, moment.defaultFormat, true);
+  var str = this.$el.getElementsByTagName("input")[0].value;
+      var d = moment(str, moment.defaultFormat, true);
       var iv=d.isValid();
       if(iv){
-        var v = d.utc().format(moment.defaultFormatUtc);
-        this.$emit("input", v);
+        str = d.utc().format(moment.defaultFormatUtc);
       }
+      this.$emit("input", str);
+
     },
     blur:function(){
+    
       if(this.$validation) this.$validation.$touch();
     }
   },
