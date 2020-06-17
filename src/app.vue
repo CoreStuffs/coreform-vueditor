@@ -159,6 +159,10 @@ export default {
           label: { default: "Date/Time field" },
           path: "dateTimeField",
         },
+        richTextField: {
+          label: { default: "Richtext field" },
+          path: "richTextField",
+        },
       },
       dataAdapter: require("./datasources.js").customDataAdapter,
       schema: schema,
