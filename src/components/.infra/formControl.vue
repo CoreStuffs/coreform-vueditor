@@ -1,11 +1,15 @@
 <template>
-    <div :data-ref="id" :type="type" class="cf_validationError uk-margin-small-bottom cf_field" v-on:mouseleave="hideToolbar" v-on:mouseover="showToolbar">
+    <div :data-ref="id" v-bind:class="'uk-width-'+ width" :type="type" class="cf_validationError uk-margin-small-bottom cf_field" v-on:mouseleave="hideToolbar" v-on:mouseover="showToolbar">
         <div ref="toolbar" class="coreform_toolbar" style="display:none">
-            <label class="uk-text-normal">{{controlType}}</label>
+            <div>
+                <label class="uk-text-normal">{{controlType}}</label>
             <label class="uk-text-normal" v-if="variableText">Data: {{variableText}}</label>
+            </div>
+            <div>
             <toolButton icon="move" cssclass="uk-drag moveHandle"/>
             <toolButton icon="settings" :onclick="openSettings"/>
             <toolButton icon="trash" cssclass="deleteHandle" :onclick="removeNode"/>
+            </div>
         </div>
         <slot></slot>
     </div>
@@ -56,13 +60,25 @@ export default {
             this.$removeControlById(this.id());
         }
     },
-    props: ["schema", "validation"]
+    props: { 
+        schema: {
+            type: Object,
+            required: true
+        },  validation: {
+            type: Object,
+            required: true
+        }, 
+        width: {
+            type:String,
+            default:"1-1"
+        }}
 }
 </script>
 <style scoped>
 .cf_field{
     position: relative;
     border: 1px solid transparent;
+    padding-right:15px
 }
 
 
@@ -70,11 +86,11 @@ export default {
     z-index: 999;
     position: absolute;
     right: 0px;
-    top: 0.5em;
+    top: -1em;
 
 }
 
-    .coreform_toolbar > label {
+    .coreform_toolbar  label {
         background-color: #fcfcfc;      
         margin-right: 7px;
         position:relative;

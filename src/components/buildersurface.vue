@@ -28,6 +28,7 @@
                 pull: 'clone',
                 put: false,
               }"
+              ghost-class="ghost"
               :fallbackOnBody="true"
               :clone="createEmptyControl"
               :sort="false"
@@ -376,6 +377,11 @@ export default {
 </script>
 
 <style>
+.ghost {
+  opacity: 0.5;
+  background: #c8ebfb;
+}
+
 .uk-form-stacked .uk-form-label {
   margin-bottom: 2px;
 }

@@ -1,5 +1,5 @@
 <template>
-  <formControl :schema="schema">
+  <formControl :schema="schema" :width="width">
     <label :for="schema.id" class="uk-form-label"
       >{{ schema.label }}
       <div class="required-tag" v-if="$isrequired"
@@ -44,12 +44,15 @@ export default {
       if(this.$validation) this.$validation.$touch();
     }
   },
-  props: ["value"]
+  props: {value:{}, width: {
+            type:String,
+            default:"1-4"
+        }}
 };
 </script>
 <style>
 .mx-datepicker {
-  
+  width:100% !important
 }
 .mx-input {
   border-radius:0px !important;
@@ -58,6 +61,7 @@ export default {
   border:1px solid #e5e5e5;
   font:inherit !important;
   font-size:0.875rem !important;
+  width:100%
 }
 
 .mx-table-date .today{

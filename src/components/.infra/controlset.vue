@@ -5,7 +5,8 @@
    @add="onAdd"
     @end="onEnd"
      handle=".moveHandle"
-     ghost-class="ghost">
+     ghost-class="ghost"
+      :component-data="getComponentData()">
         <component v-for="el in elements"
                     :key="el.id()"
                     :is="el.type"
@@ -34,6 +35,14 @@ export default {
       };
   },
   methods:{
+    getComponentData() {
+      return {
+        // attrs:{
+        //   'uk-grid': true,
+        //   'class': "uk-grid-collapse"
+        // },
+      }
+    },
     getData:function(variable){
       if(!variable) return null;
       return this.$formData[variable];
@@ -74,6 +83,8 @@ export default {
 .ghost {
   opacity: 0.5;
   background: #c8ebfb;
+  min-height:50px;
+  width: 100%;
 }
 
 </style>

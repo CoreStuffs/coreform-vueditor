@@ -16,7 +16,7 @@
         v-for="col in schema.columns"
         :key="schema.columns.indexOf(col)"
         :editMode="editMode"
-        v-bind:class="['uk-width-' + col.width + '@m']"
+        v-bind:class="[' uk-grid-collapse uk-width-' + col.width + '@m']"
       ></controlset>
     </draggable>
   </formControl>
@@ -51,6 +51,7 @@ export default {
       return {
         attrs: {
           "uk-grid": "true",
+          "class":"uk-width-1-1 uk-grid-collapse"
         },
       };
     },
@@ -59,15 +60,13 @@ export default {
 </script>
 <style scoped>
 .uk-grid {
-  padding-top: 20px;
-  padding-bottom: 15px;
   padding-left: 15px;
 }
 .uk-grid-column-medium > *,
 .uk-grid-medium > *,
 .uk-grid-collapse > * {
   padding-left: 15px;
-  padding-right: 15px;
+  padding-right: 0px;
 }
 
 .grid_edit {
@@ -85,9 +84,6 @@ export default {
   padding-right: 0px;
 }
 
-.uk-first-column {
-  padding-left: 0px;
-}
 
 .uk-grid-divider,
 .uk-grid-medium {
@@ -102,4 +98,17 @@ export default {
   left: 0px;
   border-left: 1px solid #e5e5e5;
 }
+
+.uk-grid + .uk-grid, .uk-grid > .uk-grid-margin, * + .uk-grid-margin {
+  margin-top:0px !important
+}
+
+
+.uk-first-column {
+    padding-left: 0px !important;
+    margin-left: 0px !important;
+    padding-left: 0px !important;
+}
+
+
 </style>

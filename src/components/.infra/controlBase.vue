@@ -12,6 +12,10 @@ export default {
         schema: {
             type: Object,
             required: true
+        },
+        width: {
+            type:String,
+            default:"1-1"
         }
     },
     computed:{
