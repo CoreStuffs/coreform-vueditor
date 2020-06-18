@@ -58,11 +58,20 @@ export default {
   border-radius:0px !important;
   box-shadow:inherit;
   height:30px;
-  border:1px solid #e5e5e5;
+  border:1px solid #a0a0a0;
   font:inherit !important;
   font-size:0.875rem !important;
   width:100%
 }
+
+.mx-input:hover{
+  border-color:#a0a0a0 !important
+}
+
+.mx-input:focus{
+  border-color:#409aff !important
+}
+
 
 .mx-table-date .today{
   font-weight: 700;

@@ -1,6 +1,6 @@
 <template>
-    <div :data-ref="id" v-bind:class="'uk-width-'+ preferredWidth" :type="type" class="cf_validationError uk-margin-small-bottom cf_field" v-on:mouseleave="hideToolbar" v-on:mouseover="showToolbar">
-        <div ref="toolbar" class="coreform_toolbar" style="display:none">
+    <div :data-ref="id" ref="container" v-bind:class="'uk-width-'+ preferredWidth" :type="type" class="uk-inline cf_validationError uk-margin-small-bottom cf_field" v-on:mouseleave="hideToolbar" v-on:mouseover="showToolbar">
+        <div ref="toolbar" class="coreform_toolbar uk-position-top-right" style="display:none"  :style="cssStyle">
                 <toolButton icon="move" cssclass="uk-drag moveHandle" :onclick="()=>{}"/>
                 <div class="uk-inline" style="top:-2px">
                     <toolButton icon="info" cssclass="uk-drag moveHandle" :onclick="()=>{}"/>
@@ -49,18 +49,20 @@ export default {
     methods: {
         hideToolbar: function(evt){
             this.$root.$el.getElementsByClassName("coreform_toolbar").forEach(el => el.style.display = 'none');
+            this.$refs.container.classList.remove("cf-form-focus");
             evt.stopPropagation();
         },
         showToolbar: function(evt){
             this.$root.$el.getElementsByClassName("coreform_toolbar").forEach(el => el.style.display = 'none');
             this.$refs.toolbar.style.display = '';
+            this.$refs.container.classList.add("cf-form-focus");
             evt.stopPropagation();
         },
         openSettings: function (evt) {
-            this.$openControlSettingsById(this.id());
+            this.$openControlSettingsById(this.id);
         },
         removeNode: function (evt) {
-            this.$removeControlById(this.id());
+            this.$removeControlById(this.id);
         }
     },
     props: { 
@@ -74,25 +76,33 @@ export default {
             preferredWidth: {
                 type:String,
                 default:"1-1"
+            },
+            "cssStyle":{
+                 type:String   
             }
         }
 }
 </script>
 <style scoped>
+.cf-form-focus{
+    border:2px dotted lightsteelblue !important
+}
+
 .cf_field{
     position: relative;
-    border: 1px solid transparent;
-    padding-right:15px
+    border: 2px solid transparent;
+    padding:3px;
+    padding-right:15px;
+    margin-right:15px;
+    width:100%
 }
 
-
-.coreform_toolbar {
+ .coreform_toolbar {
     z-index: 999;
-    position: absolute;
+    /* position: absolute;
     right: 0px;
-    top: -1em;
-
-}
+    top:0px*/
+} 
 
     .coreform_toolbar  label {
         background-color: #fcfcfc;      

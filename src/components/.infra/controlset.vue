@@ -1,14 +1,13 @@
 <template>
   <draggable 
-  :list="elements" 
-  group="cfShareGroupForDesignSurface"
-   @add="onAdd"
+    :list="elements" 
+    group="cfShareGroupForDesignSurface"
+    @add="onAdd"
     @end="onEnd"
-     handle=".moveHandle"
-     ghost-class="ghost"
-      :component-data="getComponentData()">
+    handle=".moveHandle"
+    ghost-class="ghost"
+    >
         <component v-for="el in elements"
-                    :key="el.id"
                     :is="el.type"
                     :schema="el"
                     :editMode="editMode"
@@ -80,12 +79,14 @@ export default {
 };
 </script>
 <style scoped>
-.ghost {
-  opacity: 0.5;
-  background: #c8ebfb;
+.ghost{
+  opacity: 0.3;
+  background: #d0d0d0;
   min-height:50px;
   width: 100%;
+  box-shadow: 5px 5px 5px grey;
 }
+
 
 </style>
 

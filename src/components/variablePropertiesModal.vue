@@ -53,7 +53,7 @@
                         }"
                       >
                         <option
-                          :key="key"
+                          :key="text"
                           v-for="(text, key) in acceptedVariablesTypes"
                           v-bind:value="key"
                         >

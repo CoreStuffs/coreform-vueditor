@@ -50,7 +50,7 @@ var schema = {
     },
     {
       name: "Birthday",
-      type: "dateTime",
+      type: "datetime",
       validations: [
         {
           type: "required",

@@ -1,5 +1,6 @@
 <template>
-  <formControl :schema="schema">
+<div class=" moveHandle">
+  <formControl :schema="schema" cssStyle="top:-1em">
     <draggable
       class="uk-grid"
       v-bind:class="{
@@ -20,6 +21,7 @@
       ></controlset>
     </draggable>
   </formControl>
+</div>
 </template>
 <script>
 export default {
@@ -62,6 +64,7 @@ export default {
 .uk-grid {
   padding-left: 15px;
 }
+
 .uk-grid-column-medium > *,
 .uk-grid-medium > *,
 .uk-grid-collapse > * {
@@ -96,7 +99,7 @@ export default {
   top: 0;
   bottom: 0;
   left: 0px;
-  border-left: 1px solid #e5e5e5;
+  border-left: 1px solid #a0a0a0;
 }
 
 .uk-grid + .uk-grid, .uk-grid > .uk-grid-margin, * + .uk-grid-margin {

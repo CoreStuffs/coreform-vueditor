@@ -78,7 +78,7 @@ export default {
     padding: 2px;
     border-width: 0px !important;
     border-bottom-width: 1px !important;
-    border-color:#e5e5e5 !important;
+    border-color:#a0a0a0 !important;
     transition: 0.2s ease-in-out;
     transition-property: color, background-color, border;
 }

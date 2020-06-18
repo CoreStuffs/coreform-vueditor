@@ -251,9 +251,11 @@ export default {
     saveVariable: function (obj, srcName) {
       var t = this;
       var type = this.staticData.variableTypes[obj.type];
-      type.implicitValidations.forEach(valid => {
-        obj.validations.push({ type: valid});
-      });
+      if(type && type.implicitValidations){
+        type.implicitValidations.forEach(valid => {
+          obj.validations.push({ type: valid});
+        });
+      }
       var variable = this.getVariableByName(srcName ?? obj.name);
       if (variable) {
         Object.assign(variable, obj);
@@ -338,7 +340,7 @@ export default {
       },
       $openControlSettingsById: function (id, callback) {
         var obj = t.findNodeByQuery((o) => {
-          return o.id && o.id() === id;
+          return o.id && o.id === id;
         });
         t.openControlProperties(obj, callback);
       },
