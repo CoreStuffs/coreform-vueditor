@@ -1,13 +1,13 @@
-const tag = "textField";
+const tag = "richTextField";
 const label = {
-  default: "Text field",
-  fr: "Champs texte",
+  default: "Richtext field",
+  fr: "Champs texte riche",
 };
 const defaultSchema = {
   label: "",
   placeholder: "",
 };
 
-const acceptedVariableTypes = ["text", "number"];
+const acceptedVariableTypes = ["richtext"];
 const isDataField = true;
 export { tag, label, acceptedVariableTypes, isDataField, defaultSchema };

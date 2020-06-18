@@ -48,49 +48,55 @@ var schema = {
         },
       ],
     },
+    {
+      name: "Birthday",
+      type: "dateTime",
+      validations: [
+        {
+          type: "required",
+          errorMessage: "At least one country",
+        },
+        {
+          type: "dateTime",
+          errorMessage: "Invalid date format",
+        },
+      ],
+    },
   ],
   elements: [
     {
       label: "Nom",
       variable: "name",
       placeholder: "Nom complet",
-      id: "ctrl_2",
       type: "textField",
-      width: 12,
     },
     {
-      "label": "Date de naissance",
-      "placeholder": "",
-      "variable": "Birthday",
-      "type": "dateTimeField"
+      label: "Date de naissance",
+      placeholder: "",
+      variable: "Birthday",
+      type: "dateTimeField",
     },
     {
       showSeparator: true,
       columns: [
         {
-          id: "col_undefined_1",
           width: "1-2",
           elements: [
             {
               label: "Rue",
               variable: "street",
               placeholder: "",
-              id: "ctrl_3",
               type: "textField",
-              width: 12,
             },
             {
               label: "Code postal",
               variable: "CP",
               placeholder: "The postal code here ;)",
-              id: "ctrl_5",
               type: "textField",
-              width: 12,
             },
           ],
         },
         {
-          id: "col_undefined_2",
           width: "1-2",
           elements: [
             {
@@ -99,7 +105,6 @@ var schema = {
               placeholder: "Numéro ou lieu-dit",
               id: "ctrl_4",
               type: "textField",
-              width: 12,
             },
             {
               label: "Localité",
@@ -107,14 +112,11 @@ var schema = {
               placeholder: "Ville, village, hameau...",
               id: "ctrl_6",
               type: "textField",
-              width: 12,
             },
           ],
         },
       ],
-      id: "ctrl_1",
       type: "columns",
-      width: 12,
     },
     {
       label: "Countries where you have already been",
@@ -122,18 +124,14 @@ var schema = {
       placeholder: "Multiple countries",
       sourceId: "countries",
       multiple: true,
-      id: "ctrl_8",
       type: "selectField",
-      width: 12,
     },
     {
       label: "New label",
       variable: "nwlbl",
       placeholder: "",
       sourceId: "currencies",
-      id: "ctrl_7",
       type: "selectField",
-      width: 12,
     },
   ],
 };
@@ -168,7 +166,7 @@ export default {
       schema: schema,
     };
   },
-  mounted:function(){
+  mounted: function () {
     document.title = "Demo CoreForm Components";
   },
   components: c(),

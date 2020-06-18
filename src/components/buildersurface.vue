@@ -164,9 +164,7 @@ export default {
     Object.assign(this.schema, this.value);
     this.executeNodesOperation((o) => {
       var id = this.getNextId();
-      o.id = function () {
-        return id;
-      };
+      o.id = id;
     });
 
     var t = this;

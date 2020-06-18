@@ -1,5 +1,5 @@
 <template>
-  <formControl :schema="schema" :width="width">
+  <formControl :schema="schema" :preferredWidth="width">
     <label :for="schema.id" class="uk-form-label"
       >{{ schema.label }}
       <div class="required-tag" v-if="$isrequired"

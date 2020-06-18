@@ -1,15 +1,18 @@
 <template>
-    <div :data-ref="id" v-bind:class="'uk-width-'+ width" :type="type" class="cf_validationError uk-margin-small-bottom cf_field" v-on:mouseleave="hideToolbar" v-on:mouseover="showToolbar">
+    <div :data-ref="id" v-bind:class="'uk-width-'+ preferredWidth" :type="type" class="cf_validationError uk-margin-small-bottom cf_field" v-on:mouseleave="hideToolbar" v-on:mouseover="showToolbar">
         <div ref="toolbar" class="coreform_toolbar" style="display:none">
-            <div>
-                <label class="uk-text-normal">{{controlType}}</label>
-            <label class="uk-text-normal" v-if="variableText">Data: {{variableText}}</label>
-            </div>
-            <div>
-            <toolButton icon="move" cssclass="uk-drag moveHandle"/>
-            <toolButton icon="settings" :onclick="openSettings"/>
-            <toolButton icon="trash" cssclass="deleteHandle" :onclick="removeNode"/>
-            </div>
+                <toolButton icon="move" cssclass="uk-drag moveHandle" :onclick="()=>{}"/>
+                <div class="uk-inline" style="top:-2px">
+                    <toolButton icon="info" cssclass="uk-drag moveHandle" :onclick="()=>{}"/>
+                    <div uk-drop="pos: top-left; mode:click; offset: 5">
+                        <div class="uk-card-body uk-card uk-card-small uk-card-default">
+                            <div><label class="uk-text-normal">{{controlType}}</label></div>
+                            <div><label class="uk-text-normal" v-if="variableText">Data: {{variableText}}</label></div>
+                        </div>
+                    </div>
+                </div>
+                <toolButton icon="settings" :onclick="openSettings"/>
+                <toolButton icon="trash" cssclass="deleteHandle" :onclick="removeNode"/>
         </div>
         <slot></slot>
     </div>
@@ -61,17 +64,18 @@ export default {
         }
     },
     props: { 
-        schema: {
-            type: Object,
-            required: true
-        },  validation: {
-            type: Object,
-            required: true
-        }, 
-        width: {
-            type:String,
-            default:"1-1"
-        }}
+            schema: {
+                type: Object,
+                required: true
+            },  validation: {
+                type: Object,
+                required: false
+            }, 
+            preferredWidth: {
+                type:String,
+                default:"1-1"
+            }
+        }
 }
 </script>
 <style scoped>

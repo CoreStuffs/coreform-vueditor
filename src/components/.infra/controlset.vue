@@ -8,7 +8,7 @@
      ghost-class="ghost"
       :component-data="getComponentData()">
         <component v-for="el in elements"
-                    :key="el.id()"
+                    :key="el.id"
                     :is="el.type"
                     :schema="el"
                     :editMode="editMode"
