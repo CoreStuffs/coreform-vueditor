@@ -1,5 +1,5 @@
 <template>
-  <div v-cloak class="cf uk-container uk-container-large">
+  <div v-cloak class="cf ">
     <ul uk-tab data-uk-tab="{connect:'#cf-formBuilder'}">
       <li class="uk-active"><a href="#">Properties</a></li>
       <li><a href="#">Form designer</a></li>
@@ -11,16 +11,17 @@
         Properties
       </li>
       <li>
-        <div uk-grid class="uk-grid-small">
-          <div class="uk-width-expand@m">
-            <div class="uk-form-stacked uk-card uk-card-default uk-card-body">
+        <div uk-grid class="uk-grid-small" id="cFdesignSurface">
+                    
+          <div class="uk-width-4-5@m uk-form-stacked">
+          
               <controlset
                 :elements="schema.elements"
                 :editMode="true"
               ></controlset>
-            </div>
           </div>
-          <div class="uk-width-auto@m" style="min-width: 200px;">
+          <div class="uk-width-1-5@m uk-padding-small">
+          <div uk-sticky="bottom:true;offset:50px">
             <draggable
               :list="formControlsList"
               :group="{
@@ -56,12 +57,13 @@
               </div>
             </draggable>
           </div>
+          </div>
         </div>
       </li>
-      <li>
+      <li> 
         <variablesTable :variables="schema.variables"></variablesTable>
-      </li>
-      <li>
+       </li>
+      <li> 
         <div uk-grid class="uk-grid-small">
           <div class="uk-width-1-2@m">
             Schema
@@ -229,7 +231,7 @@ export default {
     openControlProperties: function (control, callback) {
       //this.$refs.controlPropertiesModal.showModal(control, function(model) {
       this.$refs.controlPropertiesModal.showModal(control, function (model) {
-        control = deepCopy(model);
+        Object.assign(control, model);
         if (callback) callback(control);
       });
     },

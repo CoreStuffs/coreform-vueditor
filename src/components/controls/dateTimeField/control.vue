@@ -44,6 +44,11 @@ export default {
       if(this.$validation) this.$validation.$touch();
     }
   },
+    watch: {
+            value: function (newValue) {
+              this.data = newValue;
+            }
+  },
   props: {value:{}, width: {
             type:String,
             default:"1-4"

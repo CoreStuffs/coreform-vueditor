@@ -60,6 +60,11 @@ export default {
       type: [String, Array, Object]
     }
   },
+  watch: {
+            value: function (newValue) {
+              this.data = newValue;
+            }
+  },
   created:function(){
       var arr = this.$externalDataSources.filter(o=>o.id === this.schema.sourceId);
       if(arr.length===1) this.dataSource = arr[0];

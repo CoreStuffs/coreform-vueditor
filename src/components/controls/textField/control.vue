@@ -38,6 +38,11 @@ export default {
       if(this.$validation) this.$validation.$touch();
     }
   },
+  watch: {
+            value: function (newValue) {
+              this.data = newValue;
+            }
+  },
   props: {
     value: {
       type: String,
