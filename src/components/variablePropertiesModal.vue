@@ -1,5 +1,5 @@
 <template>
-  <div :ref="editformId" :id="editformId" class="cf uk-flex-top" uk-modal v-cloak>
+  <div :ref="editformId" :id="editformId" class="cf uk-flex-top" uk-modal="stack:true" v-cloak>
     <div
       style="transition: none;"
       class="uk-modal-dialog uk-transition-fade uk-margin-auto-vertical"

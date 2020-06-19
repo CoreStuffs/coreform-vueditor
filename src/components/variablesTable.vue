@@ -1,5 +1,5 @@
 <template>
-  <div class="uk-overflow-auto">
+  <div>
     <table class="uk-table uk-table-middle uk-table-divider uk-table-small">
       <thead>
         <tr>

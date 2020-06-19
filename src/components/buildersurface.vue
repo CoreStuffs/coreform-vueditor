@@ -1,75 +1,92 @@
 <template>
-  <div v-cloak class="cf">
-    <ul uk-tab data-uk-tab="{connect:'#cf-formBuilder'}">
-      <li class="uk-active"><a href="#">Properties</a></li>
-      <li><a href="#">Form designer</a></li>
-      <li><a href="#">Variables</a></li>
-      <li><a href="#">Debug</a></li>
-    </ul>
-    <ul id="cf-formBuilder" class="uk-switcher uk-margin">
-      <li>
-        Properties
-      </li>
-      <li>
-        <div uk-grid class="uk-grid-small" id="cFdesignSurface">
-          <div class="uk-width-4-5@m uk-form-stacked">
-            <controlset
-              :elements="schema.elements"
-              :editMode="true"
-            ></controlset>
-          </div>
-          <div class="uk-width-1-5@m uk-padding-small">
-            <div class="toolBox" uk-sticky="bottom:true;offset:50px">
-              <draggable
-                :list="formControlsList"
-                :group="{
-                  name: 'cfShareGroupForDesignSurface',
-                  pull: 'clone',
-                  put: false,
-                }"
-                ghost-class="ghost"
-                :fallbackOnBody="true"
-                :clone="createEmptyControl"
-                :sort="false"
-              >
-                <div :key="ctrl.id" v-for="ctrl in formControlsList">
-                  <div class="toolBoxItem">
-                    <div>
-                      <span class="uk-margin-small-right uk-icon" :uk-icon="getFormControlIcon(ctrl.icon)"></span>
-                      {{ ctrl.label.default }}
-                    </div>
+  <div v-cloak class="cf uk-container">
+    <div uk-grid class="uk-grid-small" id="cFdesignSurface">
+      <div class="uk-width-4-5@m uk-form-stacked">
+        <controlset :elements="schema.elements" :editMode="true"></controlset>
+      </div>
+      <div class="uk-width-1-5@m uk-padding-small">
+        <div class="toolBox" uk-sticky="bottom:true;offset:50px">
+          <div class="uk-margin-small-left">
+            <draggable
+              :list="formControlsList"
+              :group="{
+                name: 'cfShareGroupForDesignSurface',
+                pull: 'clone',
+                put: false,
+              }"
+              ghost-class="ghost"
+              :fallbackOnBody="true"
+              :clone="createEmptyControl"
+              :sort="false"
+            >
+              <div :key="ctrl.id" v-for="ctrl in formControlsList">
+                <div class="toolBoxItem">
+                  <div>
+                    <span
+                      class="uk-margin-small-right uk-icon"
+                      :uk-icon="getFormControlIcon(ctrl.icon)"
+                    ></span>
+                    {{ ctrl.label.default }}
                   </div>
                 </div>
-              </draggable>
+              </div>
+            </draggable>
+            <hr />
+
+            <div class="toolBoxItem">
+              <a uk-toggle href="#modalVariables">
+                <span
+                  class="uk-margin-small-right uk-icon"
+                  uk-icon="settings"
+                ></span>
+                Variables
+              </a>
+            </div>
+
+            <div class="toolBoxItem">
+              <a uk-toggle href="#modalDebug">
+                <span
+                  class="uk-margin-small-right uk-icon"
+                  uk-icon="code"
+                ></span>
+                Debug
+              </a>
             </div>
           </div>
         </div>
-      </li>
-      <li>
+      </div>
+    </div>
+
+    <div id="modalVariables" uk-modal="container:false; stack:true">
+      <div class="uk-modal-dialog uk-modal-body uk-width-5-6@s uk-width-1-2@m">
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <h2 class="uk-modal-title">Variables</h2>
         <variablesTable :variables="schema.variables"></variablesTable>
-      </li>
-      <li>
-        <div uk-grid class="uk-grid-small">
-          <div class="uk-width-1-2@m">
-            Schema
-            <div>
-              <pre><code style="font-size:12px">{{ schema }}</code></pre>
-            </div>
-          </div>
-          <div class="uk-width-1-2@m">
-            Data
-            <div>
-              <pre><code style="font-size:12px">{{ data }}</code></pre>
-            </div>
-          </div>
-        </div>
-      </li>
-    </ul>
+      </div>
+    </div>
+
     <variablePropertiesModal
       ref="variablePropertiesModal"
       :variableTypes="staticData.variableTypes"
     />
     <controlPropertiesModal ref="controlPropertiesModal" />
+
+    <div id="modalDebug" uk-modal="container:false">
+      <div class="uk-modal-dialog uk-modal-body uk-width-3-4@m uk-width-1-1@s">
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <h2 class="uk-modal-title">Debug</h2>
+        <div uk-grid class="uk-grid-small">
+          <div class="uk-width-1-2@m">
+            <h4>Schema</h4>
+              <pre uk-overflow-auto><code style="font-size:12px">{{ schema }}</code></pre>
+          </div>
+          <div class="uk-width-1-2@m">
+            <h4>Data</h4>
+              <pre uk-overflow-auto><code style="font-size:12px">{{ data }}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -104,7 +121,7 @@ export default {
     return {
       data: {},
       controls: {},
-      toolBoxFormItems:{},
+      toolBoxFormItems: {},
       schema: { elements: [], variables: [] },
       dataSources: [],
       staticData: staticData,
@@ -184,8 +201,8 @@ export default {
     }
   },
   methods: {
-    getFormControlIcon:function(icon){
-      if(!icon) return "move";
+    getFormControlIcon: function (icon) {
+      if (!icon) return "move";
       return icon;
     },
     getExternalDataItem: function (sourceid, itemid, onSuccess, query) {
@@ -396,19 +413,21 @@ export default {
   font-size: 70%;
 }
 
-.toolBox{
-        background-color: #fcfcfc;
-        padding:10px;
-        padding-left:20px;
-        border-left:1px solid gray;
+.toolBox {
+  border-left: 1px solid gray;
 }
 
-.toolBoxItem{
-      white-space: nowrap;
-      margin-bottom: 5px;
-      padding: 2px;
-      cursor: default;
+.toolBox  > div {
+  padding: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  background-color: #fafafa;
+  min-width: 150px;
 }
 
-
+.toolBoxItem {
+  margin-bottom: 5px;
+  padding: 2px;
+  cursor: default;
+}
 </style>

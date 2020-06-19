@@ -7,7 +7,7 @@
                     <div uk-drop="pos: top-left; mode:click; offset: 5">
                         <div class="uk-card-body uk-card uk-card-small uk-card-default">
                             <div><label class="uk-text-normal">{{controlType}}</label></div>
-                            <div><label class="uk-text-normal" v-if="variableText">Data: {{variableText}}</label></div>
+                            <div><label class="uk-text-normal" v-if="variableText">Variable: {{variableText}}</label></div>
                         </div>
                     </div>
                 </div>
