@@ -6,6 +6,7 @@
     >
       <button class="uk-modal-close-default" type="button" uk-close></button>
       <div class="uk-modal-body uk-form-stacked" id="editFormBody">
+        <h2 class="uk-modal-title">{{title}}</h2>
         <div>
           <ul uk-tab>
             <li><a href="#">Basic</a></li>
@@ -102,6 +103,7 @@ export default {
       this.editformFieldId = Date.now();
       this.callback = callback;
       var ctrl = this.$getControlByTag(control.type);
+      this.title = ctrl.label.default;
       this.isDataField = ctrl.isDataField;
       var v = ctrl.properties.default.validations;
       this.controlValidations = { control: {} };
@@ -169,6 +171,7 @@ export default {
       isDataField: false,
       callback: function () {},
       control: {},
+      title:"",
       controlValidations: { control: {} },
     };
   },

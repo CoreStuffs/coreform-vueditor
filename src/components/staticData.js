@@ -7,7 +7,6 @@ import {
 } from "vuelidate/lib/validators";
 
 import moment from "moment";
-import "moment/locale/fr";
 
 moment.locale("fr");
 moment.defaultFormat = "L LT"; //"D/M/YYYY HH:mm";
@@ -22,6 +21,34 @@ const dateTimeValidator = (value) => isValidDate(value);
 
 
 export default {
+  formControls: {
+    columns: {
+      label: { default: "Columns" },
+      path: "grid",
+      icon : "thumbnails"
+    },
+    textField: {
+      label: { default: "Text field" },
+      path: "textField",
+      icon: "quote-right"
+    },
+    selectField: {
+      label: { default: "List" },
+      path: "selectField",
+      icon: "triangle-down"
+    },
+    dateTimeField: {
+      label: { default: "Date/Time field" },
+      path: "dateTimeField",
+      icon: "calendar"
+    },
+    richTextField: {
+      label: { default: "Richtext field" },
+      path: "richTextField",
+      icon: "file-edit"
+    },
+  },
+
   formValidators: {
     required: {
       build: function () {

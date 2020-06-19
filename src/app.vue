@@ -2,13 +2,20 @@
   <div id="app">
     <h1>
       Hello from App Vue
+      <select v-model="size">
+        <option value="100">100%</option>
+        <option value="75">75%</option>
+        <option value="50">50%</option>
+        <option value="30">30%</option>
+      </select>
+
     </h1>
-    <buildersurface
-      v-model="schema"
-      :formControls="controls"
-      :externalDataAdapter="dataAdapter"
-    ></buildersurface>
-    <pre><code style="font-size:12px">{{ schema }}</code></pre>
+    <div :style="{position: 'relative', width: size + '%', left : (100-size)/2 + '%'}">
+      <buildersurface
+        v-model="schema"
+        :externalDataAdapter="dataAdapter"
+      ></buildersurface>
+    </div>
   </div>
 </template>
 <script>
@@ -140,30 +147,11 @@ export default {
   methods: {},
   data: function () {
     return {
-      controls: {
-        columns: {
-          label: { default: "Columns" },
-          path: "grid",
-        },
-        textField: {
-          label: { default: "Text field" },
-          path: "textField",
-        },
-        selectField: {
-          label: { default: "List" },
-          path: "selectField",
-        },
-        dateTimeField: {
-          label: { default: "Date/Time field" },
-          path: "dateTimeField",
-        },
-        richTextField: {
-          label: { default: "Richtext field" },
-          path: "richTextField",
-        },
-      },
       dataAdapter: require("./datasources.js").customDataAdapter,
       schema: schema,
+
+
+      size:50
     };
   },
   mounted: function () {

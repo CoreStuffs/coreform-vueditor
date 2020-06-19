@@ -1,5 +1,5 @@
 <template>
-    <div :data-ref="id" ref="container" v-bind:class="'uk-width-'+ preferredWidth" :type="type" class="uk-inline cf_validationError uk-margin-small-bottom cf_field" v-on:mouseleave="hideToolbar" v-on:mouseover="showToolbar">
+    <div :data-ref="id" ref="container" v-bind:class="'uk-width-'+ preferredWidth" :type="type" class="uk-inline cf_validationError uk-margin-small-bottom cf_field" v-on:mouseleave="hideToolbar" v-on:mouseover="showToolbar"  v-on:dblclick="openSettings">
         <div ref="toolbar" class="coreform_toolbar uk-position-top-right" style="display:none"  :style="cssStyle">
                 <toolButton icon="move" cssclass="uk-drag moveHandle" :onclick="()=>{}"/>
                 <div class="uk-inline" style="top:-2px">
@@ -59,6 +59,7 @@ export default {
             evt.stopPropagation();
         },
         openSettings: function (evt) {
+            if(evt)evt.cancelBubble = true;
             this.$openControlSettingsById(this.id);
         },
         removeNode: function (evt) {

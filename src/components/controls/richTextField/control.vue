@@ -73,6 +73,12 @@ export default {
   font-size: 14px !important;
 }
 
+.ql-editor.ql-blank::before {
+    color: #ccc !important;
+    font-style: normal !important;
+    font-size:14px;
+    font-weight:100
+}
 
 .ql-toolbar.ql-snow {
     padding: 2px;
@@ -91,10 +97,14 @@ export default {
 .quillWrapper {
   border-style: solid;
   border-width: 1px;;
-    border-color:#e5e5e5 !important;
+    border-color:#a0a0a0 !important;
 }
 
 .ql-focus {
       border-color:#1e87f0 !important
 }
+
+ .ql-snow .ql-picker {
+   font-weight:400 !important
+ }
 </style>

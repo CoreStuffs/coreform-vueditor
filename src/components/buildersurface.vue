@@ -1,5 +1,5 @@
 <template>
-  <div v-cloak class="cf ">
+  <div v-cloak class="cf">
     <ul uk-tab data-uk-tab="{connect:'#cf-formBuilder'}">
       <li class="uk-active"><a href="#">Properties</a></li>
       <li><a href="#">Form designer</a></li>
@@ -12,58 +12,43 @@
       </li>
       <li>
         <div uk-grid class="uk-grid-small" id="cFdesignSurface">
-                    
           <div class="uk-width-4-5@m uk-form-stacked">
-          
-              <controlset
-                :elements="schema.elements"
-                :editMode="true"
-              ></controlset>
+            <controlset
+              :elements="schema.elements"
+              :editMode="true"
+            ></controlset>
           </div>
           <div class="uk-width-1-5@m uk-padding-small">
-          <div uk-sticky="bottom:true;offset:50px">
-            <draggable
-              :list="formControlsList"
-              :group="{
-                name: 'cfShareGroupForDesignSurface',
-                pull: 'clone',
-                put: false,
-              }"
-              ghost-class="ghost"
-              :fallbackOnBody="true"
-              :clone="createEmptyControl"
-              :sort="false"
-            >
-              <div
-                :key="ctrl.id"
-                v-for="ctrl in formControlsList"
+            <div class="toolBox" uk-sticky="bottom:true;offset:50px">
+              <draggable
+                :list="formControlsList"
+                :group="{
+                  name: 'cfShareGroupForDesignSurface',
+                  pull: 'clone',
+                  put: false,
+                }"
+                ghost-class="ghost"
+                :fallbackOnBody="true"
+                :clone="createEmptyControl"
+                :sort="false"
               >
-                <div
-                  style="
-                    margin-bottom: 2px;
-                    background-color: #f0f0f0;
-                    padding: 2px;
-                    cursor: default;
-                  "
-                >
-                  <div>
-                    <span
-                      class="uk-margin-small-right uk-icon"
-                      uk-icon="user"
-                    ></span>
-                    {{ ctrl.label.default }}
+                <div :key="ctrl.id" v-for="ctrl in formControlsList">
+                  <div class="toolBoxItem">
+                    <div>
+                      <span class="uk-margin-small-right uk-icon" :uk-icon="getFormControlIcon(ctrl.icon)"></span>
+                      {{ ctrl.label.default }}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </draggable>
-          </div>
+              </draggable>
+            </div>
           </div>
         </div>
       </li>
-      <li> 
+      <li>
         <variablesTable :variables="schema.variables"></variablesTable>
-       </li>
-      <li> 
+      </li>
+      <li>
         <div uk-grid class="uk-grid-small">
           <div class="uk-width-1-2@m">
             Schema
@@ -85,21 +70,15 @@
       :variableTypes="staticData.variableTypes"
     />
     <controlPropertiesModal ref="controlPropertiesModal" />
-    <button
-      class="uk-button uk-button-default"
-      @click="openControlProperties()"
-    >
-      Open
-    </button>
   </div>
 </template>
 
 <script>
-
 import UIkit from "uikit";
 import Icons from "uikit/dist/js/uikit-icons";
 UIkit.use(Icons);
 import { deepCopy } from "@/components/utils.js";
+import staticData from "@/components/staticData.js";
 import "../assets/style.sass";
 import { validationMixin } from "vuelidate";
 var globalId = 1;
@@ -117,14 +96,18 @@ export default {
       import("@/components/controlPropertiesModal.vue"),
     draggable: () => import("vuedraggable"),
   },
+  // value : containes the schema
+  // formControls: allows override of staticData.formControls
+  // externalDataAdapter: data adapter for lists
   props: ["value", "formControls", "externalDataAdapter"],
   data: function () {
     return {
       data: {},
       controls: {},
+      toolBoxFormItems:{},
       schema: { elements: [], variables: [] },
       dataSources: [],
-      staticData: require("@/components/staticData.js").default,
+      staticData: staticData,
       maxId: 0,
     };
   },
@@ -154,7 +137,7 @@ export default {
   computed: {
     formControlsList: function () {
       var arr = new Array();
-      for (let [key, value] of Object.entries(this.formControls)) {
+      for (let [key, value] of Object.entries(this.toolBoxFormItems)) {
         var obj = deepCopy(value);
         obj.id = key;
         arr.push(obj);
@@ -163,6 +146,7 @@ export default {
     },
   },
   created: function () {
+    this.toolBoxFormItems = this.formControls ?? this.staticData.formControls;
     Object.assign(this.schema, this.value);
     this.executeNodesOperation((o) => {
       var id = this.getNextId();
@@ -175,11 +159,11 @@ export default {
     });
 
     var arr = [];
-    if (typeof this.formControls === "string") {
-      var s = this.formControls;
+    if (typeof this.toolBoxFormItems === "string") {
+      var s = this.toolBoxFormItems;
       arr = deepCopy(eval(s));
     } else {
-      arr = this.formControls;
+      arr = this.toolBoxFormItems;
     }
 
     for (let [key, o] of Object.entries(arr)) {
@@ -200,6 +184,10 @@ export default {
     }
   },
   methods: {
+    getFormControlIcon:function(icon){
+      if(!icon) return "move";
+      return icon;
+    },
     getExternalDataItem: function (sourceid, itemid, onSuccess, query) {
       if (this.externalDataAdapter && this.externalDataAdapter.getDataItem)
         this.externalDataAdapter.getDataItem(itemid, onSuccess, query);
@@ -253,9 +241,9 @@ export default {
     saveVariable: function (obj, srcName) {
       var t = this;
       var type = this.staticData.variableTypes[obj.type];
-      if(type && type.implicitValidations){
-        type.implicitValidations.forEach(valid => {
-          obj.validations.push({ type: valid});
+      if (type && type.implicitValidations) {
+        type.implicitValidations.forEach((valid) => {
+          obj.validations.push({ type: valid });
         });
       }
       var variable = this.getVariableByName(srcName ?? obj.name);
@@ -407,5 +395,20 @@ export default {
   top: -0.5em;
   font-size: 70%;
 }
-</style>
 
+.toolBox{
+        background-color: #fcfcfc;
+        padding:10px;
+        padding-left:20px;
+        border-left:1px solid gray;
+}
+
+.toolBoxItem{
+      white-space: nowrap;
+      margin-bottom: 5px;
+      padding: 2px;
+      cursor: default;
+}
+
+
+</style>
