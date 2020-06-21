@@ -4,6 +4,7 @@
     group="cfShareGroupForDesignSurface"
     @add="onAdd"
     @end="onEnd"
+    swap-Threshold="0.2"
     handle=".moveHandle"
     ghost-class="ghost"
     >

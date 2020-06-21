@@ -63,17 +63,18 @@ export default {
 <style scoped>
 .uk-grid {
   padding-left: 15px;
+ 
 }
 
 .uk-grid-column-medium > *,
 .uk-grid-medium > *,
 .uk-grid-collapse > * {
   padding-left: 15px;
-  padding-right: 0px;
+  padding-right: 0px; 
 }
 
 .grid_edit {
-  min-height: 25px;
+  min-height: 35px;
 }
 
 .grid_edit > div {
