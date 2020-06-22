@@ -1,0 +1,58 @@
+<template>
+     <div>
+        <label for="chkRequired" class="uk-form-label"
+          ><input
+            name="checkRequired"
+            v-model="required"
+            class="uk-checkbox"
+            type="checkbox"
+          />
+          Required</label>
+    </div>
+</template>
+<script>
+export default {
+  data: function () {
+    return {data:this.value};
+  },
+  computed: {
+    required: {
+      get() {
+        return (
+          this.variable &&
+          this.variable.validations &&
+          this.variable.validations.filter(
+            (o) => o.type.toLowerCase() === "required"
+          ).length === 1
+        );
+      },
+      set(val) {
+        if (val) {
+          this.variable.validations.push({ type: "required" });
+        } else {
+          this.variable.validations = this.variable.validations.filter(
+            (o) => o.type.toLowerCase() !== "required"
+          );
+        }
+        this.$emit("input", this.variable);
+      },
+    },
+  },
+  validation: function () {
+    return {};
+  },
+  methods: {
+    changeRequired: function (e) {
+      if (e.srcElement.checked) {
+        this.variable.validations.push({ type: "required" });
+      } else {
+        this.variable.validations = this.variable.validations.filter(
+          (o) => o.type.toLowerCase() !== "required"
+        );
+      }
+      this.$emit("input", this.variable);
+    },
+  },
+  props: ["value"]
+};
+</script>

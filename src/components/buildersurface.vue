@@ -322,6 +322,7 @@ export default {
       $formData: t.data,
       $getNextId: t.getNextId,
       $variableTypes: t.staticData.variableTypes,
+      $formValidators: t.staticData.formValidators,
       $controls: t.controls,
       $getVariableByName: t.getVariableByName,
       $saveVariable: t.saveVariable,

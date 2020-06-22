@@ -51,31 +51,37 @@ export default {
 
   formValidators: {
     required: {
+      label: { default: "Required" },
       build: function () {
         return required;
       },
     },
     minLength: {
+      label: { default: "Minimum length" },
       build: function (data) {
         return minLength(data.minLength);
       },
     },
     maxLength: {
+      label: { default: "Maximum length" },
       build: function (data) {
         return maxLength(data.maxLength);
       },
     },
     number: {
+      label: { default: "Is a valid number" },
       build: function () {
         return number;
       },
     },
     email: {
+      label: { default: "Is a valid Email" },
       build: function () {
         return email;
       },
     },
     dateTime: {
+      label: { default: "Is a valid date/time" },
       build: function () {
         return dateTimeValidator;
       },
@@ -84,33 +90,33 @@ export default {
   variableTypes: {
     text: {
       text: "String or Text",
-      optionalValidations: ["required", "minLength", "maxLength", "email"],
+      optionalValidators: ["required", "minLength", "maxLength", "email"],
     },
     number: {
       text: "Numeric value",
       implicitValidations: ["number"],
-      optionalValidations: ["required"],
+      optionalValidators: ["required"],
     },
     richtext: {
       text: "Rich content",
-      optionalValidations: ["required"],
+      optionalValidators: ["required"],
     },
     datetime: {
       text: "Date and time",
       implicitValidations: ["dateTime"],
-      optionalValidations: ["required"],
+      optionalValidators: ["required"],
     },
     datetimerange: {
       text: "Date and time range",
-      optionalValidations: ["required"],
+      optionalValidators: ["required"],
     },
     listitemarray: {
       text: "Multiple selection items",
-      optionalValidations: ["required"],
+      optionalValidators: ["required"],
     },
     listitem: {
       text: "Selection item",
-      optionalValidations: ["required"],
+      optionalValidators: ["required"],
     },
   },
 };
