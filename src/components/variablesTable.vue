@@ -12,7 +12,7 @@
       <tbody>
         <tr :key="variable.name" v-for="variable in variables">
           <td class="uk-text-nowrap uk-text-small">
-            {{ variable.name }}
+            <a @click="editVariable(variable)">{{ variable.name }}</a>
           </td>
           <td class="uk-text-nowrap uk-text-small">
             {{ variable.type }}
@@ -50,8 +50,9 @@ export default {
   methods: {
     isRequired: function (variable) {
       return (
-        variable.validations.filter((o) => o.type.toLowerCase() === "required")
-          .length > 0
+        variable.validations.filter(
+          (o) => o.type.toLowerCase() === "required" && o.enabled
+        ).length > 0
       );
     },
     addVariable: function () {

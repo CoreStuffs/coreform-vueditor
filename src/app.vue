@@ -8,9 +8,14 @@
         <option value="50">50%</option>
         <option value="30">30%</option>
       </select>
-
     </h1>
-    <div :style="{position: 'relative', width: size + '%', left : (100-size)/2 + '%'}">
+    <div
+      :style="{
+        position: 'relative',
+        width: size + '%',
+        left: (100 - size) / 2 + '%',
+      }"
+    >
       <buildersurface
         v-model="schema"
         :externalDataAdapter="dataAdapter"
@@ -35,12 +40,16 @@ var schema = {
       type: "text",
       validations: [
         {
+          enabled: true,
           type: "required",
           errorMessage: "This field is required",
         },
         {
+          enabled: false,
           type: "minLength",
-          minLength: 3,
+          parameters: {
+            minLength: 3,
+          },
           errorMessage: "Minimum length of 3 characters",
         },
       ],
@@ -50,6 +59,7 @@ var schema = {
       type: "listitemarray",
       validations: [
         {
+          enabled: true,
           type: "required",
           errorMessage: "At least one country",
         },
@@ -60,10 +70,12 @@ var schema = {
       type: "datetime",
       validations: [
         {
+          enabled: true,
           type: "required",
           errorMessage: "At least one country",
         },
         {
+          enabled: true,
           type: "dateTime",
           errorMessage: "Invalid date format",
         },
@@ -149,9 +161,7 @@ export default {
     return {
       dataAdapter: require("./datasources.js").customDataAdapter,
       schema: schema,
-
-
-      size:50
+      size: 50,
     };
   },
   mounted: function () {

@@ -1,5 +1,11 @@
 <template>
-  <div :ref="editformId" :id="editformId" class="cf uk-flex-top" uk-modal="stack:true" v-cloak>
+  <div
+    :ref="editformId"
+    :id="editformId"
+    class="cf uk-flex-top"
+    uk-modal="stack:true"
+    v-cloak
+  >
     <div
       style="transition: none;"
       class="uk-modal-dialog uk-transition-fade uk-margin-auto-vertical"
@@ -183,7 +189,9 @@ export default {
       if (Object.keys(this.acceptedVariablesTypes).length === 1)
         this.variable.type = Object.keys(this.acceptedVariablesTypes)[0];
 
-      var modal = UIkit.modal(document.getElementById(this.editformId),{container:false});
+      var modal = UIkit.modal(document.getElementById(this.editformId), {
+        container: false,
+      });
       var t = this;
       UIkit.util.on(
         document.getElementById(this.editformId),

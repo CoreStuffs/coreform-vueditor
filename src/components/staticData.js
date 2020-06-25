@@ -11,7 +11,7 @@ import moment from "moment";
 moment.locale("fr");
 moment.defaultFormat = "L LT"; //"D/M/YYYY HH:mm";
 
-function isValidDate(value){
+function isValidDate(value) {
   console.log(value + " is valid?");
   var m = moment(value, moment.defaultFormatUtc, true);
   return m.isValid();
@@ -19,33 +19,32 @@ function isValidDate(value){
 
 const dateTimeValidator = (value) => isValidDate(value);
 
-
 export default {
   formControls: {
     columns: {
       label: { default: "Columns" },
       path: "grid",
-      icon : "thumbnails"
+      icon: "thumbnails",
     },
     textField: {
       label: { default: "Text field" },
       path: "textField",
-      icon: "quote-right"
+      icon: "quote-right",
     },
     selectField: {
       label: { default: "List" },
       path: "selectField",
-      icon: "triangle-down"
+      icon: "triangle-down",
     },
     dateTimeField: {
       label: { default: "Date/Time field" },
       path: "dateTimeField",
-      icon: "calendar"
+      icon: "calendar",
     },
     richTextField: {
       label: { default: "Richtext field" },
       path: "richTextField",
-      icon: "file-edit"
+      icon: "file-edit",
     },
   },
 
@@ -58,6 +57,7 @@ export default {
     },
     minLength: {
       label: { default: "Minimum length" },
+      editorPath: "minlength",
       build: function (data) {
         return minLength(data.minLength);
       },

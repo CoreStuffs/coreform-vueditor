@@ -35,8 +35,10 @@ export default {
                             if (variable.name === this.schema.variable) {
                                 for (const vali in variable.validations) {
                                     var validation = variable.validations[vali];
-                                    if (validation.type === this.$validation.$params[valid].type) {
-                                        return validation.errorMessage;
+                                    if(validation.enabled){
+                                        if (validation.type === this.$validation.$params[valid].type) {
+                                            return validation.errorMessage;
+                                        }
                                     }
                                 }
                             }
