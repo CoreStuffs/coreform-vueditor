@@ -164,9 +164,6 @@ export default {
       size: 50,
     };
   },
-  mounted: function () {
-    document.title = "Demo CoreForm Components";
-  },
   components: c(),
   computed: {
     valueString: function () {
