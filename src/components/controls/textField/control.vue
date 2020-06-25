@@ -9,45 +9,46 @@
         :type="inputType"
         :placeholder="schema.placeholder"
         class="uk-input uk-form-small"
-         v-bind:class="{'uk-form-danger': $error}"
+        v-bind:class="{ 'uk-form-danger': $error }"
         :id="schema.id"
         v-model="data"
         @input="updateInput"
       />
     </div>
+    <span v-if="$errorMessage" class="error-message">{{ $errorMessage }}</span>
   </formControl>
 </template>
 <script>
 import controlBase from "@/components/.infra/controlBase.vue";
 export default {
-  extends:controlBase,
+  extends: controlBase,
   components: {
-    formControl: () => import("@/components/.infra/formControl.vue")
+    formControl: () => import("@/components/.infra/formControl.vue"),
   },
-  data:function(){
-    return {data: this.value };
+  data: function () {
+    return { data: this.value };
   },
   computed: {
-    inputType: function() {
+    inputType: function () {
       return "text";
-    }
+    },
   },
   methods: {
-    updateInput: function() {
+    updateInput: function () {
       this.$emit("input", this.$el.getElementsByTagName("input")[0].value);
-      if(this.$validation) this.$validation.$touch();
-    }
+      if (this.$validation) this.$validation.$touch();
+    },
   },
   watch: {
-            value: function (newValue) {
-              this.data = newValue;
-            }
+    value: function (newValue) {
+      this.data = newValue;
+    },
   },
   props: {
     value: {
       type: String,
-      required: false
-    }
-  }
+      required: false,
+    },
+  },
 };
 </script>

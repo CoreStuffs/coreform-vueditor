@@ -150,7 +150,9 @@ export default {
       for (const valid in variable.validations) {
         var v = variable.validations[valid];
         if (v.enabled) {
-          rv["v" + i] = this.staticData.formValidators[v.type].build(v);
+          rv["v" + i] = this.staticData.formValidators[v.type].build(
+            v.parameters
+          );
           i++;
         }
       }
