@@ -21,7 +21,8 @@ export default {
   },
   props: ["value"],
   created: function () {
-    if (typeof this.showSeparator === "undefined") this.value["showSeparator"] = false;
+    if (typeof this.showSeparator === "undefined")
+      this.value["showSeparator"] = false;
     //var i = 1;
     // this.columns.forEach(element => {
     //     if(!element.id) {

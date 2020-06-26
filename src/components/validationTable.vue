@@ -1,47 +1,45 @@
 <template>
-  <div class="uk-form-stacked uk-margin-large">
-    <fieldset class="uk-fieldset">
-      <div
-        class="uk-margin"
-        :key="validator.key"
-        v-for="validator in validators()"
-      >
-        <div class="uk-form-controls">
-          <label for="chkRequired" class="uk-form-label"
-            ><input
-              :name="'enb_' + validator.key"
-              :checked="isSelected(validator.key)"
-              @change="handleChange($event)"
-              class="uk-checkbox"
-              type="checkbox"
+  <fieldset class="uk-fieldset">
+    <div
+      class="uk-margin"
+      :key="validator.key"
+      v-for="validator in validators()"
+    >
+      <div class="uk-form-controls">
+        <label for="chkRequired" class="uk-form-label"
+          ><input
+            :name="'enb_' + validator.key"
+            :checked="isSelected(validator.key)"
+            @change="handleChange($event)"
+            class="uk-checkbox"
+            type="checkbox"
+          />
+          {{ validator.label.default }}</label
+        >
+      </div>
+      <div v-if="isSelected(validator.key)">
+        <component
+          v-if="validator.editor"
+          ref="editValidatorId"
+          :is="validator.key"
+          :value="validator.parameters"
+        ></component>
+        <div>
+          <label class="uk-form-label">Error message</label>
+          <div class="uk-form-controls">
+            <input
+              type="text"
+              :name="'err_' + validator.key"
+              placeholder="To display if the value is not valid"
+              class="uk-input uk-form-small"
+              v-model="validator.errorMessage"
+              @change="handleChange"
             />
-            {{ validator.label.default }}</label
-          >
-        </div>
-        <div v-if="isSelected(validator.key)">
-          <component
-            v-if="validator.editor"
-            ref="editValidatorId"
-            :is="validator.key"
-            :value="validator.parameters"
-          ></component>
-          <div>
-            <label class="uk-form-label">Error message</label>
-            <div class="uk-form-controls">
-              <input
-                type="text"
-                :name="'err_' + validator.key"
-                placeholder="To display if the value is not valid"
-                class="uk-input uk-form-small"
-                v-model="validator.errorMessage"
-                @change="handleChange"
-              />
-            </div>
           </div>
         </div>
       </div>
-    </fieldset>
-  </div>
+    </div>
+  </fieldset>
 </template>
 <script>
 export default {

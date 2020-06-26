@@ -1,27 +1,27 @@
 <template>
-<div class=" moveHandle">
-  <formControl :schema="schema" cssStyle="top:-1em">
-    <draggable
-      class="uk-grid"
-      v-bind:class="{
-        'uk-grid-divider uk-grid-collapse': schema.showSeparator,
-        'uk-grid-medium': !schema.showSeparator,
-        grid_edit: editMode,
-      }"
-      :list="schema.columns"
-      :group="{ name: this.schema.id }"
-      :component-data="getComponentData()"
-    >
-      <controlset
-        :elements="col.elements"
-        v-for="col in schema.columns"
-        :key="schema.columns.indexOf(col)"
-        :editMode="editMode"
-        v-bind:class="[' uk-grid-collapse uk-width-' + col.width + '@m']"
-      ></controlset>
-    </draggable>
-  </formControl>
-</div>
+  <div class="moveHandle">
+    <formControl :schema="schema" cssStyle="top:-1em">
+      <draggable
+        class="uk-grid"
+        v-bind:class="{
+          'uk-grid-divider uk-grid-collapse': schema.showSeparator,
+          'uk-grid-medium': !schema.showSeparator,
+          grid_edit: editMode,
+        }"
+        :list="schema.columns"
+        :group="{ name: this.schema.id }"
+        :component-data="getComponentData()"
+      >
+        <controlset
+          :elements="col.elements"
+          v-for="col in schema.columns"
+          :key="schema.columns.indexOf(col)"
+          :editMode="editMode"
+          v-bind:class="[' uk-grid-collapse uk-width-' + col.width + '@m']"
+        ></controlset>
+      </draggable>
+    </formControl>
+  </div>
 </template>
 <script>
 export default {
@@ -53,7 +53,7 @@ export default {
       return {
         attrs: {
           "uk-grid": "true",
-          "class":"uk-width-1-1 uk-grid-collapse"
+          class: "uk-width-1-1 uk-grid-collapse",
         },
       };
     },
@@ -62,13 +62,13 @@ export default {
 </script>
 <style scoped>
 .uk-grid {
-  padding-left: 15px;
+  padding-left: 0px !important;
 }
 
 .uk-grid-column-medium > *,
 .uk-grid-medium > *,
 .uk-grid-collapse > * {
-  padding-left: 15px;
+  padding-left: 0px;
   padding-right: 0px;
 }
 
@@ -87,10 +87,10 @@ export default {
   padding-right: 0px;
 }
 
-
 .uk-grid-divider,
-.uk-grid-medium {
-  margin-left: -15px;
+.uk-grid-medium,
+.uk-grid-collapse {
+  margin-left: 0px !important;
 }
 
 .uk-grid-divider > :not(.uk-first-column)::before {
@@ -102,16 +102,28 @@ export default {
   border-left: 1px solid #a0a0a0;
 }
 
-.uk-grid + .uk-grid, .uk-grid > .uk-grid-margin, * + .uk-grid-margin {
-  margin-top:0px !important
+.uk-grid + .uk-grid,
+.uk-grid > .uk-grid-margin,
+* + .uk-grid-margin {
+  margin-top: 0px !important;
 }
 
-
-.uk-first-column {
-    padding-left: 0px !important;
-    margin-left: 0px !important;
-    padding-left: 0px !important;
+.uk-grid > div {
+  padding-right: 10px;
+  padding-left: 10px;
 }
 
+.uk-grid.uk-grid-divider > div {
+  padding-left: 12px;
+}
 
+div.uk-first-column {
+  padding-left: 0px !important;
+  margin-left: 0px !important;
+  padding-left: 0px !important;
+}
+
+.uk-grid > div:last-child {
+  padding-right: 0px !important;
+}
 </style>

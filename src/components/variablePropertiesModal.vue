@@ -20,7 +20,6 @@
             <li v-bind:class="{ 'uk-tab-error': $v.$error }">
               <a href="#">Basic</a>
             </li>
-            <li><a href="#">Validations</a></li>
             <li><a href="#">Debug</a></li>
           </ul>
           <ul class="uk-switcher uk-margin" uk-overflow-auto>
@@ -72,10 +71,9 @@
                     </div>
                   </div>
                 </fieldset>
+                <h3>Validation</h3>
+                <validationTable :variable="variable" />
               </div>
-            </li>
-            <li>
-              <validationTable :variable="variable" />
             </li>
             <li>
               <pre><code>{{variable}}</code></pre>

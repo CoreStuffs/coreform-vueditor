@@ -79,9 +79,7 @@ export default {
   padding: 6px 8px !important;
   min-height: 100px;
   font-size: 14px !important;
-  font-family: apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
-    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
+  font-family: inherit !important;
 }
 .quillWrapper .ql-picker-label {
   font-size: 14px !important;

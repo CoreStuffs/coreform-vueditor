@@ -99,7 +99,7 @@ var schema = {
       showSeparator: true,
       columns: [
         {
-          width: "1-2",
+          width: "1-3",
           elements: [
             {
               label: "Rue",
@@ -116,20 +116,25 @@ var schema = {
           ],
         },
         {
-          width: "1-2",
+          width: "1-3",
+          elements: [
+            {
+              label: "Localité",
+              variable: "place",
+              placeholder: "Ville, village, hameau...",
+              id: "ctrl_6",
+              type: "textField",
+            },
+          ],
+        },
+        {
+          width: "1-3",
           elements: [
             {
               label: "N°",
               variable: "number",
               placeholder: "Numéro ou lieu-dit",
               id: "ctrl_4",
-              type: "textField",
-            },
-            {
-              label: "Localité",
-              variable: "place",
-              placeholder: "Ville, village, hameau...",
-              id: "ctrl_6",
               type: "textField",
             },
           ],
