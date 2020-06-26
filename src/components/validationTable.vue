@@ -1,11 +1,12 @@
 <template>
   <fieldset class="uk-fieldset">
     <div
-      class="uk-margin"
+      class="uk-grid"
+      uk-grid
       :key="validator.key"
       v-for="validator in validators()"
     >
-      <div class="uk-form-controls">
+      <div class="uk-form-controls uk-width-1-3">
         <label for="chkRequired" class="uk-form-label"
           ><input
             :name="'enb_' + validator.key"
@@ -17,7 +18,10 @@
           {{ validator.label.default }}</label
         >
       </div>
-      <div v-if="isSelected(validator.key)">
+      <div
+        v-if="isSelected(validator.key)"
+        class="uk-width-2-3 uk-form-stacked"
+      >
         <component
           v-if="validator.editor"
           ref="editValidatorId"
@@ -37,6 +41,7 @@
             />
           </div>
         </div>
+        <hr />
       </div>
     </div>
   </fieldset>

@@ -5,6 +5,7 @@
     class="cf uk-flex-top"
     uk-modal="stack:true"
     v-cloak
+    uk-overflow-auto
   >
     <div
       style="transition: none;"
@@ -24,7 +25,7 @@
           </ul>
           <ul class="uk-switcher uk-margin" uk-overflow-auto>
             <li>
-              <div class="uk-form-horizontal uk-margin-large">
+              <div class="uk-form-horizontal uk-margin-small">
                 <fieldset class="uk-fieldset">
                   <div class="uk-margin">
                     <label for="txtValue" class="uk-form-label"
@@ -71,7 +72,10 @@
                     </div>
                   </div>
                 </fieldset>
-                <h3>Validation</h3>
+              </div>
+              <hr />
+              <div class="uk-form-stacked uk-margin-small">
+                <h5>Validation</h5>
                 <validationTable :variable="variable" />
               </div>
             </li>

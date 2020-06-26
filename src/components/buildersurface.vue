@@ -61,7 +61,17 @@
       <div class="uk-modal-dialog uk-modal-body uk-width-5-6@s uk-width-1-2@m">
         <button class="uk-modal-close-default" type="button" uk-close></button>
         <h2 class="uk-modal-title">Variables</h2>
-        <variablesTable :variables="schema.variables"></variablesTable>
+        <div>
+          <variablesTable :variables="schema.variables"></variablesTable>
+        </div>
+        <div class="uk-modal-footer uk-text-right">
+          <button
+            class="uk-button uk-button-primary uk-modal-close"
+            type="button"
+          >
+            Close
+          </button>
+        </div>
       </div>
     </div>
 
