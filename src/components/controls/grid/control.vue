@@ -65,24 +65,14 @@ export default {
 </script>
 <style scoped>
 .uk-grid {
-<<<<<<< HEAD
-  padding-left: 15px;
- 
-=======
   padding-left: 0px !important;
->>>>>>> cd7377feef2cf2a822deef1e2365253915e8f3d1
 }
 
 .uk-grid-column-medium > *,
 .uk-grid-medium > *,
 .uk-grid-collapse > * {
-<<<<<<< HEAD
-  padding-left: 15px;
-  padding-right: 0px; 
-=======
   padding-left: 0px;
   padding-right: 0px;
->>>>>>> cd7377feef2cf2a822deef1e2365253915e8f3d1
 }
 
 .grid_edit {

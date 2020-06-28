@@ -19,42 +19,24 @@
 <script>
 /* https://github.com/mengxiong10/vue2-datepicker */
 import controlBase from "@/components/.infra/controlBase.vue";
-<<<<<<< HEAD
 import formControl from "@/components/.infra/formControl.vue";
 import DatePicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
-=======
-import DatePicker from "vue2-datepicker";
-import "vue2-datepicker/index.css";
->>>>>>> cd7377feef2cf2a822deef1e2365253915e8f3d1
 
 import "vue2-datepicker/locale/fr";
 import "vue2-datepicker/locale/ru";
 export default {
-<<<<<<< HEAD
   
   extends:controlBase,
  data:function(){
    return {
      lang:'en',
      data:this.value
-=======
-  extends: controlBase,
-  data: function () {
-    return {
-      lang: "en",
-      data: this.value,
->>>>>>> cd7377feef2cf2a822deef1e2365253915e8f3d1
     };
   },
   components: {
-<<<<<<< HEAD
     formControl,
     DatePicker
-=======
-    formControl: () => import("@/components/.infra/formControl.vue"),
-    DatePicker,
->>>>>>> cd7377feef2cf2a822deef1e2365253915e8f3d1
   },
   methods: {
     updateInput: function () {

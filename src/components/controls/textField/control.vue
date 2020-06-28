@@ -24,11 +24,7 @@ import formControl from "@/components/.infra/formControl.vue";
 export default {
   extends: controlBase,
   components: {
-<<<<<<< HEAD
     formControl
-=======
-    formControl: () => import("@/components/.infra/formControl.vue"),
->>>>>>> cd7377feef2cf2a822deef1e2365253915e8f3d1
   },
   data: function () {
     return { data: this.value };

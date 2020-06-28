@@ -63,7 +63,7 @@ export default {
   methods: {
     handleChange: function (e) {
       var el;
-      var name = e.srcElement.name.substring(4).toLowerCase();
+      var name = e.srcElement.name.substring(4);
       var arr = this.variable.validations.filter(
         (o) => o.type.toLowerCase() === name
       );

@@ -109,15 +109,9 @@ export default {
     },
   },
   components: {
-<<<<<<< HEAD
     'v-select':vSelect,
     formControl
   }
-=======
-    "v-select": () => import("vue-select"),
-    formControl: () => import("@/components/.infra/formControl.vue"),
-  },
->>>>>>> cd7377feef2cf2a822deef1e2365253915e8f3d1
 };
 </script>
 <style scoped></style>

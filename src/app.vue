@@ -165,15 +165,8 @@ export default {
   data: function () {
     return {
       dataAdapter: require("./datasources.js").customDataAdapter,
-<<<<<<< HEAD
-      schema: {},// schema,
-
-
+      schema: {}, // schema,
       size:50
-=======
-      schema: schema,
-      size: 50,
->>>>>>> cd7377feef2cf2a822deef1e2365253915e8f3d1
     };
   },
   components: c(),
