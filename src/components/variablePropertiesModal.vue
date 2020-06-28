@@ -1,5 +1,12 @@
 <template>
-  <div :ref="editformId" :id="editformId" class="cf uk-flex-top" uk-modal="stack:true" v-cloak>
+  <div
+    :ref="editformId"
+    :id="editformId"
+    class="cf uk-flex-top"
+    uk-modal="stack:true"
+    v-cloak
+    uk-overflow-auto
+  >
     <div
       style="transition: none;"
       class="uk-modal-dialog uk-transition-fade uk-margin-auto-vertical"
@@ -14,12 +21,11 @@
             <li v-bind:class="{ 'uk-tab-error': $v.$error }">
               <a href="#">Basic</a>
             </li>
-            <li><a href="#">Validations</a></li>
             <li><a href="#">Debug</a></li>
           </ul>
           <ul class="uk-switcher uk-margin" uk-overflow-auto>
             <li>
-              <div class="uk-form-horizontal uk-margin-large">
+              <div class="uk-form-horizontal uk-margin-small">
                 <fieldset class="uk-fieldset">
                   <div class="uk-margin">
                     <label for="txtValue" class="uk-form-label"
@@ -67,9 +73,11 @@
                   </div>
                 </fieldset>
               </div>
-            </li>
-            <li>
-              <validationTable :variable="variable" />
+              <hr />
+              <div class="uk-form-stacked uk-margin-small">
+                <h5>Validation</h5>
+                <validationTable :variable="variable" />
+              </div>
             </li>
             <li>
               <pre><code>{{variable}}</code></pre>
@@ -183,7 +191,9 @@ export default {
       if (Object.keys(this.acceptedVariablesTypes).length === 1)
         this.variable.type = Object.keys(this.acceptedVariablesTypes)[0];
 
-      var modal = UIkit.modal(document.getElementById(this.editformId),{container:false});
+      var modal = UIkit.modal(document.getElementById(this.editformId), {
+        container: false,
+      });
       var t = this;
       UIkit.util.on(
         document.getElementById(this.editformId),

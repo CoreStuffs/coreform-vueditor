@@ -1,12 +1,18 @@
 <template>
-  <div :ref="editformId" :id="editformId" class="cf uk-flex-top" uk-modal v-cloak>
+  <div
+    :ref="editformId"
+    :id="editformId"
+    class="cf uk-flex-top"
+    uk-modal
+    v-cloak
+  >
     <div
       style="transition: none;"
       class="uk-modal-dialog uk-transition-fade uk-margin-auto-vertical"
     >
       <button class="uk-modal-close-default" type="button" uk-close></button>
       <div class="uk-modal-body uk-form-stacked" id="editFormBody">
-        <h2 class="uk-modal-title">{{title}}</h2>
+        <h2 class="uk-modal-title">{{ title }}</h2>
         <div>
           <ul uk-tab>
             <li><a href="#">Basic</a></li>
@@ -114,7 +120,9 @@ export default {
         }
       }
       this.$options.components[control.type] = ctrl.properties.default;
-      UIkit.modal(document.getElementById(this.editformId), {container:false}).show();
+      UIkit.modal(document.getElementById(this.editformId), {
+        container: false,
+      }).show();
       this.control = deepCopy(control);
       this.$forceUpdate();
     },
@@ -171,7 +179,7 @@ export default {
       isDataField: false,
       callback: function () {},
       control: {},
-      title:"",
+      title: "",
       controlValidations: { control: {} },
     };
   },

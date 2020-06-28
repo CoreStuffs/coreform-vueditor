@@ -1,6 +1,6 @@
 <script>
 export default {
-    inject: ["$getControlValidator"],
+    inject: ["$getControlValidator", "$getVariableByName"],
     data:function(){
         return {};
     },
@@ -30,18 +30,15 @@ export default {
             if (this.$validation && this.$validation.$error && this.schema.variable) {
                 for (const valid in this.$validation) {
                     if (!String(this.$validation[valid]).startsWith("$") && this.$validation[valid] === false) {
-                        for (const varid in this.$root.$form.schema.variables) {
-                            var variable = this.$root.$form.schema.variables[varid];
-                            if (variable.name === this.schema.variable) {
-                                for (const vali in variable.validations) {
-                                    var validation = variable.validations[vali];
-                                    if (validation.type === this.$validation.$params[valid].type) {
-                                        return validation.errorMessage;
-                                    }
+                        var variable = this.$getVariableByName(this.schema.variable);
+                        for (const vali in variable.validations) {
+                            var validation = variable.validations[vali];
+                            if(validation.enabled){
+                                if (validation.type === this.$validation.$params[valid].type) {
+                                    return validation.errorMessage ?? "Validation error: " + validation.type;
                                 }
                             }
                         }
-
                     }
                 }
             }

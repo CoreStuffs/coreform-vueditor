@@ -92,9 +92,9 @@ export default {
 .cf_field{
     position: relative;
     border: 2px solid transparent;
-    padding:3px;
+    /* padding:3px;
     padding-right:15px;
-    margin-right:15px;
+    margin-right:15px; */
     width:100%
 }
 

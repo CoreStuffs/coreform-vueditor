@@ -8,9 +8,14 @@
         <option value="50">50%</option>
         <option value="30">30%</option>
       </select>
-
     </h1>
-    <div :style="{position: 'relative', width: size + '%', left : (100-size)/2 + '%'}">
+    <div
+      :style="{
+        position: 'relative',
+        width: size + '%',
+        left: (100 - size) / 2 + '%',
+      }"
+    >
       <buildersurface
         v-model="schema"
         :externalDataAdapter="dataAdapter"
@@ -35,12 +40,16 @@ var schema = {
       type: "text",
       validations: [
         {
+          enabled: true,
           type: "required",
           errorMessage: "This field is required",
         },
         {
+          enabled: false,
           type: "minLength",
-          minLength: 3,
+          parameters: {
+            minLength: 3,
+          },
           errorMessage: "Minimum length of 3 characters",
         },
       ],
@@ -50,6 +59,7 @@ var schema = {
       type: "listitemarray",
       validations: [
         {
+          enabled: true,
           type: "required",
           errorMessage: "At least one country",
         },
@@ -60,10 +70,12 @@ var schema = {
       type: "datetime",
       validations: [
         {
+          enabled: true,
           type: "required",
           errorMessage: "At least one country",
         },
         {
+          enabled: true,
           type: "dateTime",
           errorMessage: "Invalid date format",
         },
@@ -87,7 +99,7 @@ var schema = {
       showSeparator: true,
       columns: [
         {
-          width: "1-2",
+          width: "1-3",
           elements: [
             {
               label: "Rue",
@@ -104,20 +116,25 @@ var schema = {
           ],
         },
         {
-          width: "1-2",
+          width: "1-3",
+          elements: [
+            {
+              label: "Localité",
+              variable: "place",
+              placeholder: "Ville, village, hameau...",
+              id: "ctrl_6",
+              type: "textField",
+            },
+          ],
+        },
+        {
+          width: "1-3",
           elements: [
             {
               label: "N°",
               variable: "number",
               placeholder: "Numéro ou lieu-dit",
               id: "ctrl_4",
-              type: "textField",
-            },
-            {
-              label: "Localité",
-              variable: "place",
-              placeholder: "Ville, village, hameau...",
-              id: "ctrl_6",
               type: "textField",
             },
           ],
@@ -148,14 +165,16 @@ export default {
   data: function () {
     return {
       dataAdapter: require("./datasources.js").customDataAdapter,
+<<<<<<< HEAD
       schema: {},// schema,
 
 
       size:50
+=======
+      schema: schema,
+      size: 50,
+>>>>>>> cd7377feef2cf2a822deef1e2365253915e8f3d1
     };
-  },
-  mounted: function () {
-    document.title = "Demo CoreForm Components";
   },
   components: c(),
   computed: {

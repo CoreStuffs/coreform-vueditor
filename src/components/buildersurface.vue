@@ -61,7 +61,17 @@
       <div class="uk-modal-dialog uk-modal-body uk-width-5-6@s uk-width-1-2@m">
         <button class="uk-modal-close-default" type="button" uk-close></button>
         <h2 class="uk-modal-title">Variables</h2>
-        <variablesTable :variables="schema.variables"></variablesTable>
+        <div>
+          <variablesTable :variables="schema.variables"></variablesTable>
+        </div>
+        <div class="uk-modal-footer uk-text-right">
+          <button
+            class="uk-button uk-button-primary uk-modal-close"
+            type="button"
+          >
+            Close
+          </button>
+        </div>
       </div>
     </div>
 
@@ -78,11 +88,15 @@
         <div uk-grid class="uk-grid-small">
           <div class="uk-width-1-2@m">
             <h4>Schema</h4>
-              <pre uk-overflow-auto><code style="font-size:12px">{{ schema }}</code></pre>
+            <pre
+              uk-overflow-auto
+            ><code style="font-size:12px">{{ schema }}</code></pre>
           </div>
           <div class="uk-width-1-2@m">
             <h4>Data</h4>
-              <pre uk-overflow-auto><code style="font-size:12px">{{ data }}</code></pre>
+            <pre uk-overflow-auto>
+              <code style="font-size:12px">{{ data }}</code>
+            </pre>
           </div>
         </div>
       </div>
@@ -148,8 +162,12 @@ export default {
       var i = 0;
       for (const valid in variable.validations) {
         var v = variable.validations[valid];
-        rv["v" + i] = this.staticData.formValidators[v.type].build(v);
-        i++;
+        if (v.enabled) {
+          rv["v" + i] = this.staticData.formValidators[v.type].build(
+            v.parameters
+          );
+          i++;
+        }
       }
     }
     return obj;
@@ -201,6 +219,15 @@ export default {
       if (o.label) el.label = deepCopy(o.label);
       if (o.defaultSchema) el.defaultSchema = deepCopy(o.defaultSchema);
       t.controls[key] = el;
+    }
+
+    for (let [, value] of Object.entries(this.staticData.formValidators)) {
+      if (value.editorPath) {
+        if (value.editorPath.indexOf("/") < 0)
+          value.editorPath = "./validators/" + value.editorPath;
+        let obj = require(value.editorPath + "/editor.vue");
+        value.editor = obj;
+      }
     }
   },
   methods: {
@@ -421,7 +448,7 @@ export default {
   border-left: 1px solid gray;
 }
 
-.toolBox  > div {
+.toolBox > div {
   padding: 10px;
   padding-left: 20px;
   padding-right: 20px;

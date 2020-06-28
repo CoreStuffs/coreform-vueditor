@@ -22,4 +22,3 @@ function deepCopy(from, to) {
 }
 
 export { deepCopy };
-
