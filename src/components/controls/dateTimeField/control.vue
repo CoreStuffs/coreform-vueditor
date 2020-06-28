@@ -21,12 +21,14 @@
 <script>
 /* https://github.com/mengxiong10/vue2-datepicker */
 import controlBase from "@/components/.infra/controlBase.vue";
+import formControl from "@/components/.infra/formControl.vue";
 import DatePicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
 
 import 'vue2-datepicker/locale/fr';
 import 'vue2-datepicker/locale/ru';
 export default {
+  
   extends:controlBase,
  data:function(){
    return {
@@ -35,7 +37,7 @@ export default {
     };
  },
   components: {
-    formControl: () => import("@/components/.infra/formControl.vue"),
+    formControl,
     DatePicker
   },
   methods: {

@@ -98,6 +98,11 @@ import { deepCopy } from "@/components/utils.js";
 import staticData from "@/components/staticData.js";
 import "../assets/style.sass";
 import { validationMixin } from "vuelidate";
+import controlset from "@/components/.infra/controlset";
+import variablesTable from "@/components/variablesTable.vue";
+import variablePropertiesModal from "@/components/variablePropertiesModal.vue";
+import controlPropertiesModal from "@/components/controlPropertiesModal.vue";
+import draggable from "vuedraggable";
 var globalId = 1;
 export default {
   mixins: [validationMixin],
@@ -105,13 +110,11 @@ export default {
   display: "Simple",
   order: 0,
   components: {
-    controlset: () => import("@/components/.infra/controlset"),
-    variablesTable: () => import("@/components/variablesTable.vue"),
-    variablePropertiesModal: () =>
-      import("@/components/variablePropertiesModal.vue"),
-    controlPropertiesModal: () =>
-      import("@/components/controlPropertiesModal.vue"),
-    draggable: () => import("vuedraggable"),
+    controlset,
+    variablesTable,
+    variablePropertiesModal,
+    controlPropertiesModal,
+    draggable,
   },
   // value : containes the schema
   // formControls: allows override of staticData.formControls

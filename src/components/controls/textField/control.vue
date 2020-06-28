@@ -19,10 +19,11 @@
 </template>
 <script>
 import controlBase from "@/components/.infra/controlBase.vue";
+import formControl from "@/components/.infra/formControl.vue";
 export default {
   extends:controlBase,
   components: {
-    formControl: () => import("@/components/.infra/formControl.vue")
+    formControl
   },
   data:function(){
     return {data: this.value };

@@ -148,7 +148,7 @@ export default {
   data: function () {
     return {
       dataAdapter: require("./datasources.js").customDataAdapter,
-      schema: schema,
+      schema: {},// schema,
 
 
       size:50

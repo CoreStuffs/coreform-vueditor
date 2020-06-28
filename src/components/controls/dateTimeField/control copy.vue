@@ -22,6 +22,7 @@
 </template>
 <script>
 import controlBase from "@/components/.infra/controlBase.vue";
+import formControl from "@/components/.infra/formControl.vue";
 import moment from 'moment';
 import 'moment/locale/fr';
 moment.locale("fr");
@@ -30,7 +31,7 @@ export default {
   extends:controlBase,
  
   components: {
-    formControl: () => import("@/components/.infra/formControl.vue"),
+    formControl,
   },
   computed: {
     input: function() {

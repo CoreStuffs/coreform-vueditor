@@ -17,11 +17,12 @@
 </template>
 <script>
 import controlBase from "@/components/.infra/controlBase.vue";
+import formControl from "@/components/.infra/formControl.vue";
 import { VueEditor } from "vue2-editor";
 export default {
   extends: controlBase,
   components: {
-    formControl: () => import("@/components/.infra/formControl.vue"),
+    formControl,
     VueEditor,
   },
 

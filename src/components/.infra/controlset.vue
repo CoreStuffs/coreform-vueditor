@@ -7,6 +7,7 @@
     swap-Threshold="0.2"
     handle=".moveHandle"
     ghost-class="ghost"
+    :component-data="getComponentData()"
     >
         <component v-for="el in elements"
                     :is="el.type"
@@ -21,12 +22,13 @@
   </draggable>
 </template>
 <script>
+import draggable from "vuedraggable";
 export default {
   inject:["$formData","$controls","$openControlSettingsByObject"],
   name: "controlset",
   props: ['elements','editMode'],
   components: {
-      'draggable' : () => import('vuedraggable'),
+      draggable,
   },
   created:function(){
       var t = this;
@@ -37,10 +39,10 @@ export default {
   methods:{
     getComponentData() {
       return {
-        // attrs:{
-        //   'uk-grid': true,
-        //   'class': "uk-grid-collapse"
-        // },
+        attrs:{
+          'data-text':'Drag and drop elements here',
+          'class': "dropzone"
+        },
       }
     },
     getData:function(variable){
@@ -88,6 +90,17 @@ export default {
   box-shadow: 5px 5px 5px grey;
 }
 
+div:empty{
+  min-height:25px;
+  border:1px dashed silver
+}
+
+div:empty:before{
+  content:attr(data-text);
+  color:#e0e0e0;
+  padding:2px;
+  font-weight: 100;
+}
 
 </style>
 
