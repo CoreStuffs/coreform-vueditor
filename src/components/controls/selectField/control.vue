@@ -109,9 +109,9 @@ export default {
     },
   },
   components: {
-    'v-select':vSelect,
-    formControl
-  }
+    "v-select": vSelect,
+    formControl,
+  },
 };
 </script>
 <style scoped></style>
