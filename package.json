@@ -5,14 +5,11 @@
   "main": "./dist/coreform-components.common.js",
   "scripts": {
     "serve": "cross-env vue-cli-service serve --mode development",
-    "build": "cross-env vue-cli-service build  --mode production --target lib --name coreform-components ./src/components/index.js",
+    "build": "cross-env vue-cli-service build  --mode production --target lib --name coreform-components ./src/components/buildersurface.vue",
     "lint": "vue-cli-service lint"
   },
   "files": [
-    "dist/*",
-    "public/*",
-    "*.json",
-    "*.js"
+    "dist/*"
   ],
   "dependencies": {
     "axios": "^0.19.2",

@@ -1,8 +1,17 @@
 <meta charset="utf-8">
 <title>coreform-components demo</title>
+<script src="https://unpkg.com/vue"></script>
 <script src="./coreform-components.umd.js"></script>
 
 
+<div id="app">
+  <demo></demo>
+</div>
+
 <script>
-console.log(coreform-components)
+new Vue({
+  components: {
+    demo: coreform-components
+  }
+}).$mount('#app')
 </script>

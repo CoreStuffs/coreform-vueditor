@@ -7,4 +7,9 @@ module.exports = {
   chainWebpack: (config) => {
     config.optimization.delete("splitChunks");
   },
+  configureWebpack: {
+    resolve: {
+      symlinks: false,
+    },
+  },
 };
