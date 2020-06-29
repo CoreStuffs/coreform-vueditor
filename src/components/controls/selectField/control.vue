@@ -41,6 +41,8 @@
   </formControl>
 </template>
 <script>
+import vSelect from "vue-select";
+import formControl from "@/components/.infra/formControl.vue";
 import controlBase from "@/components/.infra/controlBase.vue";
 export default {
   inject: ["$getExternalData", "$externalDataSources"],
@@ -107,8 +109,8 @@ export default {
     },
   },
   components: {
-    "v-select": () => import("vue-select"),
-    formControl: () => import("@/components/.infra/formControl.vue"),
+    "v-select": vSelect,
+    formControl,
   },
 };
 </script>

@@ -24,6 +24,9 @@
   </div>
 </template>
 <script>
+import controlset from "@/components/.infra/controlset.vue";
+import formControl from "@/components/.infra/formControl.vue";
+import draggable from "vuedraggable";
 export default {
   name: "Grid",
   data: function () {
@@ -41,9 +44,9 @@ export default {
   },
   created: function () {},
   components: {
-    draggable: () => import("vuedraggable"),
-    controlset: () => import("@/components/.infra/controlset"),
-    formControl: () => import("@/components/.infra/formControl"),
+    draggable,
+    controlset,
+    formControl,
   },
   methods: {
     getVariable: function (name) {
@@ -73,7 +76,7 @@ export default {
 }
 
 .grid_edit {
-  min-height: 25px;
+  min-height: 35px;
 }
 
 .grid_edit > div {

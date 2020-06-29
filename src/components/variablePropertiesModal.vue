@@ -113,7 +113,7 @@ import { deepCopy } from "@/components/utils.js";
 Vue.use(Vuelidate);
 
 import { required, minLength, alphaNum } from "vuelidate/lib/validators";
-
+import validationTable from "@/components/validationTable.vue";
 export default {
   inject: ["$variableTypes", "$saveVariable"],
   data: function () {
@@ -128,7 +128,7 @@ export default {
     };
   },
   components: {
-    validationTable: () => import("@/components/validationTable.vue"),
+    validationTable,
   },
   validations: function () {
     return {
