@@ -1,12 +1,12 @@
 <template>
   <div>
-    <label class="uk-form-label">Minimum length</label>
+    <label class="uk-form-label">Maximum length</label>
     <div class="uk-form-controls">
       <input
         class="uk-input uk-form-small"
         ref="txtLength"
-        name="txtMinLength"
-        v-model="parameters.minLength"
+        name="txtMaxLength"
+        v-model="parameters.maxLength"
         @input="updateInput"
       />
     </div>
@@ -14,7 +14,7 @@
 </template>
 <script>
 export default {
-  name: "minLength",
+  name: "maxLength",
   data: function () {
     return { parameters: this.value };
   },

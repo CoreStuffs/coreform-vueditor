@@ -1,49 +1,54 @@
 <template>
   <fieldset class="uk-fieldset">
-    <div
-      class="uk-grid"
-      uk-grid
-      :key="validator.key"
-      v-for="validator in validators()"
-    >
-      <div class="uk-form-controls uk-width-1-3">
-        <label for="chkRequired" class="uk-form-label"
-          ><input
-            :name="'enb_' + validator.key"
-            :checked="isSelected(validator.key)"
-            @change="handleChange($event)"
-            class="uk-checkbox"
-            type="checkbox"
-          />
-          {{ validator.label.default }}</label
-        >
-      </div>
+    <draggable :list="validators()">
       <div
-        v-if="isSelected(validator.key)"
-        class="uk-width-2-3 uk-form-stacked"
+        class="uk-grid"
+        uk-grid
+        :key="validator.key"
+        v-for="validator in validators()"
       >
-        <component
-          v-if="validator.editor"
-          ref="editValidatorId"
-          :is="validator.key"
-          :value="validator.parameters"
-        ></component>
-        <div>
-          <label class="uk-form-label">Error message</label>
-          <div class="uk-form-controls">
-            <input
-              type="text"
-              :name="'err_' + validator.key"
-              placeholder="To display if the value is not valid"
-              class="uk-input uk-form-small"
-              v-model="validator.errorMessage"
-              @change="handleChange"
+        <div class="uk-form-controls uk-width-1-3">
+          <label for="chkRequired" class="uk-form-label"
+            ><input
+              :ref="'enb_' + validator.key"
+              :checked="isSelected(validator.key)"
+              @change="handleChange('enb_' + validator.key)"
+              class="uk-checkbox"
+              type="checkbox"
             />
-          </div>
+            {{ validator.label.default }}</label
+          >
         </div>
-        <hr />
+        <div
+          v-show="isSelected(validator.key)"
+          class="uk-width-2-3 uk-form-stacked"
+        >
+          <div v-show="validator.editor" class="uk-margin-small-bottom">
+            <component
+              v-if="validator.editor"
+              :ref="'par_' + validator.key"
+              :is="validator.key"
+              v-model="validator.parameters"
+              @input="handleChange('par_' + validator.key)"
+            ></component>
+          </div>
+          <div>
+            <label class="uk-form-label">Error message</label>
+            <div class="uk-form-controls">
+              <input
+                type="text"
+                :ref="'err_' + validator.key"
+                placeholder="To display if the value is not valid"
+                class="uk-input uk-form-small"
+                v-model="validator.errorMessage"
+                @change="handleChange('err_' + validator.key)"
+              />
+            </div>
+          </div>
+          <hr />
+        </div>
       </div>
-    </div>
+    </draggable>
   </fieldset>
 </template>
 <script>
@@ -51,6 +56,9 @@ export default {
   inject: ["$variableTypes", "$formValidators"],
   validation: function () {
     return {};
+  },
+  components: {
+    draggable: () => import("vuedraggable"),
   },
   created: function () {
     for (let [key, value] of Object.entries(this.$formValidators)) {
@@ -61,36 +69,42 @@ export default {
     }
   },
   methods: {
-    handleChange: function (e) {
+    handleChange: function (name) {
       var el;
-      var name = e.srcElement.name.substring(4).toLowerCase();
+      var srcEl = this.$refs[name][0];
+      var typeName = name.substring(4);
       var arr = this.variable.validations.filter(
-        (o) => o.type.toLowerCase() === name
+        (o) => o.type.toLowerCase() === typeName.toLowerCase()
       );
       if (arr.length === 0) {
-        el = { type: name };
+        el = { type: typeName };
         this.variable.validations.push(el);
       } else {
         el = arr[0];
       }
 
-      if (e.srcElement.name.indexOf("enb_") === 0) {
-        if (e.srcElement.checked) {
+      if (name.indexOf("enb_") === 0) {
+        if (srcEl.checked) {
           el.enabled = true;
         } else {
           el.enabled = false;
         }
       }
 
-      if (e.srcElement.name.indexOf("err_") === 0) {
-        el.errorMessage = e.srcElement.value;
+      if (name.indexOf("err_") === 0) {
+        el.errorMessage = srcEl.value;
+      }
+
+      if (name.indexOf("par_") === 0) {
+        el.parameters = srcEl.parameters;
       }
 
       this.$emit("input", this.variable);
+      this.$forceUpdate();
     },
     isSelected: function (validatorKey) {
       var f = this.variable.validations.filter(
-        (o) => o.type === validatorKey && o.enabled
+        (o) => o.type.toLowerCase() === validatorKey.toLowerCase() && o.enabled
       );
       return f.length === 1;
     },
@@ -106,7 +120,9 @@ export default {
         vals.forEach((element) => {
           var o = this.$formValidators[element];
           o.key = element;
-          var f = this.variable.validations.filter((o) => o.type === element);
+          var f = this.variable.validations.filter(
+            (o) => o.type.toLowerCase() === element.toLowerCase()
+          );
           if (f.length === 1) {
             var vt = f[0];
             if (vt.errorMessage) o.errorMessage = vt.errorMessage;

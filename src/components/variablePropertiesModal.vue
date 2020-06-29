@@ -12,14 +12,14 @@
       class="uk-modal-dialog uk-transition-fade uk-margin-auto-vertical"
     >
       <button class="uk-modal-close-default" type="button" uk-close></button>
-      <!--<div class="uk-modal-header">
-                <h2 class="uk-modal-title">Variable</h2>
-            </div>-->
       <div class="uk-modal-body uk-text-small" id="editFormBody">
         <div>
           <ul uk-tab>
             <li v-bind:class="{ 'uk-tab-error': $v.$error }">
               <a href="#">Basic</a>
+            </li>
+            <li v-bind:class="{ 'uk-tab-error': $v.$error }">
+              <a href="#">Validation</a>
             </li>
             <li><a href="#">Debug</a></li>
           </ul>
@@ -73,7 +73,8 @@
                   </div>
                 </fieldset>
               </div>
-              <hr />
+            </li>
+            <li>
               <div class="uk-form-stacked uk-margin-small">
                 <h5>Validation</h5>
                 <validationTable :variable="variable" />
@@ -218,6 +219,7 @@ export default {
       if (this.callback !== null && typeof this.callback !== "undefined") {
         var obj = deepCopy(this.variable);
         this.$saveVariable(this.variable, this.srcName);
+        this.$forceUpdate();
         this.callback(obj);
       }
       //}

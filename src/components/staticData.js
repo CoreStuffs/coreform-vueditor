@@ -57,13 +57,14 @@ export default {
     },
     minLength: {
       label: { default: "Minimum length" },
-      editorPath: "minlength",
+      editorPath: "minLength",
       build: function (data) {
         return minLength(data.minLength);
       },
     },
     maxLength: {
       label: { default: "Maximum length" },
+      editorPath: "maxLength",
       build: function (data) {
         return maxLength(data.maxLength);
       },
