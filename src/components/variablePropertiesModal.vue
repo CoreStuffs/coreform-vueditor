@@ -106,15 +106,13 @@
 </template>
 
 <script>
-import Vue from "vue";
 import UIkit from "uikit";
-import Vuelidate from "vuelidate";
+import { validationMixin } from "vuelidate";
 import { deepCopy } from "@/components/utils.js";
-Vue.use(Vuelidate);
-
 import { required, minLength, alphaNum } from "vuelidate/lib/validators";
 import validationTable from "@/components/validationTable.vue";
 export default {
+  mixins: [validationMixin],
   inject: ["$variableTypes", "$saveVariable"],
   data: function () {
     return {

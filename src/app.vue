@@ -21,6 +21,19 @@
         :externalDataAdapter="dataAdapter"
       ></buildersurface>
     </div>
+    <blockquote class="example">
+      <pre><code>
+      &lt;script&gt;<br />
+      import vue from &quot;vue&quot;;<br />
+      import coreform from &quot;coreform-components&quot;;<br />
+      vue.use(coreform);<br />
+        ...
+      &lt;/script&gt;<br />
+      &lt;template&gt;<br />
+        &lt;coreform-builder /&gt;<br />
+      &lt;/template&gt;
+    </code></pre>
+    </blockquote>
   </div>
 </template>
 <script>
@@ -181,5 +194,11 @@ export default {
 <style scoped>
 #app {
   margin: 10px;
+}
+
+.example {
+  border: 1px solid gray;
+  margin: 50px;
+  padding: 20px;
 }
 </style>

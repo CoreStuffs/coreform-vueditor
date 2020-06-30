@@ -1,13 +1,12 @@
-import Vue from "vue";
 import buildersurface from "./buildersurface.vue";
 import viewer from "./viewer.vue";
-const Components = {
-  builder: buildersurface,
-  viewer,
+
+export default {
+  // eslint-disable-next-line no-unused-vars
+  install(Vue, options) {
+    // Let's register our component globally
+    // https://vuejs.org/v2/guide/components-registration.html
+    Vue.component("coreform-builder", buildersurface);
+    Vue.component("coreform-viewer", viewer);
+  },
 };
-
-Object.keys(Components).forEach((name) => {
-  Vue.component(name, Components[name]);
-});
-
-export default Components;
