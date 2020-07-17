@@ -4,7 +4,8 @@
 <script>
 export default {
   data: function () {
-    return { msg: "Hello" };
+    return {};
   },
+  props: ["msg"],
 };
 </script>
