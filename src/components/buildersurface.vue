@@ -94,9 +94,9 @@
           </div>
           <div class="uk-width-1-2@m">
             <h4>Data</h4>
-            <pre uk-overflow-auto>
-              <code style="font-size:12px">{{ data }}</code>
-            </pre>
+            <pre
+              uk-overflow-auto
+            ><code style="font-size:12px">{{ data }}</code></pre>
           </div>
         </div>
       </div>

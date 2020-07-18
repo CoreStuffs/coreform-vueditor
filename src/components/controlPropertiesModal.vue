@@ -83,20 +83,19 @@
   </div>
 </template>
 <script>
-import Vue from "vue";
 import UIkit from "uikit";
-import Vuelidate from "vuelidate";
-Vue.use(Vuelidate);
+import { validationMixin } from "vuelidate";
 import { deepCopy } from "@/components/utils.js";
 
 import { required, minLength, alphaNum } from "vuelidate/lib/validators";
 export default {
+  mixins: [validationMixin],
   inject: [
     "$getControlByTag",
     "$getVariablesByType",
     "$variableTypes",
     "$controls",
-    "$openVariableProperties"
+    "$openVariableProperties",
   ],
   //   created:function(){
   //         this.$controls.forEach(control=>{
