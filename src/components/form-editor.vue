@@ -413,7 +413,9 @@ export default {
   },
 };
 </script>
-
+<style lang="sass">
+@import "../assets/style.sass"
+</style>
 <style>
 .ghost {
   opacity: 0.5;
