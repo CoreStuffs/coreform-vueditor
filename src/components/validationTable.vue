@@ -116,10 +116,14 @@ export default {
       ) {
         var vals = this.$variableTypes[this.variable.type].optionalValidators;
         var ret = [];
-
+        
         vals.forEach((element) => {
           var o = this.$formValidators[element];
           o.key = element;
+          if (o.editor) {
+            let obj = o.editor;
+            this.$options.components[o.key] = obj.default;
+          }
           var f = this.variable.validations.filter(
             (o) => o.type.toLowerCase() === element.toLowerCase()
           );

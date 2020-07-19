@@ -136,7 +136,6 @@ export default {
         name: {
           required: required,
           alphaNum: alphaNum,
-          minLength: minLength(3),
           unique: (value) =>
             this.$getVariableByName(value) &&
             this.srcName.toLowerCase() === value.toLowerCase(),

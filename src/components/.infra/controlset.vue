@@ -3,7 +3,6 @@
     :list="elements" 
     group="cfShareGroupForDesignSurface"
     @add="onAdd"
-    @end="onEnd"
     swap-Threshold="0.2"
     handle=".moveHandle"
     ghost-class="ghost"
@@ -13,7 +12,7 @@
                     :is="el.type"
                     :schema="el"
                     :editMode="editMode"
-                    
+                    v-if="!el.isNew"
                     v-model="$formData[el.variable]"
                     :data="JSON.stringify({id:el.id, isNew:false})"
                    
@@ -36,11 +35,6 @@ export default {
         t.$options.components[key] = value.control.default;
       };
   },
-  watch:{
-    $controls:function(){
-      console.log("updated control list...");
-    }
-  },
   methods:{
     getComponentData() {
       return {
@@ -54,17 +48,7 @@ export default {
       if(!variable) return null;
       return this.$formData[variable];
     },
-    onEnd:function(a){
-       console.log("End");
-            for (let [key, value] of Object.entries( this.$controls)) {
-              console.log('END - ' + key + ' - ' + value);
-            };
-    },
-    onClone:function(a){
-      console.log("Clone");
-    },
     onAdd:function(a){
-       console.log("Add");
           //Trick: We try to find an element with isNew (a new one). For whatever reason, it can be at newindex or oldindex (investigation required).
           //If, after all, it has no isNew... it is not a new one
           if(a.pullMode === "clone"){
@@ -86,6 +70,7 @@ export default {
               }
             var index = a.newIndex;
             this.$openControlSettingsByObject(obj, (o)=>{
+              t.$options.components[o.type] = t.$controls[o.type].control.default;
               if(t.elements.length>0){
                 t.elements.splice(index, 0, o);
               }else{
