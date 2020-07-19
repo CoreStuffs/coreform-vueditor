@@ -5,7 +5,7 @@
   "main": "./dist/coreform-components.common.js",
   "scripts": {
     "serve": "cross-env vue-cli-service serve --mode development",
-    "build": "cross-env vue-cli-service build --target lib --name coreform-components ./src/components/index.js",
+    "build": "cross-env vue-cli-service build --target wc-async --name coreform-components ./src/components/form-*.vue",
     "lint": "vue-cli-service lint"
   },
   "files": [
@@ -18,13 +18,14 @@
     "moment": "^2.26.0",
     "uikit": "^3.5.3",
     "vue": "^2.6.11",
+    "vue-custom-element": "^3.2.14",
     "vue-quill-editor": "^3.0.6",
     "vue-select": "^3.10.3",
     "vue2-datepicker": "^3.6.0",
     "vue2-editor": "^2.10.2",
     "vuedraggable": "^2.23.2",
     "vuelidate": "^0.7.5"
-    },
+  },
   "devDependencies": {
     "style-loader": "^1.2.1",
     "cross-env": "^7.0.2",
