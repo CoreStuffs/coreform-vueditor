@@ -36,6 +36,11 @@ export default {
         t.$options.components[key] = value.control.default;
       };
   },
+  watch:{
+    $controls:function(){
+      console.log("updated control list...");
+    }
+  },
   methods:{
     getComponentData() {
       return {
@@ -50,13 +55,25 @@ export default {
       return this.$formData[variable];
     },
     onEnd:function(a){
-
+       console.log("End");
+            for (let [key, value] of Object.entries( this.$controls)) {
+              console.log('END - ' + key + ' - ' + value);
+            };
+    },
+    onClone:function(a){
+      console.log("Clone");
     },
     onAdd:function(a){
+       console.log("Add");
           //Trick: We try to find an element with isNew (a new one). For whatever reason, it can be at newindex or oldindex (investigation required).
           //If, after all, it has no isNew... it is not a new one
           if(a.pullMode === "clone"){
             var t = this;
+            //Moche!
+            for (let [key, value] of Object.entries( this.$controls)) {
+              console.log('ADD - ' + key + ' - ' + value);
+            };
+            
             var obj;
             for (var i = 0; i < this.elements.length; i++) {
               var element = this.elements[i];

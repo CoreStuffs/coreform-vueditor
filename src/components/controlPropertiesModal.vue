@@ -46,6 +46,9 @@
                     uk-icon="icon: plus-circle"
                   ></a>
                 </div>
+                <div v-show="control.variable">
+                  <a href="#" @click="editVariable()">Edit variable</a>
+                </div>
               </div>
               <component
                 :key="editformFieldId"
@@ -85,7 +88,6 @@ import UIkit from "uikit";
 import Vuelidate from "vuelidate";
 Vue.use(Vuelidate);
 import { deepCopy } from "@/components/utils.js";
-
 import { required, minLength, alphaNum } from "vuelidate/lib/validators";
 export default {
   inject: [
@@ -93,7 +95,7 @@ export default {
     "$getVariablesByType",
     "$variableTypes",
     "$controls",
-    "$openVariableProperties",
+    "$openVariableProperties"
   ],
   //   created:function(){
   //         this.$controls.forEach(control=>{
@@ -125,6 +127,10 @@ export default {
       }).show();
       this.control = deepCopy(control);
       this.$forceUpdate();
+    },
+    editVariable: function () {
+      var t = this;
+      this.$openVariableProperties(t.control.variable, null, function () {});
     },
     addVariable: function () {
       var t = this;
@@ -192,7 +198,6 @@ export default {
         minLength: minLength(3),
       };
     }
-
     return obj;
   },
 };
