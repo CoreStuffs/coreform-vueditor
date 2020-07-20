@@ -1,8 +1,8 @@
 import Vue from "vue";
-import form-editor from "./form-editor.vue";
+import buildersurface from "./buildersurface.vue";
 
 const Components = {
-    form-editor
+    buildersurface
 };
 
 Object.keys(Components).forEach(name => {

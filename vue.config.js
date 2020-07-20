@@ -1,6 +1,6 @@
 module.exports = {
   css: {
-    extract: true,
+    extract: false,
   },
   lintOnSave: true,
   filenameHashing: false,

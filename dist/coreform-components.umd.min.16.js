@@ -1,0 +1,2 @@
+(("undefined"!==typeof self?self:this)["webpackJsonpcoreform_components"]=("undefined"!==typeof self?self:this)["webpackJsonpcoreform_components"]||[]).push([[16],{ea36:function(e,n,t){"use strict";t.r(n),t.d(n,"tag",(function(){return o})),t.d(n,"label",(function(){return s})),t.d(n,"isDataField",(function(){return f})),t.d(n,"defaultSchema",(function(){return r}));var o="grid",s={default:"2 columns",fr:"2 colonnes"},r={showSeparator:!1,columns:[{width:"1-2",elements:[]},{width:"1-2",elements:[]}]},f=!1}}]);
+//# sourceMappingURL=coreform-components.umd.min.16.js.map

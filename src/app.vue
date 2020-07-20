@@ -16,17 +16,17 @@
         left: (100 - size) / 2 + '%',
       }"
     >
-      <form-editor
+      <buildersurface
         v-model="schema"
         :externalDataAdapter="dataAdapter"
-      ></form-editor>
+      ></buildersurface>
     </div>
   </div>
 </template>
 <script>
-import form-editor from "@/components/form-editor.vue";
+import buildersurface from "@/components/buildersurface.vue";
 var c = function () {
-  return { form-editor };
+  return { buildersurface };
 };
 
 // var schema = {
