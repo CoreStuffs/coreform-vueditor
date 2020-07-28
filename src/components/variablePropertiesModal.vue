@@ -112,7 +112,7 @@ import Vuelidate from "vuelidate";
 import { deepCopy } from "@/components/utils.js";
 Vue.use(Vuelidate);
 
-import { required, minLength, alphaNum } from "vuelidate/lib/validators";
+import { required, alphaNum } from "vuelidate/lib/validators";
 import validationTable from "@/components/validationTable.vue";
 export default {
   inject: ["$variableTypes", "$saveVariable"],

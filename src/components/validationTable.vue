@@ -116,7 +116,6 @@ export default {
       ) {
         var vals = this.$variableTypes[this.variable.type].optionalValidators;
         var ret = [];
-        
         vals.forEach((element) => {
           var o = this.$formValidators[element];
           o.key = element;

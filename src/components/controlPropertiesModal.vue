@@ -95,7 +95,7 @@ export default {
     "$getVariablesByType",
     "$variableTypes",
     "$controls",
-    "$openVariableProperties"
+    "$openVariableProperties",
   ],
   //   created:function(){
   //         this.$controls.forEach(control=>{

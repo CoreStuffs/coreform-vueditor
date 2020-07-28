@@ -120,8 +120,8 @@ import draggable from "vuedraggable";
 var globalId = 1;
 export default {
   mixins: [validationMixin],
-  name: "simple",
-  display: "Simple",
+  name: "designer",
+  display: "designer",
   order: 0,
   components: {
     controlset,
@@ -183,7 +183,7 @@ export default {
       return arr;
     },
   },
-  created: async function () {
+  created: function () {
     this.toolBoxFormItems = this.formControls ?? this.staticData.formControls;
     Object.assign(this.schema, this.value);
     this.executeNodesOperation((o) => {
@@ -206,15 +206,15 @@ export default {
 
     for (let [key, o] of Object.entries(arr)) {
       if (o.path.indexOf("/") < 0) o.path = "./controls/" + o.path;
-      let obj = await import(o.path + "/manifest.js");
+      let obj = require(o.path + "/manifest.js");
       var el = {
         tag: key,
         label: obj.label ?? {},
         defaultSchema: obj.defaultSchema ?? {},
         acceptedVariableTypes: obj.acceptedVariableTypes,
         isDataField: obj.isDataField,
-        control: await import(o.path + "/control.vue"),
-        properties: await import(o.path + "/properties.vue"),
+        control: require(o.path + "/control.vue"),
+        properties: require(o.path + "/properties.vue"),
       };
       if (o.label) el.label = deepCopy(o.label);
       if (o.defaultSchema) el.defaultSchema = deepCopy(o.defaultSchema);
@@ -225,7 +225,7 @@ export default {
       if (value.editorPath) {
         if (value.editorPath.indexOf("/") < 0)
           value.editorPath = "./validators/" + value.editorPath;
-        let obj = await import(value.editorPath + "/editor.vue");
+        let obj = require(value.editorPath + "/editor.vue");
         value.editor = obj;
       }
     }

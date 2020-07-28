@@ -16,17 +16,14 @@
         left: (100 - size) / 2 + '%',
       }"
     >
-      <buildersurface
-        v-model="schema"
-        :externalDataAdapter="dataAdapter"
-      ></buildersurface>
+      <designer v-model="schema" :externalDataAdapter="dataAdapter"></designer>
     </div>
   </div>
 </template>
 <script>
-import buildersurface from "@/components/buildersurface.vue";
+import designer from "@/components/designer.vue";
 var c = function () {
-  return { buildersurface };
+  return { designer };
 };
 
 // var schema = {
