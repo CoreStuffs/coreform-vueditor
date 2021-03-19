@@ -14,7 +14,7 @@
     "*.json"
   ],
   "dependencies": {
-    "axios": "~0.19.2",
+    "axios": "~0.21.1",
     "moment": "^2.29.1",
     "uikit": "^3.5.5",
     "vue": "^2.6.12",
