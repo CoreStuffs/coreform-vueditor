@@ -8,7 +8,7 @@
     uk-overflow-auto
   >
     <div
-      style="transition: none;"
+      style="transition: none"
       class="uk-modal-dialog uk-transition-fade uk-margin-auto-vertical"
     >
       <button class="uk-modal-close-default" type="button" uk-close></button>
